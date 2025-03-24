@@ -14,6 +14,10 @@ sealed class NavRoutes {
         const val ROUTE = "interview"
     }
 
+    data object Saved : NavRoutes() {
+        const val ROUTE = "saved"
+    }
+
     data object Profile : NavRoutes() {
         const val ROUTE = "profile"
     }

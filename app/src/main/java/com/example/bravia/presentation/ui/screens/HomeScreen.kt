@@ -89,7 +89,9 @@ fun HomeScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(internships) { internship ->
+                    items(
+                        internships
+                    ) { internship ->
                         InternshipCard(
                             internship = internship,
                             onClick = {

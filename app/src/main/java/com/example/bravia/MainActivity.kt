@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bravia.navigation.NavGraph
 import com.example.bravia.presentation.ui.components.BottomNavigationBar
 
-import com.example.studentapp.presentation.ui.theme.StudentAppTheme
+import com.example.studentapp.presentation.ui.theme.BravIATheme
 
 /**
  * Punto de entrada principal de la aplicación de estudiantes.
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            StudentAppTheme {
+            BravIATheme {
                 // Inicializar el NavController
                 val navController = rememberNavController()
 

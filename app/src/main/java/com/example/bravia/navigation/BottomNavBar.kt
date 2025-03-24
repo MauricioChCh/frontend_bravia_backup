@@ -2,6 +2,7 @@ package com.example.bravia.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
@@ -18,6 +19,7 @@ sealed class BottomNavBar(
      */
     object Routes {
         const val HOME = "home"
+        const val SAVED = "saved"
         const val INTERNSHIP = "internship"
         const val PROFILE = "profile"
     }
@@ -42,6 +44,13 @@ sealed class BottomNavBar(
         Icons.Filled.Info
     )
 
+    data object Saved : BottomNavBar(
+        Routes.SAVED,
+        R.string.saved,
+        Icons.Filled.AccountBox
+    )
+
+
     /**
      * Profile representa el elemento de navegación para la pantalla de perfil.
      * Esta pantalla permite al usuario ver y editar su información de perfil.
@@ -52,11 +61,13 @@ sealed class BottomNavBar(
         Icons.Filled.Person
     )
 
+
+
     companion object {
         /**
          * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
          */
-        fun items() = listOf(Home, Internship, Profile)
+        fun items() = listOf(Home, Saved, Internship, Profile)
 
         /**
          * Determina si la ruta proporcionada coincide con cualquier ruta de elemento de navegación inferior.
@@ -65,7 +76,7 @@ sealed class BottomNavBar(
          * @return True si la ruta coincide con un elemento de navegación inferior, false en caso contrario
          */
         fun isBottomNavRoute(route: String): Boolean {
-            return route == Routes.HOME || route == Routes.INTERNSHIP || route == Routes.PROFILE
+            return route == Routes.HOME || route == Routes.INTERNSHIP || route == Routes.PROFILE || route == Routes.SAVED
         }
     }
 }

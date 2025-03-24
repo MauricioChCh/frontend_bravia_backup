@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 
 import com.example.bravia.presentation.ui.screens.InternshipScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
+import com.example.bravia.presentation.ui.screens.SavedIntershipsScreen
 import com.example.studentapp.presentation.ui.screens.HomeScreen
 
 /**
@@ -44,6 +45,21 @@ fun NavGraph(
                 paddingValues = paddingValues
             )
         }
+        // Pantall especifica de intership
+
+
+
+        // Pantalla de guardados
+        composable(
+            route = BottomNavBar.Routes.SAVED,
+            arguments = emptyList()
+        ) {
+            SavedIntershipsScreen(
+                navController = navController,
+                paddingValues = paddingValues
+            )
+        }
+
 
         // Pantalla de perfil - muestra y permite editar el perfil del usuario
         composable(

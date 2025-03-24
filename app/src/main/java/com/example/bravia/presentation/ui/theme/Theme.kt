@@ -12,7 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.example.bravia.presentation.ui.theme.*
+import com.example.bravia.presentation.ui.theme.BackgroundWhite
+import com.example.bravia.presentation.ui.theme.DarkText
+import com.example.bravia.presentation.ui.theme.GreenAccent
+import com.example.bravia.presentation.ui.theme.LightGreen
+import com.example.bravia.presentation.ui.theme.Typography
 
 // Colores basados en el diseño de Figma
 
@@ -43,7 +47,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun StudentAppTheme(
+fun BravIATheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -53,7 +57,7 @@ fun StudentAppTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+//            window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }

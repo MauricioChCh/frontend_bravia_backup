@@ -34,8 +34,8 @@ fun MainLayout(
     paddingValues: PaddingValues, content: @Composable () -> Unit
 ) {
     // Obtener recursos de strings antes de usarlos en semántica
-    val appName = stringResource(id = R.string.app_name)
-    val appTitle = stringResource(id = R.string.app_title)
+    //val appName = stringResource(id = R.string.app_name)
+    //val appTitle = stringResource(id = R.string.app_title)
 
     Surface(
         modifier = Modifier
@@ -50,27 +50,28 @@ fun MainLayout(
                 color = MaterialTheme.colorScheme.primary,
                 shadowElevation = 4.dp
             ) {
-                Text(
-                    text = appName,
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp, bottom = 8.dp)
-                        .semantics { heading() })
+//                Text(
+//                    text = appName,
+//                    style = MaterialTheme.typography.headlineMedium,
+//                    color = MaterialTheme.colorScheme.onPrimary,
+//                    textAlign = TextAlign.Center,
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(top = 16.dp, bottom = 8.dp)
+//                        .semantics { heading() }
+//                )
             }
 
             // Sección de subtítulo de la aplicación
-            Text(
-                text = appTitle,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
-            )
+//            Text(
+//                text = appTitle,
+//                style = MaterialTheme.typography.titleMedium,
+//                color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                textAlign = TextAlign.Center,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp, vertical = 12.dp)
+//            )
 
             // Contenido específico de la pantalla
             content()
