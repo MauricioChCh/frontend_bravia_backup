@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BravIA</string>
+    <string name="app_title">Encuentra las mejores pasantías para tu carrera</string>
+    <string name="home">Start</string>
+    <string name="internship">Internship</string>
+    <string name="profile">Profile</string>
 </resources>
+
