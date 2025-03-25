@@ -3,14 +3,17 @@ package com.example.bravia
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.bravia.navigation.BottomNavBar
 import com.example.bravia.navigation.NavGraph
+import com.example.bravia.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.BottomNavigationBar
 
 import com.example.studentapp.presentation.ui.theme.BravIATheme
@@ -27,11 +30,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BravIATheme {
-                // Inicializar el NavController
-                val navController = rememberNavController()
 
                 // Configurar la pantalla principal con el NavController
-                StudentAppScreen(navController = navController)
+                MainScreen()
             }
         }
     }
@@ -43,21 +44,29 @@ class MainActivity : ComponentActivity() {
  * @param navController Controlador para gestionar la navegación entre pantallas
  */
 @Composable
-fun StudentAppScreen(navController: androidx.navigation.NavHostController) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Scaffold(
-            bottomBar = {
+fun MainScreen() {
+    val navController = rememberNavController()
+
+    // Obtener la ruta actual para determinar si mostrar la barra de navegación
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    // Determinar si la ruta actual es una pantalla de detalle
+    val isDetailScreen = currentRoute?.startsWith("internshipDetail") == true
+
+    Scaffold(
+        bottomBar = {
+            // Solo mostrar la barra de navegación si NO estamos en una pantalla de detalle
+            if (!isDetailScreen) {
                 BottomNavigationBar(navController = navController)
             }
-        ) { paddingValues ->
-            NavGraph(
-                navController = navController,
-                paddingValues = paddingValues
-            )
         }
+    ) { paddingValues ->
+        NavGraph(
+            navController = navController,
+            paddingValues = paddingValues
+        )
     }
 }
+
 

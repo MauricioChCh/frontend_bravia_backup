@@ -10,18 +10,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bravia.data.datasource.InternshipsProvider
 import com.example.bravia.navigation.NavRoutes
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.ui.components.InternshipCard
 import com.example.studentapp.presentation.ui.theme.ThemeDefaults
-
 
 @Composable
 fun HomeScreen(
@@ -33,6 +30,9 @@ fun HomeScreen(
 
     // Obtener la lista de pasantías del proveedor
     val internships = InternshipsProvider.findAllInternships()
+
+    // Estado para recordar las pasantías marcadas como favoritas
+    val bookmarkedInternships = remember { mutableStateMapOf<Long, Boolean>() }
 
     MainLayout(paddingValues = paddingValues) {
         Column(
@@ -53,16 +53,6 @@ fun HomeScreen(
                     focusedContainerColor = MaterialTheme.colorScheme.surface,
                     unfocusedContainerColor = MaterialTheme.colorScheme.surface
                 )
-            )
-
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
-            // Título de sección
-            Text(
-                text = "Mis pasantías",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
@@ -89,6 +79,10 @@ fun HomeScreen(
                     items(internships) { internship ->
                         InternshipCard(
                             internship = internship,
+                            initialBookmarked = bookmarkedInternships[internship.id] ?: false,
+                            onBookmarkChange = { isBookmarked ->
+                                bookmarkedInternships[internship.id] = isBookmarked
+                            },
                             onClick = {
                                 navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
                             }
@@ -100,3 +94,4 @@ fun HomeScreen(
         }
     }
 }
+

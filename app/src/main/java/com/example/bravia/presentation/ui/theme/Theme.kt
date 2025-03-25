@@ -52,6 +52,13 @@ object ThemeDefaults {
     val spacerHeight = 24.dp
     val cardSpacerHeight = 12.dp
     val searchFieldShape = 8.dp
+    val cardElevation = 2.dp
+
+    //redondeos
+    val roundedSmall = 8.dp
+    val roundedMid = 16.dp
+    val roundedLarge = 24.dp
+    val roundedXLarge = 32.dp
 
 
 }

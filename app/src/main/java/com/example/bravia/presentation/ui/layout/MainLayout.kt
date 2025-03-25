@@ -18,60 +18,58 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.bravia.R
 
+
 /**
  * MainLayout es un componente que proporciona la estructura de diseño estándar para la aplicación.
  *
- * Este componente establece un marco visual consistente en todas las pantallas con:
- * - Un encabezado prominente que muestra el nombre de la aplicación con semántica de accesibilidad adecuada
- * - Un subtítulo descriptivo que refuerza el propósito de la aplicación
- * - Un área de contenido designada para elementos de UI específicos de la pantalla
- *
  * @param paddingValues Valores de relleno que se aplicarán al diseño, típicamente del Scaffold
+ * @param showHeader Si se debe mostrar el encabezado con el logo de la aplicación
+ * @param title Título opcional para mostrar en la parte superior del contenido
  * @param content El contenido específico de la pantalla que se mostrará dentro de este diseño
  */
 @Composable
 fun MainLayout(
-    paddingValues: PaddingValues, content: @Composable () -> Unit
+    paddingValues: PaddingValues,
+    showHeader: Boolean = true,
+    title: String? = null,
+    content: @Composable () -> Unit
 ) {
-    // Obtener recursos de strings antes de usarlos en semántica
-    //val appName = stringResource(id = R.string.app_name)
-    //val appTitle = stringResource(id = R.string.app_title)
-
     Surface(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column {
-            // Sección de encabezado de la aplicación con marca principal
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary,
-                shadowElevation = 4.dp
-            ) {
-//                Text(
-//                    text = appName,
-//                    style = MaterialTheme.typography.headlineMedium,
-//                    color = MaterialTheme.colorScheme.onPrimary,
-//                    textAlign = TextAlign.Center,
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+//            // Logo de la aplicación (solo si showHeader es true)
+//            if (showHeader) {
+//                Box(
 //                    modifier = Modifier
 //                        .fillMaxWidth()
-//                        .padding(top = 16.dp, bottom = 8.dp)
-//                        .semantics { heading() }
+//                        .padding(horizontal = 16.dp, vertical = 12.dp),
+//                    contentAlignment = Alignment.CenterStart
+//                ) {
+//                    Text(
+//                        text = "eportuIA",
+//                        fontSize = 24.sp,
+//                        fontWeight = FontWeight.Bold,
+//                        color = Color(0xFF0A0A0A)
+//                    )
+//                }
+//            }
+//
+//            // Título de la sección (si se proporciona)
+//            if (title != null) {
+//                Text(
+//                    text = title,
+//                    style = MaterialTheme.typography.headlineMedium,
+//                    fontWeight = FontWeight.Bold,
+//                    color = MaterialTheme.colorScheme.onBackground,
+//                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
 //                )
-            }
-
-            // Sección de subtítulo de la aplicación
-//            Text(
-//                text = appTitle,
-//                style = MaterialTheme.typography.titleMedium,
-//                color = MaterialTheme.colorScheme.onSurfaceVariant,
-//                textAlign = TextAlign.Center,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 16.dp, vertical = 12.dp)
-//            )
+//            }
 
             // Contenido específico de la pantalla
             content()

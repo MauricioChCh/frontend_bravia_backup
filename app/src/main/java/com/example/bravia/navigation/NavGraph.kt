@@ -3,9 +3,13 @@ package com.example.bravia.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.compose.ui.unit.dp
 
+import com.example.bravia.presentation.ui.screens.InternshipDetailScreen
 import com.example.bravia.presentation.ui.screens.InternshipScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedIntershipsScreen
@@ -45,9 +49,23 @@ fun NavGraph(
                 paddingValues = paddingValues
             )
         }
-        // Pantall especifica de intership
 
-
+        // Pantalla detalle de internship
+        composable(
+            route = NavRoutes.InternshipDetail.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val internshipId = backStackEntry.arguments?.getLong(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
+            InternshipDetailScreen(
+                navController = navController,
+                internshipId = internshipId,
+                paddingValues = PaddingValues(0.dp) // Cambiado a 0.dp para ignorar el padding del Scaffold principal
+            )
+        }
 
         // Pantalla de guardados
         composable(
@@ -59,7 +77,6 @@ fun NavGraph(
                 paddingValues = paddingValues
             )
         }
-
 
         // Pantalla de perfil - muestra y permite editar el perfil del usuario
         composable(
@@ -73,3 +90,4 @@ fun NavGraph(
         }
     }
 }
+

@@ -4,6 +4,7 @@
     <string name="home">Start</string>
     <string name="saved">Saved</string>
     <string name="internship">Internship</string>
+    <string name="applied_internships">Aplicadas</string>
     <string name="profile">Profile</string>
 </resources>
 
