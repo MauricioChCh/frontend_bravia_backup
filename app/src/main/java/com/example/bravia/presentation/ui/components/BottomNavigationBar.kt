@@ -3,13 +3,12 @@ package com.example.bravia.presentation.ui.components
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.bravia.navigation.BottomNavBar
+import com.example.bravia.presentation.navigation.BottomNavBar
 
 /**
  * Barra de navegación inferior que permite al usuario navegar entre las principales secciones de la aplicación.

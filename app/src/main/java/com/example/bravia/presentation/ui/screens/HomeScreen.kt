@@ -1,8 +1,7 @@
-package com.example.studentapp.presentation.ui.screens
+package com.example.bravia.presentation.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -10,29 +9,30 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bravia.data.datasource.InternshipsProvider
-import com.example.bravia.navigation.NavRoutes
+import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.ui.components.InternshipCard
+import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.studentapp.presentation.ui.theme.ThemeDefaults
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: InternshipViewModel
 ) {
     // Estado para el campo de búsqueda
     var searchText by remember { mutableStateOf("") }
 
-    // Obtener la lista de pasantías del proveedor
-    val internships = InternshipsProvider.findAllInternships()
+    // Obtener la lista de pasantías del ViewModel
+    val internships by viewModel.internshipList.collectAsState()
 
-    // Estado para recordar las pasantías marcadas como favoritas
-    val bookmarkedInternships = remember { mutableStateMapOf<Long, Boolean>() }
+    // Realizar búsqueda cuando cambia el texto
+    LaunchedEffect(searchText) {
+        viewModel.searchInternships(searchText)
+    }
 
     MainLayout(paddingValues = paddingValues) {
         Column(
@@ -49,7 +49,6 @@ fun HomeScreen(
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(ThemeDefaults.searchFieldShape),
                 colors = TextFieldDefaults.colors(
-                    // Usar colores del tema
                     focusedContainerColor = MaterialTheme.colorScheme.surface,
                     unfocusedContainerColor = MaterialTheme.colorScheme.surface
                 )
@@ -76,12 +75,13 @@ fun HomeScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(internships) { internship ->
+                    items(count = internships.size) { index ->
+                        val internship = internships[index]
                         InternshipCard(
                             internship = internship,
-                            initialBookmarked = bookmarkedInternships[internship.id] ?: false,
+                            initialBookmarked = internship.isBookmarked,
                             onBookmarkChange = { isBookmarked ->
-                                bookmarkedInternships[internship.id] = isBookmarked
+                                viewModel.bookmarkInternship(internship.id, isBookmarked)
                             },
                             onClick = {
                                 navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
@@ -94,4 +94,3 @@ fun HomeScreen(
         }
     }
 }
-

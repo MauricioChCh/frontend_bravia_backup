@@ -1,8 +1,10 @@
+// MainActivity.kt
 package com.example.bravia
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -11,40 +13,44 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.bravia.navigation.BottomNavBar
+import com.example.bravia.data.datasource.InternshipDataSourceImpl
+import com.example.bravia.data.mapper.InternshipMapper
+import com.example.bravia.data.repository.InternshipRepositoryImpl
 import com.example.bravia.navigation.NavGraph
-import com.example.bravia.navigation.NavRoutes
+import com.example.bravia.presentation.factory.InternshipViewModelFactory
 import com.example.bravia.presentation.ui.components.BottomNavigationBar
 
+import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.studentapp.presentation.ui.theme.BravIATheme
 
-/**
- * Punto de entrada principal de la aplicación de estudiantes.
- *
- * Esta actividad configura la interfaz de usuario principal utilizando Jetpack Compose
- * y establece la navegación entre pantallas.
- */
 class MainActivity : ComponentActivity() {
+
+    private val internshipViewModel: InternshipViewModel by viewModels {
+        // Crear el mapper
+        val internshipMapper = InternshipMapper()
+
+        // Crear la fuente de datos
+        val dataSource = InternshipDataSourceImpl()
+
+        // Crear el repositorio
+        val repository = InternshipRepositoryImpl(dataSource, internshipMapper)
+
+        // Crear la fábrica del ViewModel
+        InternshipViewModelFactory(repository)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             BravIATheme {
-
-                // Configurar la pantalla principal con el NavController
-                MainScreen()
+                MainScreen(internshipViewModel)
             }
         }
     }
 }
 
-/**
- * Pantalla principal que integra el sistema de navegación.
- *
- * @param navController Controlador para gestionar la navegación entre pantallas
- */
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: InternshipViewModel) {
     val navController = rememberNavController()
 
     // Obtener la ruta actual para determinar si mostrar la barra de navegación
@@ -64,9 +70,8 @@ fun MainScreen() {
     ) { paddingValues ->
         NavGraph(
             navController = navController,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            viewModel = viewModel
         )
     }
 }
-
-

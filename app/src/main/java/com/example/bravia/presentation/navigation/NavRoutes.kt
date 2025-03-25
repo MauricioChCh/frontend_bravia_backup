@@ -1,4 +1,4 @@
-package com.example.bravia.navigation
+package com.example.bravia.presentation.navigation
 
 /**
  * Contiene todas las constantes de rutas de navegación para la aplicación.

@@ -1,34 +1,36 @@
+// presentation/ui/screens/SavedInternshipsScreen.kt
 package com.example.bravia.presentation.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bravia.presentation.navigation.NavRoutes
+import com.example.bravia.presentation.ui.components.InternshipCard
 import com.example.bravia.presentation.ui.layout.MainLayout
+import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.studentapp.presentation.ui.theme.ThemeDefaults
 
-
 @Composable
-fun SavedIntershipsScreen (
+fun SavedInternshipsScreen(
     navController: NavController,
-    paddingValues: PaddingValues
-){
-    var searchText by remember { mutableStateOf("") }
+    paddingValues: PaddingValues,
+    viewModel: InternshipViewModel
+) {
+    // Obtener las pasantías guardadas
+    val bookmarkedInternships by viewModel.bookmarkedInternships.collectAsState()
+
+    // Cargar las pasantías guardadas al entrar en la pantalla
+    LaunchedEffect(Unit) {
+        viewModel.loadBookmarkedInternships()
+    }
 
     MainLayout(paddingValues = paddingValues) {
         Column(
@@ -36,26 +38,46 @@ fun SavedIntershipsScreen (
                 .fillMaxSize()
                 .padding(ThemeDefaults.screenPadding)
         ) {
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
             Text(
-                text = "Mis pasantías",
+                text = "Saved Internships",
                 style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
             )
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
-            if (searchText.isEmpty()) {
-                // Mostrar mensaje si no hay pasantías guardadas
-                Text(
-                    text = "No tienes pasantías guardadas",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            if (bookmarkedInternships.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No saved internships",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center
+                    )
+                }
             } else {
-                // Mostrar lista de pasantías guardadas
-
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(bookmarkedInternships) { internship ->
+                        InternshipCard(
+                            internship = internship,
+                            initialBookmarked = true,
+                            onBookmarkChange = { isBookmarked ->
+                                viewModel.bookmarkInternship(internship.id, isBookmarked)
+                            },
+                            onClick = {
+                                navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(ThemeDefaults.cardSpacerHeight))
+                    }
+                }
             }
         }
     }
-
 }

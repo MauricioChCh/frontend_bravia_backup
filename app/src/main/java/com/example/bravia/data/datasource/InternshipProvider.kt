@@ -1,12 +1,12 @@
 package com.example.bravia.data.datasource
 
-import com.example.bravia.data.model.Internship
+import com.example.bravia.data.datasource.model.InternshipDto
+import com.example.bravia.domain.model.Internship
 import java.util.Date
 
-class InternshipsProvider {
-    companion object {
-        private val internshipMainList = listOf(
-            Internship(
+object InternshipProvider {
+    val internships = listOf(
+        InternshipDto(
                 id = 1,
                 title = "Data Science Intern",
                 company = "Netflix",
@@ -24,7 +24,7 @@ class InternshipsProvider {
                 contact = "650-555-1234",
                 link = "https://careers.netflix.com/internships"
             ),
-            Internship(
+        InternshipDto(
                 id = 2,
                 title = "UX Design Intern",
                 company = "Airbnb",
@@ -42,7 +42,7 @@ class InternshipsProvider {
                 contact = "415-555-6789",
                 link = "https://www.airbnb.com/careers/internships"
             ),
-            Internship(
+        InternshipDto(
                 id = 3,
                 title = "Cybersecurity Intern",
                 company = "Microsoft",
@@ -60,7 +60,7 @@ class InternshipsProvider {
                 contact = "425-555-9012",
                 link = "https://careers.microsoft.com/cybersecurity-internship"
             ),
-            Internship(
+        InternshipDto(
                 id = 4,
                 title = "Marketing Analytics Intern",
                 company = "Spotify",
@@ -78,7 +78,7 @@ class InternshipsProvider {
                 contact = "212-555-3456",
                 link = "https://www.spotify.com/careers/marketing-internship"
             ),
-            Internship(
+        InternshipDto(
                 id = 5,
                 title = "Software Engineering Intern",
                 company = "Amazon Web Services",
@@ -96,7 +96,7 @@ class InternshipsProvider {
                 contact = "206-555-7890",
                 link = "https://aws.amazon.com/careers/internships"
             ),
-            Internship(
+        InternshipDto(
                 id = 6,
                 title = "Mobile App Development Intern",
                 company = "Facebook",
@@ -114,7 +114,7 @@ class InternshipsProvider {
                 contact = "650-555-2345",
                 link = "https://www.facebook.com/careers/internships"
             ),
-            Internship(
+        InternshipDto(
                 id = 7,
                 title = "Data Analyst Intern",
                 company = "Google",
@@ -132,7 +132,7 @@ class InternshipsProvider {
                 contact = "650-555-6789",
                 link = "https://careers.google.com/internships"
             ),
-            Internship(
+        InternshipDto(
                 id = 8,
                 title = "Product Management Intern",
                 company = "Apple",
@@ -150,7 +150,7 @@ class InternshipsProvider {
                 contact = "408-555-1234",
                 link = "https://www.apple.com/careers/internships"
             ),
-            Internship(
+        InternshipDto(
                 id = 9,
                 title = "Graphic Design Intern",
                 company = "Adobe",
@@ -168,7 +168,7 @@ class InternshipsProvider {
                 contact = "408-555-5678",
                 link = "https://www.adobe.com/careers/internships"
             ),
-            Internship(
+        InternshipDto(
                 id = 10,
                 title = "Business Development Intern",
                 company = "Tesla",
@@ -189,12 +189,4 @@ class InternshipsProvider {
 
         )
 
-        fun findInternshipById(id: Long): Internship? {
-            return internshipMainList.find { it.id == id }
-        }
-
-        fun findAllInternships(): List<Internship> {
-            return internshipMainList
-        }
     }
-}

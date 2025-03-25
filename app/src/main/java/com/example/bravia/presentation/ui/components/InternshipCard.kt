@@ -1,3 +1,4 @@
+// presentation/ui/components/InternshipCard.kt
 package com.example.bravia.presentation.ui.components
 
 import androidx.compose.foundation.background
@@ -31,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.bravia.data.model.Internship
+import com.example.bravia.domain.model.Internship
 import com.example.studentapp.presentation.ui.theme.ThemeDefaults
 
 @Composable
@@ -127,4 +128,3 @@ fun InternshipCard(
         }
     }
 }
-

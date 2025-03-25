@@ -1,4 +1,4 @@
-package com.example.bravia.navigation
+package com.example.bravia.presentation.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons

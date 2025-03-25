@@ -1,8 +1,8 @@
-package com.example.bravia.data.model
+package com.example.bravia.data.datasource.model
 
 import java.util.Date
 
-data class Internship(
+data class InternshipDto(
     val id: Long,
     val title: String,
     val company: String,
@@ -18,8 +18,5 @@ data class Internship(
     val percentage: String,
     val activities: String,
     val contact: String,
-    val link: String,
-//    val status: Status,
-//    val priority: Priori
-
+    val link: String
 )

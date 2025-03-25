@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bravia.data.datasource.InternshipsProvider
-import com.example.bravia.navigation.NavRoutes
+import com.example.bravia.data.datasource.InternshipProvider
+import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.InternshipCard
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.studentapp.presentation.ui.theme.ThemeDefaults
@@ -24,8 +24,7 @@ fun InternshipScreen(
     navController: NavController,
     paddingValues: PaddingValues
 ) {
-    // Obtener la lista de pasantías
-    val internships = InternshipsProvider.findAllInternships()
+
 
     MainLayout(paddingValues = paddingValues) {
         Column(
@@ -33,42 +32,12 @@ fun InternshipScreen(
                 .fillMaxSize()
                 .padding(ThemeDefaults.screenPadding)
         ) {
-            if (internships.isEmpty()) {
-                // Mostrar mensaje si no hay pasantías
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "No hay pasantías disponibles",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            } else {
-                // Mostrar lista de pasantías
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(
-                        items = internships,
-                        key = { internship -> internship.id }
-                    ) { internship ->
-                        InternshipCard(
-                            internship = internship,
-                            onClick = {
-                                navController.navigate(
-                                    NavRoutes.InternshipDetail.createRoute(
-                                        internship.id
-                                    )
-                                )
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-                    }
-                }
-            }
+            Text(
+                text = "Interships",
+                style = MaterialTheme.typography.displayMedium,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
         }
     }
 }

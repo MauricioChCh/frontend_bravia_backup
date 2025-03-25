@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -27,10 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bravia.data.datasource.InternshipsProvider
+import com.example.bravia.data.datasource.InternshipProvider
 import com.example.bravia.presentation.ui.components.InternshipCard
 import com.example.bravia.presentation.ui.layout.MainLayout
-import com.example.bravia.navigation.NavRoutes
+import com.example.bravia.presentation.navigation.NavRoutes
 
 @Composable
 fun AppliedInternshipsScreen(
@@ -41,7 +40,7 @@ fun AppliedInternshipsScreen(
 
     // Para demostración, usamos la misma lista de pasantías
     // En una implementación real, tendrías una lista filtrada de pasantías guardadas
-    val savedInternships = InternshipsProvider.findAllInternships().take(2)
+    //val savedInternships = InternshipProvider.findAllInternships().take(2)
 
     MainLayout(
         paddingValues = paddingValues,
@@ -74,48 +73,48 @@ fun AppliedInternshipsScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Lista de pasantías aplicadas
-            if (savedInternships.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "No has aplicado a ninguna pasantía",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(
-                            text = "Aplica a pasantías para verlas aquí",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(savedInternships) { internship ->
-                        InternshipCard(
-                            internship = internship,
-                            onClick = {
-                                navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                    }
-                }
-            }
+//            if (savedInternships.isEmpty()) {
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .weight(1f),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Column(
+//                        horizontalAlignment = Alignment.CenterHorizontally
+//                    ) {
+//                        Text(
+//                            text = "No has aplicado a ninguna pasantía",
+//                            style = MaterialTheme.typography.bodyLarge,
+//                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                            textAlign = TextAlign.Center
+//                        )
+//
+//                        Spacer(modifier = Modifier.height(8.dp))
+//
+//                        Text(
+//                            text = "Aplica a pasantías para verlas aquí",
+//                            style = MaterialTheme.typography.bodyMedium,
+//                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                            textAlign = TextAlign.Center
+//                        )
+//                    }
+//                }
+//            } else {
+//                LazyColumn(
+//                    modifier = Modifier.fillMaxWidth()
+//                ) {
+//                    items(savedInternships) { internship ->
+//                        InternshipCard(
+//                            internship = internship,
+//                            onClick = {
+//                                navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
+//                            }
+//                        )
+//                        Spacer(modifier = Modifier.height(12.dp))
+//                    }
+//                }
+//            }
         }
     }
 }
