@@ -27,7 +27,7 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavBar.items().forEach { item ->
             NavigationBarItem(
                 icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },
-                label = { Text(text = stringResource(id = item.title)) },
+                //label = { Text(text = stringResource(id = item.title)) },
                 selected = currentRoute == item.route,
                 onClick = {
                     // Navegar a la ruta seleccionada solo si no estamos ya en ella

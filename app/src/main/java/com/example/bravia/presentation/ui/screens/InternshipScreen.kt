@@ -15,7 +15,8 @@ import com.example.bravia.data.datasource.InternshipsProvider
 import com.example.bravia.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.InternshipCard
 import com.example.bravia.presentation.ui.layout.MainLayout
-import com.example.bravia.presentation.ui.theme.ThemeDefaults
+import com.example.studentapp.presentation.ui.theme.ThemeDefaults
+
 
 
 @Composable

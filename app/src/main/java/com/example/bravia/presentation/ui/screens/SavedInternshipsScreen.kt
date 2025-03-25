@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bravia.presentation.ui.layout.MainLayout
-import com.example.bravia.presentation.ui.theme.ThemeDefaults
+import com.example.studentapp.presentation.ui.theme.ThemeDefaults
 
 
 @Composable

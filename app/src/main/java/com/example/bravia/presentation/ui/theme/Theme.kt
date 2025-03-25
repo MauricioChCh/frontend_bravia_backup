@@ -11,6 +11,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.example.bravia.presentation.ui.theme.BackgroundWhite
 import com.example.bravia.presentation.ui.theme.DarkText
@@ -45,6 +46,15 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = Color.White,
     onSurface = Color.White,
 )
+
+object ThemeDefaults {
+    val screenPadding = 16.dp
+    val spacerHeight = 24.dp
+    val cardSpacerHeight = 12.dp
+    val searchFieldShape = 8.dp
+
+
+}
 
 @Composable
 fun BravIATheme(
