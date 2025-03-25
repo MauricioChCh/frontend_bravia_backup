@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bravia.presentation.ui.layout.MainLayout
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
 
 
 @Composable
@@ -33,16 +34,15 @@ fun SavedIntershipsScreen (
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(ThemeDefaults.screenPadding)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
             Text(
                 text = "Mis pasantías",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF0A0A0A)
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
             if (searchText.isEmpty()) {
                 // Mostrar mensaje si no hay pasantías guardadas

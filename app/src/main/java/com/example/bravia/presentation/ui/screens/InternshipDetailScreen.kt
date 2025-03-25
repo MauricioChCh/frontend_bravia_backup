@@ -15,6 +15,8 @@ import com.example.bravia.data.datasource.InternshipsProvider
 import java.text.SimpleDateFormat
 import java.util.Locale
 import com.example.bravia.presentation.ui.layout.MainLayout
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
+
 
 @Composable
 fun InternshipDetailScreen(
@@ -31,19 +33,17 @@ fun InternshipDetailScreen(
             Card(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
+                    .padding(ThemeDefaults.screenPadding)
                     .semantics { contentDescription = "Detalles de pasantía para ${internship.title}" },
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
-                // Contenido de la tarjeta (igual que antes)
-                // ...
+
             }
         } ?: run {
-            // Estado de error (igual que antes)
-            // ...
+
         }
     }
 }

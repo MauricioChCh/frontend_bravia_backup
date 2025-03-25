@@ -13,7 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bravia.data.datasource.InternshipsProvider
 import com.example.bravia.navigation.NavRoutes
+import com.example.bravia.presentation.ui.components.InternshipCard
 import com.example.bravia.presentation.ui.layout.MainLayout
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
+
 
 @Composable
 fun InternshipScreen(
@@ -27,7 +30,7 @@ fun InternshipScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(ThemeDefaults.screenPadding)
         ) {
             if (internships.isEmpty()) {
                 // Mostrar mensaje si no hay pasantías
@@ -54,10 +57,14 @@ fun InternshipScreen(
                         InternshipCard(
                             internship = internship,
                             onClick = {
-                                navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
+                                navController.navigate(
+                                    NavRoutes.InternshipDetail.createRoute(
+                                        internship.id
+                                    )
+                                )
                             }
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
                     }
                 }
             }

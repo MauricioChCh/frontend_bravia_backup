@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bravia.presentation.ui.layout.MainLayout
-
+import com.example.bravia.presentation.ui.theme.Typography
 
 /**
  * Pantalla que muestra el perfil del estudiante.
@@ -37,11 +38,13 @@ fun ProfileScreen(
             ) {
                 Text(
                     text = "Perfil",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Aquí puedes ver y editar tu perfil",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(top = 8.dp)
                 )
             }

@@ -1,4 +1,4 @@
-package com.example.bravia.presentation.ui.screens
+package com.example.bravia.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,16 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.bravia.presentation.ui.theme.GreenAccent
+import com.example.bravia.data.model.Internship
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
 
 @Composable
 fun InternshipCard(
-    internship: com.example.bravia.data.model.Internship,
-    onClick: () -> Unit
+    internship: Internship,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = Modifier
@@ -41,21 +41,21 @@ fun InternshipCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(ThemeDefaults.cardSpacerHeight),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Imagen de la empresa (usamos un placeholder por ahora)
+            // Imagen de la empresa (placeholder)
             Box(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)
-                    .background(Color.LightGray),
+                    .background(MaterialTheme.colorScheme.secondary),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = internship.company.first().toString(),
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
             }
 
@@ -67,30 +67,41 @@ fun InternshipCard(
             ) {
                 Text(
                     text = internship.title,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = internship.company,
-                    fontSize = 14.sp,
-                    color = Color(0xFF666666)
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = internship.modality,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = internship.location,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = internship.percentage,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            // Estado de la pasantía (usamos la modalidad como estado)
+            // Estado de la pasantía
             Box(
-                modifier = Modifier
-                    .background(
-                        color = GreenAccent,
-                        shape = RoundedCornerShape(4.dp)
-                    )
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Text(
-                    text = internship.modality,
-                    fontSize = 12.sp,
-                    color = Color(0xFF052E08)
+                    text = "s", // You might want to replace this with actual status
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
