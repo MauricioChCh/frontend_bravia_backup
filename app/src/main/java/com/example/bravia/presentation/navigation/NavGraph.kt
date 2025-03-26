@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.screens.HomeScreen
+import com.example.bravia.presentation.ui.screens.InterestsScreen
 import com.example.bravia.presentation.ui.screens.InternshipDetailScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedInternshipsScreen
@@ -62,11 +63,23 @@ fun NavGraph(
             val password = backStackEntry.arguments?.getString(NavRoutes.ProfileSignUp.ARG_PASSWORD) ?: ""
             val typeAccount = backStackEntry.arguments?.getString(NavRoutes.ProfileSignUp.ARG_TYPE_ACCOUNT) ?: ""
             SignUpProfileScreen(
+                navController = navController,
                 paddingValues = paddingValues,
                 signupViewModel = signUpViewModel,
                 email = email,
                 password = password,
                 typeAccount = typeAccount
+            )
+        }
+
+        // Interests Screen
+        composable(
+            route = NavRoutes.InterestsSignUp.ROUTE,
+        ) {
+            InterestsScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                signupViewModel = signUpViewModel
             )
         }
 
