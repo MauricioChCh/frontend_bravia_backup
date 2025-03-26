@@ -51,173 +51,169 @@ fun SignUpScreen(
     paddingValues: PaddingValues,
     signUpViewModel: SignupViewModel
 ) {
-    MainLayout(paddingValues = paddingValues) {
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
-        var confirmPassword by remember { mutableStateOf("") }
-        var expanded by remember { mutableStateOf(false) }
-        val options = listOf("Student", "Business")
-        var selectedOption by remember { mutableStateOf("Select option") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+    val options = listOf("Student", "Business")
+    var selectedOption by remember { mutableStateOf("Select option") }
 
-        Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(ThemeDefaults.screenPadding)
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(ThemeDefaults.screenPadding)
+    ) {
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
+
+
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "BravIA",
+            textAlign = TextAlign.Center,
+            style = Typography.displayLarge
+        )
+
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
+
+        Text(
+            text = "Sign Up",
+            style = Typography.displayMedium,
+        )
+
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            border = BorderStroke(0.5.dp, Color.Black),
+            shape = RoundedCornerShape(ThemeDefaults.roundedMid),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface ),
+            elevation = CardDefaults.cardElevation(ThemeDefaults.cardElevation)
         ) {
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
 
+
+            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
             Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "BravIA",
-                textAlign = TextAlign.Center,
-                style = Typography.displayLarge
+                modifier = Modifier.padding(start = ThemeDefaults.textPadding),
+                text = "Email",
+                style = Typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground
             )
-
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
-
-            Text(
-                text = "Sign Up",
-                style = Typography.displayMedium,
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = ThemeDefaults.textFieldPadding)
             )
 
             Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                border = BorderStroke(0.5.dp, Color.Black),
-                shape = RoundedCornerShape(ThemeDefaults.roundedMid),
-                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface ),
-                elevation = CardDefaults.cardElevation(ThemeDefaults.cardElevation)
+            Text(
+                modifier = Modifier.padding(start = ThemeDefaults.textPadding),
+                text = "Password",
+                style = Typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = ThemeDefaults.textFieldPadding)
+            )
+
+            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
+
+            Text(
+                modifier = Modifier.padding(start = ThemeDefaults.textPadding),
+                text = "Confirm Password",
+                style = Typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = ThemeDefaults.textFieldPadding)
+            )
+
+            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
+
+            Text(
+                modifier = Modifier.padding(start = ThemeDefaults.textPadding),
+                text = "Type of account",
+                style = Typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
             ) {
 
-
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
-                Text(
-                    modifier = Modifier.padding(start = ThemeDefaults.textPadding),
-                    text = "Email",
-                    style = Typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
                 OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
+                    value = selectedOption,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = {
+                        Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = ThemeDefaults.textFieldPadding)
+                        .padding(ThemeDefaults.textFieldPadding)
+                        .clickable { expanded = true }
+                        .menuAnchor()
                 )
-
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
-                Text(
-                    modifier = Modifier.padding(start = ThemeDefaults.textPadding),
-                    text = "Password",
-                    style = Typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = ThemeDefaults.textFieldPadding)
-                )
-
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
-                Text(
-                    modifier = Modifier.padding(start = ThemeDefaults.textPadding),
-                    text = "Confirm Password",
-                    style = Typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                OutlinedTextField(
-                    value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = ThemeDefaults.textFieldPadding)
-                )
-
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
-                Text(
-                    modifier = Modifier.padding(start = ThemeDefaults.textPadding),
-                    text = "Type of account",
-                    style = Typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                ExposedDropdownMenuBox(
+                ExposedDropdownMenu(
                     expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
+                    onDismissRequest = { expanded = false }
                 ) {
-
-                    OutlinedTextField(
-                        value = selectedOption,
-                        onValueChange = {},
-                        readOnly = true,
-                        trailingIcon = {
-                            Icon(Icons.Default.ArrowDropDown, contentDescription = null)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(ThemeDefaults.textFieldPadding)
-                            .clickable { expanded = true }
-                            .menuAnchor()
-                    )
-                    ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        options.forEach { option ->
-                            DropdownMenuItem(
-                                text = { Text(option) },
-                                onClick = {
-                                    selectedOption = option
-                                    expanded = false
-                                }
-                            )
-                        }
+                    options.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option) },
+                            onClick = {
+                                selectedOption = option
+                                expanded = false
+                            }
+                        )
                     }
                 }
-
-            }
-
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
-            // Button
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 70.dp)
-            ) {
-                Text(
-                    text = "Continue ...",
-                    style = Typography.headlineSmall,
-                )
-
-            }
-
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
-            Button(
-                onClick = { /* TODO Acción de ir a login */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 50.dp)
-            ) {
-                Text(
-                    text = "Login",
-                    style = Typography.headlineSmall,
-                )
             }
 
         }
+
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
+
+        // Button
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 70.dp)
+        ) {
+            Text(
+                text = "Continue ...",
+                style = Typography.headlineSmall,
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
+
+        Button(
+            onClick = { /* TODO Acción de ir a login */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 50.dp)
+        ) {
+            Text(
+                text = "Login",
+                style = Typography.headlineSmall,
+            )
+        }
+
     }
-
-
 }
