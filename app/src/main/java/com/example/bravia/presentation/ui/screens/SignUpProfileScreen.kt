@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 import com.example.studentapp.presentation.ui.theme.ThemeDefaults
@@ -42,6 +43,7 @@ import com.example.studentapp.presentation.ui.theme.ThemeDefaults
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpProfileScreen (
+    navController: NavController,
     paddingValues: PaddingValues,
     signupViewModel: SignupViewModel,
     email: String,
@@ -342,7 +344,7 @@ fun SignUpProfileScreen (
 
         // Button
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { /*TODO*/ navController.navigate("interestsSignup") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp)
