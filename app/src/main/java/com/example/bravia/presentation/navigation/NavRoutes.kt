@@ -10,6 +10,15 @@ sealed class NavRoutes {
         const val ROUTE = "signup"
     }
 
+    data object ProfileSignUp : NavRoutes() {
+        const val ROUTE = "profileSignup/{email}/{password}/{typeAccount}"
+        const val ARG_EMAIL = "email"
+        const val ARG_PASSWORD = "password"
+        const val ARG_TYPE_ACCOUNT = "typeAccount"
+
+        fun createRoute(email: String, password: String, typeAccount: String) = "profileSignup/$email/$password/$typeAccount"
+    }
+
     data object Home : NavRoutes() {
         const val ROUTE = "home"
     }
@@ -25,6 +34,8 @@ sealed class NavRoutes {
     data object Profile : NavRoutes() {
         const val ROUTE = "profile"
     }
+
+
 
     data object InternshipDetail : NavRoutes() {
         const val ROUTE = "internshipDetail/{internshipId}"

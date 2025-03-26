@@ -1,5 +1,6 @@
 package com.example.bravia.presentation.ui.screens
 
+import android.R.attr.onClick
 import android.content.res.Resources
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -48,6 +49,7 @@ import com.example.bravia.presentation.viewmodel.SignupViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
+    navController: NavController,
     paddingValues: PaddingValues,
     signUpViewModel: SignupViewModel
 ) {
@@ -189,7 +191,7 @@ fun SignUpScreen(
 
         // Button
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate("profileSignup/$email/$password/$selectedOption") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp)
@@ -204,10 +206,10 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
         Button(
-            onClick = { /* TODO Acción de ir a login */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 50.dp)
+            onClick = { /* TODO Acción de ir a login */},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 50.dp)
         ) {
             Text(
                 text = "Login",

@@ -16,6 +16,7 @@ import com.example.bravia.presentation.ui.screens.InternshipDetailScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedInternshipsScreen
 import com.example.bravia.presentation.ui.screens.SignUpScreen
+import com.example.bravia.presentation.ui.screens.SignUpProfileScreen
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
@@ -31,15 +32,43 @@ fun NavGraph(
         navController = navController,
         startDestination = NavRoutes.SignUp.ROUTE
     ) {
-        // Sign up Screen
+       // Sign up Screen
        composable(
               route = NavRoutes.SignUp.ROUTE,
        ) {
             SignUpScreen(
+                navController = navController,
                 paddingValues = paddingValues,
                 signUpViewModel = signUpViewModel
             )
        }
+
+        // Sign up Profile Screen
+        composable(
+            route = NavRoutes.ProfileSignUp.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.ProfileSignUp.ARG_EMAIL) {
+                    type = NavType.StringType
+                },
+                navArgument(NavRoutes.ProfileSignUp.ARG_PASSWORD) {
+                    type = NavType.StringType
+                },
+                navArgument(NavRoutes.ProfileSignUp.ARG_TYPE_ACCOUNT) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val email = backStackEntry.arguments?.getString(NavRoutes.ProfileSignUp.ARG_EMAIL) ?: ""
+            val password = backStackEntry.arguments?.getString(NavRoutes.ProfileSignUp.ARG_PASSWORD) ?: ""
+            val typeAccount = backStackEntry.arguments?.getString(NavRoutes.ProfileSignUp.ARG_TYPE_ACCOUNT) ?: ""
+            SignUpProfileScreen(
+                paddingValues = paddingValues,
+                signupViewModel = signUpViewModel,
+                email = email,
+                password = password,
+                typeAccount = typeAccount
+            )
+        }
 
         // Pantalla principal
         composable(

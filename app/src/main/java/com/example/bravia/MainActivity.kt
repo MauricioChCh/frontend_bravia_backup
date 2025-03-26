@@ -64,7 +64,7 @@ fun MainScreen(singUpviewModel: SignupViewModel, internshipViewModel: Internship
         bottomBar = {
 
 
-            if (currentRoute != "signup"){
+            if (currentRoute != "signup" && currentRoute?.contains("profileSignup") == false) {
                 BottomNavigationBar(navController = navController)
             }
         }
