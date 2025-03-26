@@ -3,32 +3,44 @@ package com.example.bravia.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.compose.ui.unit.dp
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.screens.HomeScreen
-
 import com.example.bravia.presentation.ui.screens.InternshipDetailScreen
-import com.example.bravia.presentation.ui.screens.InternshipScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedInternshipsScreen
-
+import com.example.bravia.presentation.ui.screens.SignUpScreen
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
-
+import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    viewModel: InternshipViewModel
+    internshipViewModel: InternshipViewModel,
+    signUpViewModel: SignupViewModel
 ) {
-    NavHost(navController = navController, startDestination = BottomNavBar.Routes.HOME) {
+    NavHost(
+        navController = navController,
+        startDestination = NavRoutes.SignUp.ROUTE
+    ) {
+        // Sign up Screen
+       composable(
+              route = NavRoutes.SignUp.ROUTE,
+       ) {
+            SignUpScreen(
+                paddingValues = paddingValues,
+                signUpViewModel = signUpViewModel
+            )
+       }
+
         // Pantalla principal
         composable(
             route = BottomNavBar.Routes.HOME,
@@ -37,7 +49,7 @@ fun NavGraph(
             HomeScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 
@@ -67,7 +79,7 @@ fun NavGraph(
                 navController = navController,
                 internshipId = internshipId,
                 paddingValues = PaddingValues(0.dp),
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 
@@ -79,7 +91,7 @@ fun NavGraph(
             SavedInternshipsScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 

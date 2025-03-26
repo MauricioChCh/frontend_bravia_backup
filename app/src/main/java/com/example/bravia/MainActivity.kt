@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -21,10 +22,13 @@ import com.example.bravia.presentation.factory.InternshipViewModelFactory
 import com.example.bravia.presentation.ui.components.BottomNavigationBar
 
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
+import com.example.bravia.presentation.viewmodel.SignupViewModel
 import com.example.studentapp.presentation.ui.theme.BravIATheme
+
 
 class MainActivity : ComponentActivity() {
 
+    private val signUpViewModel : SignupViewModel by viewModels()
     private val internshipViewModel: InternshipViewModel by viewModels {
         // Crear el mapper
         val internshipMapper = InternshipMapper()
@@ -43,27 +47,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BravIATheme {
-                MainScreen(internshipViewModel)
+                //MainScreen(internshipViewModel)
+                MainScreen(signUpViewModel, internshipViewModel)
             }
         }
     }
 }
 
 @Composable
-fun MainScreen(viewModel: InternshipViewModel) {
+fun MainScreen(singUpviewModel: SignupViewModel, internshipViewModel: InternshipViewModel) {
     val navController = rememberNavController()
-
-    // Obtener la ruta actual para determinar si mostrar la barra de navegación
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Determinar si la ruta actual es una pantalla de detalle
-    val isDetailScreen = currentRoute?.startsWith("internshipDetail") == true
-
-    Scaffold(
+    Scaffold (
         bottomBar = {
-            // Solo mostrar la barra de navegación si NO estamos en una pantalla de detalle
-            if (!isDetailScreen) {
+
+
+            if (currentRoute != "signup"){
                 BottomNavigationBar(navController = navController)
             }
         }
@@ -71,7 +72,35 @@ fun MainScreen(viewModel: InternshipViewModel) {
         NavGraph(
             navController = navController,
             paddingValues = paddingValues,
-            viewModel = viewModel
+            internshipViewModel = internshipViewModel,
+            signUpViewModel = singUpviewModel
         )
     }
 }
+
+//@Composable
+//fun MainScreen(viewModel: InternshipViewModel) {
+//    val navController = rememberNavController()
+//
+//    // Obtener la ruta actual para determinar si mostrar la barra de navegación
+//    val navBackStackEntry by navController.currentBackStackEntryAsState()
+//    val currentRoute = navBackStackEntry?.destination?.route
+//
+//    // Determinar si la ruta actual es una pantalla de detalle
+//    val isDetailScreen = currentRoute?.startsWith("internshipDetail") == true
+//
+//    Scaffold(
+//        bottomBar = {
+//            // Solo mostrar la barra de navegación si NO estamos en una pantalla de detalle
+//            if (!isDetailScreen) {
+//                BottomNavigationBar(navController = navController)
+//            }
+//        }
+//    ) { paddingValues ->
+//        NavGraph(
+//            navController = navController,
+//            paddingValues = paddingValues,
+//            viewModel = viewModel
+//        )
+//    }
+//}
