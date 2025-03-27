@@ -255,7 +255,7 @@ fun ContinueButton(
             .fillMaxWidth()
             .padding(horizontal = 70.dp),
         onClick = { navController.navigate("profileSignup/$email/$password/$selectedOption") },
-        //enabled = isValidEmail && isValidPassword && isValidConfirmPassword && isSelectedOptionValid
+        enabled = isValidEmail && isValidPassword && isValidConfirmPassword && isSelectedOptionValid
     ) {
         Text(
             text = "Continue ...",

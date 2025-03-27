@@ -174,11 +174,11 @@ fun ContinueButton(
                 navController.navigate("home")
             }
         },
-//        enabled = when (typeAccount) {
-//            "Student" -> studentName.isNotEmpty() && studentLastname.isNotEmpty() && isSelectedOptionCollegeValid && isSelectedOptionDegreeValid
-//            "Business" -> recruiterName.isNotEmpty() && recruiterLastname.isNotEmpty() && companyName.isNotEmpty() && isSelectedOptionBusinessValid
-//            else -> false
-//        }
+        enabled = when (typeAccount) {
+            "Student" -> studentName.isNotEmpty() && studentLastname.isNotEmpty() && isSelectedOptionCollegeValid && isSelectedOptionDegreeValid
+            "Business" -> recruiterName.isNotEmpty() && recruiterLastname.isNotEmpty() && companyName.isNotEmpty() && isSelectedOptionBusinessValid
+            else -> false
+        }
     ) {
         Text(
             text = if (typeAccount == "Student") {
