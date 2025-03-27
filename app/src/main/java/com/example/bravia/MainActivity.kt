@@ -30,69 +30,70 @@ import com.example.bravia.presentation.viewmodel.SignupViewModel
 import com.example.studentapp.presentation.ui.theme.BravIATheme
 
 
-class MainActivity : ComponentActivity() {
-
-    private val signUpViewModel : SignupViewModel by viewModels {
-        // Crear el mapper
-        val interestMapper = InterestMapper()
-
-        // Crear la fuente de datos
-        val dataSource = InterestDataSourceImpl()
-
-        // Crear el repositorio
-        val repository = InterestRepositoryImpl(dataSource, interestMapper)
-
-        // Crear la fábrica del ViewModel
-        SignupViewModelFactory(repository)
-    }
-    private val internshipViewModel: InternshipViewModel by viewModels {
-        // Crear el mapper
-        val internshipMapper = InternshipMapper()
-
-        // Crear la fuente de datos
-        val dataSource = InternshipDataSourceImpl()
-
-        // Crear el repositorio
-        val repository = InternshipRepositoryImpl(dataSource, internshipMapper)
-
-        // Crear la fábrica del ViewModel
-        InternshipViewModelFactory(repository)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            BravIATheme {
-                //MainScreen(internshipViewModel)
-                MainScreen(signUpViewModel, internshipViewModel)
-            }
-        }
-    }
-}
-
-@Composable
-fun MainScreen(singUpviewModel: SignupViewModel, internshipViewModel: InternshipViewModel) {
-    val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
-    Scaffold (
-        bottomBar = {
-
-
-            if (currentRoute != "signup" && currentRoute?.contains("profileSignup") == false && currentRoute != "interestsSignup") {
-                BottomNavigationBar(navController = navController)
-            }
-        }
-    ) { paddingValues ->
-        NavGraph(
-            navController = navController,
-            paddingValues = paddingValues,
-            internshipViewModel = internshipViewModel,
-            signUpViewModel = singUpviewModel
-        )
-    }
-}
+//Joshua
+//class MainActivity : ComponentActivity() {
+//
+//    private val signUpViewModel : SignupViewModel by viewModels {
+//        // Crear el mapper
+//        val interestMapper = InterestMapper()
+//
+//        // Crear la fuente de datos
+//        val dataSource = InterestDataSourceImpl()
+//
+//        // Crear el repositorio
+//        val repository = InterestRepositoryImpl(dataSource, interestMapper)
+//
+//        // Crear la fábrica del ViewModel
+//        SignupViewModelFactory(repository)
+//    }
+//    private val internshipViewModel: InternshipViewModel by viewModels {
+//        // Crear el mapper
+//        val internshipMapper = InternshipMapper()
+//
+//        // Crear la fuente de datos
+//        val dataSource = InternshipDataSourceImpl()
+//
+//        // Crear el repositorio
+//        val repository = InternshipRepositoryImpl(dataSource, internshipMapper)
+//
+//        // Crear la fábrica del ViewModel
+//        InternshipViewModelFactory(repository)
+//    }
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContent {
+//            BravIATheme {
+//                //MainScreen(internshipViewModel)
+//                MainScreen(signUpViewModel, internshipViewModel)
+//            }
+//        }
+//    }
+//}
+//Mau
+//@Composable
+//fun MainScreen(singUpviewModel: SignupViewModel, internshipViewModel: InternshipViewModel) {
+//    val navController = rememberNavController()
+//    val navBackStackEntry by navController.currentBackStackEntryAsState()
+//    val currentRoute = navBackStackEntry?.destination?.route
+//
+//    Scaffold (
+//        bottomBar = {
+//
+//
+//            if (currentRoute != "signup" && currentRoute?.contains("profileSignup") == false && currentRoute != "interestsSignup") {
+//                BottomNavigationBar(navController = navController)
+//            }
+//        }
+//    ) { paddingValues ->
+//        NavGraph(
+//            navController = navController,
+//            paddingValues = paddingValues,
+//            internshipViewModel = internshipViewModel,
+//            signUpViewModel = singUpviewModel
+//        )
+//    }
+//}
 
 //@Composable
 //fun MainScreen(viewModel: InternshipViewModel) {
