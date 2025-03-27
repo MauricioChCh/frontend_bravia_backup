@@ -15,9 +15,12 @@ import com.example.bravia.presentation.ui.screens.HomeScreen
 
 import com.example.bravia.presentation.ui.screens.InternshipDetailScreen
 import com.example.bravia.presentation.ui.screens.InternshipScreen
+import com.example.bravia.presentation.ui.screens.LoginSavedScreen
 import com.example.bravia.presentation.ui.screens.LoginScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedInternshipsScreen
+import com.example.bravia.presentation.ui.screens.SignInScreen
+import com.example.bravia.presentation.ui.screens.StartScreen
 
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.bravia.presentation.viewmodel.LoginViewModel
@@ -30,9 +33,9 @@ fun NavGraph(
     paddingValues: PaddingValues,
     internshipViewModel: InternshipViewModel,
     signUpViewModel: SignupViewModel,
-    loginViewModel: LoginViewModel
+    loginViewModel: LoginViewModel,
 ) {
-    NavHost(navController = navController, startDestination = NavRoutes.Login.ROUTE) {
+    NavHost(navController = navController, startDestination = NavRoutes.Start.ROUTE) {
 
         composable(
             route = NavRoutes.Login.ROUTE
@@ -43,7 +46,7 @@ fun NavGraph(
                 loginViewModel = loginViewModel
             )
         }
-/*
+
         composable(
             route = NavRoutes.LoginSaved.ROUTE
         ) {
@@ -53,7 +56,27 @@ fun NavGraph(
                 loginViewModel = loginViewModel
             )
         }
-*/
+
+        composable(
+            route = NavRoutes.Start.ROUTE
+        ) {
+            StartScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                loginViewModel = loginViewModel
+            )
+        }
+
+        composable(
+            route = NavRoutes.SignIn.ROUTE
+        ) {
+            SignInScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                loginViewModel = loginViewModel
+            )
+        }
+
 
         // Pantalla principal
         composable(

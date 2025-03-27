@@ -65,8 +65,12 @@ fun MainScreen(singUpviewModel: SignupViewModel, internshipViewModel: Internship
         bottomBar = {
 
 
-            if (currentRoute != "login"){
-                BottomNavigationBar(navController = navController)
+            when (currentRoute) {
+                "login" -> "Nada"
+                "start" -> "Nada"
+                "loginSaved" -> "Nada"
+                "signIn" -> "Nada"
+                else -> BottomNavigationBar(navController = navController)
             }
         }
     ) { paddingValues ->

@@ -2,9 +2,9 @@ package com.example.bravia.presentation.ui.screens
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,19 +12,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +44,6 @@ import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.studentapp.presentation.ui.theme.BravIATheme
 import com.example.studentapp.presentation.ui.theme.ThemeDefaults
-import java.time.format.TextStyle
 
 
 @Preview(showBackground = true)
@@ -102,16 +108,24 @@ fun SignInScreen(
                     modifier = Modifier
                         .padding(16.dp)
                 ) {
+                    val textoEmail = remember { mutableStateOf("") } // Estado del texto
+                    val textoPassword = remember { mutableStateOf("") } // Estado del texto
+                    val isPasswordVisible = remember { mutableStateOf(false) }
+
 
                     Text(text = "Email", style = MaterialTheme.typography.bodyMedium)
 
                     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
                     OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        modifier = Modifier.fillMaxWidth()
+                        value = textoEmail.value, // Texto actual
+                        onValueChange = { nuevoTexto -> textoEmail.value = nuevoTexto }, // Actualiza el texto
+                        placeholder = { Text("example@email.com") }, // Texto de ejemplo
+                        modifier = Modifier.fillMaxWidth(), // Ancho completo del campo
+                        textStyle = androidx.compose.ui.text.TextStyle(color = Color.Black) // Estilo del texto
                     )
+
+
 
                     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
@@ -120,11 +134,25 @@ fun SignInScreen(
                     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
                     OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = textoPassword.value, // Texto actual
+                        onValueChange = { nuevoTexto -> textoPassword.value = nuevoTexto }, // Actualiza el texto
+                        placeholder = { Text("password") }, // Texto de ejemplo
                         modifier = Modifier.fillMaxWidth(),
-                        //visualTransformation = PasswordVisualTransformation()
+                        textStyle = androidx.compose.ui.text.TextStyle(color = Color.Black),
+                        visualTransformation = if (isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            Row {
+                                Icon(
+                                    imageVector = if (isPasswordVisible.value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                    contentDescription = "Toggle password visibility",
+                                    modifier = Modifier.clickable {
+                                        isPasswordVisible.value = !isPasswordVisible.value // Alterna la visibilidad de la contraseña
+                                    }
+                                )
+                            }
+                        }
                     )
+
 
                     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
 

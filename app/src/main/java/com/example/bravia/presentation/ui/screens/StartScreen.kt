@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import com.example.bravia.presentation.ui.theme.LightGreen
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.studentapp.presentation.ui.theme.BravIATheme
+import kotlinx.coroutines.delay
 
 @Preview(showBackground = true)
 @Composable
@@ -51,4 +53,11 @@ fun StartScreen(
             style = Typography.displayLarge
         )
     }
+    LaunchedEffect(key1 = true) {
+        delay(2500) // Espera 2.5 segundos
+        navController.navigate("login") {
+            popUpTo("start") { inclusive = true } // Elimina StartScreen del historial de navegación
+        }
+    }
+
 }

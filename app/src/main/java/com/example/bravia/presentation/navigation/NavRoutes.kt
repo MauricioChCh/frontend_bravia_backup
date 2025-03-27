@@ -30,6 +30,14 @@ sealed class NavRoutes {
         const val ROUTE = "loginSaved"
     }
 
+    data object Start : NavRoutes() {
+        const val ROUTE = "start"
+    }
+
+    data object SignIn : NavRoutes() {
+        const val ROUTE = "signIn"
+    }
+
     data object InternshipDetail : NavRoutes() {
         const val ROUTE = "internshipDetail/{internshipId}"
         const val ARG_INTERNSHIP_ID = "internshipId"

@@ -65,7 +65,11 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
 
                 Button(
-                    onClick = { /* TODO Acción de ir a login */ },
+                    onClick = {
+
+                        navController.navigate("signIn")
+
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 80.dp),
@@ -80,7 +84,11 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
                 Button(
-                    onClick = { /* TODO Acción de ir a login */ },
+                    onClick = {
+
+                        navController.navigate("signIn")
+
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(216, 216, 216)),
                     modifier = Modifier
                         .fillMaxWidth()
