@@ -15,20 +15,46 @@ import com.example.bravia.presentation.ui.screens.HomeScreen
 
 import com.example.bravia.presentation.ui.screens.InternshipDetailScreen
 import com.example.bravia.presentation.ui.screens.InternshipScreen
+import com.example.bravia.presentation.ui.screens.LoginScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedInternshipsScreen
 
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
-
+import com.example.bravia.presentation.viewmodel.LoginViewModel
+import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    viewModel: InternshipViewModel
+    internshipViewModel: InternshipViewModel,
+    signUpViewModel: SignupViewModel,
+    loginViewModel: LoginViewModel
 ) {
-    NavHost(navController = navController, startDestination = BottomNavBar.Routes.HOME) {
+    NavHost(navController = navController, startDestination = NavRoutes.Login.ROUTE) {
+
+        composable(
+            route = NavRoutes.Login.ROUTE
+        ) {
+            LoginScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                loginViewModel = loginViewModel
+            )
+        }
+/*
+        composable(
+            route = NavRoutes.LoginSaved.ROUTE
+        ) {
+            LoginSavedScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                loginViewModel = loginViewModel
+            )
+        }
+*/
+
         // Pantalla principal
         composable(
             route = BottomNavBar.Routes.HOME,
@@ -37,7 +63,7 @@ fun NavGraph(
             HomeScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 
@@ -67,7 +93,7 @@ fun NavGraph(
                 navController = navController,
                 internshipId = internshipId,
                 paddingValues = PaddingValues(0.dp),
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 
@@ -79,7 +105,7 @@ fun NavGraph(
             SavedInternshipsScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 

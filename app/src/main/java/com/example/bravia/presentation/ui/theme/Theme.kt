@@ -50,6 +50,8 @@ private val DarkColorScheme = darkColorScheme(
 object ThemeDefaults {
     val screenPadding = 16.dp
     val spacerHeight = 24.dp
+    val spacerHeightMedium = 32.dp
+    val spacerHeightLarge = 50.dp
     val cardSpacerHeight = 12.dp
     val searchFieldShape = 8.dp
     val cardElevation = 2.dp
