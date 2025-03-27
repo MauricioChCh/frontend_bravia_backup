@@ -67,7 +67,7 @@ fun SignUpScreen(
     var isConfirmPasswordValid by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
 
-
+    var selectedOption by remember { mutableStateOf("Select option") }
     var isSelectedOptionValid by remember { mutableStateOf(false) }
 
     Column (
@@ -143,6 +143,8 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
             AccountType(
+                selectedOption = selectedOption,
+                onSelectedOption = { selectedOption = it },
                 isSelectedOptionValid = isSelectedOptionValid,
                 onSelectedOptionValidChange = { isSelectedOptionValid = it }
             )
@@ -158,7 +160,7 @@ fun SignUpScreen(
             isSelectedOptionValid = isSelectedOptionValid,
             email = email,
             password = password,
-            selectedOption = "Student",
+            selectedOption = selectedOption,
             navController = navController
         )
 
@@ -172,12 +174,13 @@ fun SignUpScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountType(
+    selectedOption: String,
+    onSelectedOption: (String) -> Unit,
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange : (Boolean) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var options = listOf("Student", "Business")
-    var selectedOption by remember { mutableStateOf("Select option") }
 
     Text(
         modifier = Modifier.padding(start = ThemeDefaults.textPadding),
@@ -212,9 +215,9 @@ fun AccountType(
                 DropdownMenuItem(
                     text = { Text(option) },
                     onClick = {
-                        selectedOption = option
+                        onSelectedOption(option)
                         expanded = false
-                        onSelectedOptionValidChange( selectedOption != "Select option" )
+                        onSelectedOptionValidChange( option != "Select option" )
                     }
                 )
             }
