@@ -9,11 +9,14 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.compose.ui.unit.dp
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.screens.HomeScreen
 import com.example.bravia.presentation.ui.screens.InterestsScreen
+
 import com.example.bravia.presentation.ui.screens.InternshipDetailScreen
+import com.example.bravia.presentation.ui.screens.InternshipScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedInternshipsScreen
 import com.example.bravia.presentation.ui.screens.SignUpScreen
@@ -27,22 +30,62 @@ fun NavGraph(
     navController: NavHostController,
     paddingValues: PaddingValues,
     internshipViewModel: InternshipViewModel,
-    signUpViewModel: SignupViewModel
+    signUpViewModel: SignupViewModel,
+    loginViewModel: LoginViewModel,
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = NavRoutes.SignUp.ROUTE // TODO change to login route
-    ) {
-       // Sign up Screen
-       composable(
-              route = NavRoutes.SignUp.ROUTE,
-       ) {
+    NavHost(navController = navController, startDestination = NavRoutes.Start.ROUTE) {
+
+        //start screens=========================================
+        composable(
+            route = NavRoutes.Login.ROUTE
+        ) {
+            LoginScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                loginViewModel = loginViewModel
+            )
+        }
+
+        composable(
+            route = NavRoutes.LoginSaved.ROUTE
+        ) {
+            LoginSavedScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                loginViewModel = loginViewModel
+            )
+        }
+
+        composable(
+            route = NavRoutes.Start.ROUTE
+        ) {
+            StartScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                loginViewModel = loginViewModel
+            )
+        }
+
+        composable(
+            route = NavRoutes.SignIn.ROUTE
+        ) {
+            SignInScreen(
+                navController = navController,
+                paddingValues = paddingValues,
+                loginViewModel = loginViewModel
+            )
+        }
+
+        //SING-UP screens========================================
+        composable(
+            route = NavRoutes.SignUp.ROUTE,
+        ) {
             SignUpScreen(
                 navController = navController,
                 paddingValues = paddingValues,
                 signUpViewModel = signUpViewModel
             )
-       }
+        }
 
         // Sign up Profile Screen
         composable(
@@ -83,7 +126,9 @@ fun NavGraph(
             )
         }
 
-        // Pantalla principal
+
+
+        //Main SCREENS===========================================
         composable(
             route = BottomNavBar.Routes.HOME,
             arguments = emptyList()
@@ -91,7 +136,7 @@ fun NavGraph(
             HomeScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                viewModel = internshipViewModel
+                viewModel = viewModel
             )
         }
 
@@ -121,7 +166,7 @@ fun NavGraph(
                 navController = navController,
                 internshipId = internshipId,
                 paddingValues = PaddingValues(0.dp),
-                viewModel = internshipViewModel
+                viewModel = viewModel
             )
         }
 
@@ -133,7 +178,7 @@ fun NavGraph(
             SavedInternshipsScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                viewModel = internshipViewModel
+                viewModel = viewModel
             )
         }
 

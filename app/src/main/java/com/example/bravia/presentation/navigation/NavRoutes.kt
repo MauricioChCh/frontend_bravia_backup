@@ -6,6 +6,23 @@ package com.example.bravia.presentation.navigation
  * El uso de una clase sellada con objetos garantiza la seguridad de tipos y evita errores por cadenas de ruta mal escritas.
  */
 sealed class NavRoutes {
+    //START=====================================
+    data object Login : NavRoutes() {
+        const val ROUTE = "login"
+    }
+
+    data object LoginSaved : NavRoutes() {
+        const val ROUTE = "loginSaved"
+    }
+
+    data object Start : NavRoutes() {
+        const val ROUTE = "start"
+    }
+
+    data object SignIn : NavRoutes() {
+        const val ROUTE = "signIn"
+    }
+    //SING-UP====================================
     data object SignUp : NavRoutes() {
         const val ROUTE = "signup"
     }
@@ -38,8 +55,6 @@ sealed class NavRoutes {
     data object Profile : NavRoutes() {
         const val ROUTE = "profile"
     }
-
-
 
     data object InternshipDetail : NavRoutes() {
         const val ROUTE = "internshipDetail/{internshipId}"
