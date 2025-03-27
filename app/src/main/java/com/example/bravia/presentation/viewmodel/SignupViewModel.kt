@@ -4,6 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.bravia.domain.usecase.GetAllInterestUseCase
+import com.example.bravia.domain.usecase.GetInterestByIdUseCase
+
 
 sealed class SignUPState {
     data class Loading(val message: String) : SignUPState()
@@ -12,6 +15,8 @@ sealed class SignUPState {
 }
 
 class SignupViewModel (
+    private val getAllInterestsUseCase : GetAllInterestUseCase,
+    private val getInterestByIdUseCase : GetInterestByIdUseCase
 
 ) : ViewModel() {
     var email by mutableStateOf("")
@@ -38,5 +43,6 @@ class SignupViewModel (
     fun signUp() {
         // Implement sign up logic here
     }
+
 
 }
