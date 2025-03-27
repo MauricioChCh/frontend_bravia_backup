@@ -21,8 +21,13 @@ import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedInternshipsScreen
 import com.example.bravia.presentation.ui.screens.SignUpScreen
 import com.example.bravia.presentation.ui.screens.SignUpProfileScreen
+import com.example.bravia.presentation.ui.screens.LoginScreen
+import com.example.bravia.presentation.ui.screens.LoginSavedScreen
+import com.example.bravia.presentation.ui.screens.SignInScreen
+import com.example.bravia.presentation.ui.screens.StartScreen
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
+import com.example.bravia.presentation.viewmodel.LoginViewModel
 
 
 @Composable
@@ -136,7 +141,7 @@ fun NavGraph(
             HomeScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 
@@ -166,7 +171,7 @@ fun NavGraph(
                 navController = navController,
                 internshipId = internshipId,
                 paddingValues = PaddingValues(0.dp),
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 
@@ -178,7 +183,7 @@ fun NavGraph(
             SavedInternshipsScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                viewModel = viewModel
+                viewModel = internshipViewModel
             )
         }
 

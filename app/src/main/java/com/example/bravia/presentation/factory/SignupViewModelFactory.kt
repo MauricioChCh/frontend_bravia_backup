@@ -15,8 +15,8 @@ class SignupViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SignupViewModel::class.java)) {
             return SignupViewModel(
-                getAllInterestsUseCase = GetAllInterestUseCase(repository),
-                getInterestByIdUseCase = GetInterestByIdUseCase(repository)
+//                getAllInterestsUseCase = GetAllInterestUseCase(repository),
+//                getInterestByIdUseCase = GetInterestByIdUseCase(repository)
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

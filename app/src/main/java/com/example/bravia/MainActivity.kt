@@ -1,4 +1,3 @@
-// MainActivity.kt
 package com.example.bravia
 
 import android.os.Bundle
@@ -61,7 +60,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(singUpviewModel: SignupViewModel, internshipViewModel: InternshipViewModel, loginViewModel: LoginViewModel) {
+fun MainScreen(singUpViewModel: SignupViewModel, internshipViewModel: InternshipViewModel, loginViewModel: LoginViewModel) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -83,7 +82,7 @@ fun MainScreen(singUpviewModel: SignupViewModel, internshipViewModel: Internship
             navController = navController,
             paddingValues = paddingValues,
             internshipViewModel = internshipViewModel,
-            signUpViewModel = singUpviewModel,
+            signUpViewModel = singUpViewModel,
             loginViewModel = loginViewModel
         )
     }

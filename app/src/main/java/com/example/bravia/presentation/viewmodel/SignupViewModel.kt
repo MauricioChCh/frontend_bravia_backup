@@ -15,8 +15,8 @@ sealed class SignUPState {
 }
 
 class SignupViewModel (
-    private val getAllInterestsUseCase : GetAllInterestUseCase,
-    private val getInterestByIdUseCase : GetInterestByIdUseCase
+//    private val getAllInterestsUseCase : GetAllInterestUseCase,
+//    private val getInterestByIdUseCase : GetInterestByIdUseCase,
 
 ) : ViewModel() {
     var email by mutableStateOf("")
