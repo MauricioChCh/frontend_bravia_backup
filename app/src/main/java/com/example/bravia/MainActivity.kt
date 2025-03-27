@@ -14,11 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.bravia.data.datasource.InterestDataSourceImpl
 import com.example.bravia.data.datasource.InternshipDataSourceImpl
+import com.example.bravia.data.mapper.InterestMapper
 import com.example.bravia.data.mapper.InternshipMapper
+import com.example.bravia.data.repository.InterestRepositoryImpl
 import com.example.bravia.data.repository.InternshipRepositoryImpl
 import com.example.bravia.navigation.NavGraph
 import com.example.bravia.presentation.factory.InternshipViewModelFactory
+import com.example.bravia.presentation.factory.SignupViewModelFactory
 import com.example.bravia.presentation.ui.components.BottomNavigationBar
 
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
@@ -28,7 +32,19 @@ import com.example.studentapp.presentation.ui.theme.BravIATheme
 
 class MainActivity : ComponentActivity() {
 
-    private val signUpViewModel : SignupViewModel by viewModels()
+    private val signUpViewModel : SignupViewModel by viewModels {
+        // Crear el mapper
+        val interestMapper = InterestMapper()
+
+        // Crear la fuente de datos
+        val dataSource = InterestDataSourceImpl()
+
+        // Crear el repositorio
+        val repository = InterestRepositoryImpl(dataSource, interestMapper)
+
+        // Crear la fábrica del ViewModel
+        SignupViewModelFactory(repository)
+    }
     private val internshipViewModel: InternshipViewModel by viewModels {
         // Crear el mapper
         val internshipMapper = InternshipMapper()
