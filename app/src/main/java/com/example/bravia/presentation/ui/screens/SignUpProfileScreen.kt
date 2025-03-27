@@ -116,32 +116,81 @@ fun SignUpProfileScreen (
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
         // Button
-        Button(
-            onClick = { /*TODO*/ navController.navigate("interestsSignup") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 70.dp)
-        ) {
-            Text(
-                text = "Continue ...",
-                style = Typography.headlineSmall,
-            )
-
-        }
+        ContinueButton(
+            typeAccount = typeAccount,
+            navController = navController,
+            studentName = name,
+            studentLastname = lastname,
+            recruiterName = recruiterName,
+            recruiterLastname = recruiterLastname,
+            companyName = companyName,
+            isSelectedOptionCollegeValid = isSelectedOptionCollegeValid,
+            isSelectedOptionBusinessValid = isSelectedOptionBusinessValid,
+            isSelectedOptionDegreeValid = isSelectedOptionDegreeValid
+        )
 
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
-        Button(
-            onClick = { /* TODO Acción de ir a login */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 50.dp)
-        ) {
-            Text(
-                text = "Login",
-                style = Typography.headlineSmall,
-            )
+        RedirectToLogin(navController)
+    }
+}
+
+@Composable
+fun RedirectToLogin(
+    navController: NavController
+) {
+    Button(
+        onClick = { /* TODO Acción de ir a login */ },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 50.dp)
+    ) {
+        Text(
+            text = "Login",
+            style = MaterialTheme.typography.headlineSmall
+        )
+    }
+}
+
+@Composable
+fun ContinueButton(
+    typeAccount: String,
+    navController: NavController,
+    studentName: String,
+    studentLastname: String,
+    recruiterName: String,
+    recruiterLastname: String,
+    companyName: String,
+    isSelectedOptionCollegeValid: Boolean,
+    isSelectedOptionBusinessValid: Boolean,
+    isSelectedOptionDegreeValid: Boolean
+) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 70.dp),
+        onClick = {
+            if (typeAccount == "Student") {
+                navController.navigate("interestsSignup")
+            } else if (typeAccount == "Business") {
+                navController.navigate("home")
+            }
+        },
+        enabled = when (typeAccount) {
+            "Student" -> studentName.isNotEmpty() && studentLastname.isNotEmpty() && isSelectedOptionCollegeValid && isSelectedOptionDegreeValid
+            "Business" -> recruiterName.isNotEmpty() && recruiterLastname.isNotEmpty() && companyName.isNotEmpty() && isSelectedOptionBusinessValid
+            else -> false
         }
+    ) {
+        Text(
+            text = if (typeAccount == "Student") {
+                "Continue ..."
+            } else {
+                "Create Account"
+            },
+            style = MaterialTheme.typography.headlineSmall
+        )
+
     }
 }
 
