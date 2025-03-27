@@ -136,7 +136,7 @@ fun LoginSavedScreen(
 
 
             Button(
-                onClick = { /* TODO Acción de ir a login */ },
+                onClick = { navController.navigate("signup") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(227, 229, 226)
                 ),

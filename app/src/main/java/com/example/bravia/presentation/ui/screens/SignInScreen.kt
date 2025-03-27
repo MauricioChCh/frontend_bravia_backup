@@ -159,7 +159,7 @@ fun SignInScreen(
 
                     BasicText(
                         text = buildAnnotatedString {
-                            append("Forgot Password") // Texto mostrado
+                            append("Forgot Password?") // Texto mostrado
                             addStringAnnotation(
                                 tag = "URL",
                                 annotation = "https://www.example.com", // URL del hipervínculo
@@ -186,7 +186,7 @@ fun SignInScreen(
 
 
             Button(
-                onClick = { /* TODO Acción de ir a login */ },
+                onClick = {  navController.navigate("home")  },
                 colors = ButtonDefaults.buttonColors(containerColor = LightGreen),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -201,7 +201,7 @@ fun SignInScreen(
             }
             Spacer(modifier = Modifier.height(ThemeDefaults.cardSpacerHeight))
             Button(
-                onClick = { /* TODO Acción de ir a login */ },
+                onClick = { navController.navigate("signup") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(227, 229, 226)
                 ),

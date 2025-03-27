@@ -74,6 +74,10 @@ fun MainScreen(singUpViewModel: SignupViewModel, internshipViewModel: Internship
                 "start" -> "Nada"
                 "loginSaved" -> "Nada"
                 "signIn" -> "Nada"
+                "signup" -> "Nada"
+                "interestsSignup" -> "Nada"
+                "profileSignup" -> "Nada"
+                "internshipDetail" -> "Nada"
                 else -> BottomNavigationBar(navController = navController)
             }
         }

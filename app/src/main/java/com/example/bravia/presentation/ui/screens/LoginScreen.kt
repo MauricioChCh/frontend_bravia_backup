@@ -86,7 +86,7 @@ fun LoginScreen(
                 Button(
                     onClick = {
 
-                        navController.navigate("signIn")
+                        navController.navigate("signup")
 
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(216, 216, 216)),
@@ -101,7 +101,6 @@ fun LoginScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
 
