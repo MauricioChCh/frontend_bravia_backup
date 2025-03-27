@@ -114,7 +114,7 @@ fun InterestsScreen(
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            maxLines = 7,
+            maxLines = 9,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(1f) // allow FlowRow to expand and scroll if needed

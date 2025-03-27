@@ -1,6 +1,5 @@
 package com.example.bravia.presentation.ui.screens
 
-import android.accounts.Account
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -27,14 +26,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -65,6 +62,7 @@ fun SignUpProfileScreen (
     var isSelectedOptionCollegeValid by remember { mutableStateOf(false) }
     var isSelectedOptionBusinessValid by remember { mutableStateOf(false) }
     var isSelectedOptionDegreeValid by remember { mutableStateOf(false) }
+
 
     Column (
         modifier = Modifier
@@ -176,11 +174,11 @@ fun ContinueButton(
                 navController.navigate("home")
             }
         },
-        enabled = when (typeAccount) {
-            "Student" -> studentName.isNotEmpty() && studentLastname.isNotEmpty() && isSelectedOptionCollegeValid && isSelectedOptionDegreeValid
-            "Business" -> recruiterName.isNotEmpty() && recruiterLastname.isNotEmpty() && companyName.isNotEmpty() && isSelectedOptionBusinessValid
-            else -> false
-        }
+//        enabled = when (typeAccount) {
+//            "Student" -> studentName.isNotEmpty() && studentLastname.isNotEmpty() && isSelectedOptionCollegeValid && isSelectedOptionDegreeValid
+//            "Business" -> recruiterName.isNotEmpty() && recruiterLastname.isNotEmpty() && companyName.isNotEmpty() && isSelectedOptionBusinessValid
+//            else -> false
+//        }
     ) {
         Text(
             text = if (typeAccount == "Student") {
@@ -205,6 +203,29 @@ fun Business(
     isSelectedOptionBusinessValid: Boolean,
     onSelectedOptionBusinessValidChange: (Boolean) -> Unit
 ) {
+    val optionsBusinessArea = listOf(
+        "Technology",
+        "Finance",
+        "Marketing",
+        "Human Resources",
+        "Logistics",
+        "Education",
+        "Healthcare",
+        "Retail",
+        "Construction",
+        "Energy",
+        "Manufacturing",
+        "Tourism",
+        "Consulting",
+        "Agriculture",
+        "Automotive",
+        "Entertainment",
+        "Media",
+        "Legal",
+        "Real Estate",
+        "Arts and Culture"
+    ) // TODO: Change this
+
     Text(
         text = "Business Sign Up",
         style = MaterialTheme.typography.displayMedium
@@ -228,23 +249,18 @@ fun Business(
             onNameChange = { onRecruiterName(it) }
         )
 
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
         RecruiterLastname(
             lastname = recruiterLastname,
             onLastNameChange = { onRecruiterLastname(it) }
         )
-
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
         CompanyName(
             name = companyName,
             onNameChange = { onCompanyName(it) }
         )
 
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
         BusinessArea(
+            optionsBusinessArea = optionsBusinessArea,
             isSelectedOptionValid = isSelectedOptionBusinessValid,
             onSelectedOptionValidChange = { onSelectedOptionBusinessValidChange(it) }
         )
@@ -258,10 +274,10 @@ fun Business(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusinessArea(
+    optionsBusinessArea: List<String>, // TODO: Change this
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange: (Boolean) -> Unit
 ) {
-    val optionsBusinessArea = listOf("Info", "Secre") // TODO: Change this
     var selectedOptionBussinesArea by remember { mutableStateOf("Select option") }
     var expandedBusinessArea by remember { mutableStateOf(false) }
 
@@ -407,6 +423,46 @@ fun Student(
     onSelectedOptionDegreeValidChange: (Boolean) -> Unit
 
 ) {
+    val optionsAcademicDegree = listOf(
+        "High School",
+        "Associate's Degree",
+        "Bachelor's Degree",
+        "Master's Degree",
+        "Doctorate",
+        "PhD",
+        "MD",
+        "MBA",
+        "JD",
+        "MFA",
+        "MSc",
+        "BSc",
+        "MA",
+        "BA",
+        "EdD",
+        "DVM",
+        "LLM",
+        "Postdoctoral"
+    ) // TODO: Change this
+
+    val optionsCollege = listOf(
+        "University of Costa Rica",
+        "National University",
+        "Costa Rica Institute of Technology",
+        "Distance State University",
+        "Latin University of Costa Rica",
+        "Veritas University",
+        "Hispanoamerican University",
+        "Catholic University of Costa Rica",
+        "American University",
+        "Autonomous University of Central America",
+        "International University of the Americas",
+        "Business University of Costa Rica",
+        "University for Peace",
+        "University of Ibero-America",
+        "Fidelitas University",
+        "EARTH University"
+    ) // TODO: Change this
+
     Text(
         text = "Student Sign Up",
         style = MaterialTheme.typography.displayMedium
@@ -430,38 +486,33 @@ fun Student(
             onNameChange = { onNameChange(it) }
         )
 
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
         StudentLastName(
             lastname = lastname,
             onLastNameChange = { onLastNameChange(it) }
         )
 
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
         College(
+            optionsCollege = optionsCollege,
             isSelectedOptionValid = isSelectedOptionCollegeValid,
             onSelectedOptionValidChange = { onSelectedOptionCollegeValidChange(it) }
         )
 
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
         Degree(
+            optionsAcademicDegree = optionsAcademicDegree,
             isSelectedOptionValid = isSelectedOptionDegreeValid,
             onSelectedOptionValidChange = { onSelectedOptionDegreeValidChange(it) }
         )
-
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Degree( // TODO
+    optionsAcademicDegree: List<String>, // TODO: Change this
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange : (Boolean) -> Unit
 ) {
     var expandedDegree by remember { mutableStateOf(false) }
-    val optionsDegree = listOf("College", "University") // TODO: Change this
     var selectedOptionDegree by remember { mutableStateOf("Select option") }
 
     Text(
@@ -492,7 +543,7 @@ fun Degree( // TODO
             expanded = expandedDegree,
             onDismissRequest = { expandedDegree = false }
         ) {
-            optionsDegree.forEach { option ->
+            optionsAcademicDegree.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(option) },
                     onClick = {
@@ -509,11 +560,11 @@ fun Degree( // TODO
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun College( // TODO
+    optionsCollege: List<String>, // TODO: Change this
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange : (Boolean) -> Unit
 ) {
     var expandedCollege by remember { mutableStateOf(false) }
-    val optionsCollege = listOf("Tecnico", "Academico") // TODO: Change this
     var selectedOptionCollege by remember { mutableStateOf("Select option") }
 
     Text(

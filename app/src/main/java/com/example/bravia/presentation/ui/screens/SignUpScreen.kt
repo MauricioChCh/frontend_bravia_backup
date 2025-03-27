@@ -114,8 +114,6 @@ fun SignUpScreen(
                 isValid = isEmailValid
             )
 
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
             Password(
                 password = password,
                 onPasswordChange = {
@@ -127,8 +125,6 @@ fun SignUpScreen(
                 isValid = isPasswordValid
             )
 
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
             ConfirmPassword(
                 confirmPassword = confirmPassword,
                 onConfirmPasswordChange = {
@@ -139,8 +135,6 @@ fun SignUpScreen(
                 onConfirmPasswordVisibilityChange = { confirmPasswordVisible = !confirmPasswordVisible },
                 isValid = isConfirmPasswordValid
             )
-
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
             AccountType(
                 selectedOption = selectedOption,
@@ -261,7 +255,7 @@ fun ContinueButton(
             .fillMaxWidth()
             .padding(horizontal = 70.dp),
         onClick = { navController.navigate("profileSignup/$email/$password/$selectedOption") },
-        enabled = isValidEmail && isValidPassword && isValidConfirmPassword && isSelectedOptionValid
+        //enabled = isValidEmail && isValidPassword && isValidConfirmPassword && isSelectedOptionValid
     ) {
         Text(
             text = "Continue ...",
