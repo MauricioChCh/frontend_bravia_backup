@@ -134,29 +134,52 @@ fun InterestsScreen(
         }
 
         // "Create account" button
-        Button(
-            onClick = { /*TODO*/ navController.navigate("home") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 70.dp)
-        ) {
-            Text("Create account")
-        }
+        CreateAccountButton(navController = navController)
 
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
         // "Cancel" button
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 50.dp)
-        ) {
-            Text("Cancel")
-        }
+        RedirectToLoginButton(navController = navController)
 
         Spacer(modifier = Modifier.height(60.dp))
     }
 
 
+}
+
+
+@Composable
+fun RedirectToLoginButton(
+    navController: NavController
+) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 50.dp),
+        onClick = { /*TODO*/ },
+
+    ) {
+        Text(
+            text = "Cancel",
+            style = MaterialTheme.typography.headlineSmall
+        )
+    }
+}
+
+@Composable
+fun CreateAccountButton(
+    navController: NavController
+) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 70.dp),
+        onClick = { /*TODO*/ navController.navigate("home") },
+
+    ) {
+        Text(
+            text = "Create account",
+            style = MaterialTheme.typography.headlineSmall
+        )
+    }
 }
