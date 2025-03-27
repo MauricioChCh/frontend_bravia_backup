@@ -31,7 +31,7 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.SignUp.ROUTE
+        startDestination = NavRoutes.SignUp.ROUTE // TODO change to login route
     ) {
        // Sign up Screen
        composable(

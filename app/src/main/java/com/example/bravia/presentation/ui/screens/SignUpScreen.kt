@@ -213,7 +213,7 @@ fun AccountType(
                     onClick = {
                         selectedOption = option
                         expanded = false
-                        onSelectedOptionValidChange(selectedOption != "Select option")
+                        onSelectedOptionValidChange( selectedOption != "Select option" )
                     }
                 )
             }
