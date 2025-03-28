@@ -1,5 +1,5 @@
 // presentation/ui/screens/InternshipDetailScreen.kt
-package com.example.bravia.presentation.ui.screens
+package com.example.bravia.presentation.ui.screens.student
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package com.example.bravia.presentation.ui.screens
+package com.example.bravia.presentation.ui.screens.student
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -90,22 +90,24 @@ fun HomeScreen(
                     )
                 }
             } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(count = internships.size) { index ->
-                        val internship = internships[index]
-                        InternshipCard(
-                            internship = internship,
-                            initialBookmarked = internship.isBookmarked,
-                            onBookmarkChange = { isBookmarked ->
-                                viewModel.bookmarkInternship(internship.id, isBookmarked)
-                            },
-                            onClick = {
-                                navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
+                Box() {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(count = internships.size) { index ->
+                            val internship = internships[index]
+                            InternshipCard(
+                                internship = internship,
+                                initialBookmarked = internship.isBookmarked,
+                                onBookmarkChange = { isBookmarked ->
+                                    viewModel.bookmarkInternship(internship.id, isBookmarked)
+                                },
+                                onClick = {
+                                    navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
+                        }
                     }
                 }
             }

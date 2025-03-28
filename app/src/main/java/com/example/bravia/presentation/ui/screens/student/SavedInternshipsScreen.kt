@@ -1,5 +1,5 @@
 // presentation/ui/screens/SavedInternshipsScreen.kt
-package com.example.bravia.presentation.ui.screens
+package com.example.bravia.presentation.ui.screens.student
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

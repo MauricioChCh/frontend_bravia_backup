@@ -1,4 +1,4 @@
-package com.example.bravia.presentation.ui.screens
+package com.example.bravia.presentation.ui.screens.student
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme

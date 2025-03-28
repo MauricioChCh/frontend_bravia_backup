@@ -1,4 +1,4 @@
-package com.example.bravia.presentation.ui.screens
+package com.example.bravia.presentation.ui.screens.start
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke

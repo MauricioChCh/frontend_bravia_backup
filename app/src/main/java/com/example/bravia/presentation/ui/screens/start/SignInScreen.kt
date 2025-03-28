@@ -1,4 +1,4 @@
-package com.example.bravia.presentation.ui.screens
+package com.example.bravia.presentation.ui.screens.start
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -122,7 +123,7 @@ fun SignInScreen(
                         onValueChange = { nuevoTexto -> textoEmail.value = nuevoTexto }, // Actualiza el texto
                         placeholder = { Text("example@email.com") }, // Texto de ejemplo
                         modifier = Modifier.fillMaxWidth(), // Ancho completo del campo
-                        textStyle = androidx.compose.ui.text.TextStyle(color = Color.Black) // Estilo del texto
+                        textStyle = TextStyle(color = Color.Black) // Estilo del texto
                     )
 
 
@@ -138,7 +139,7 @@ fun SignInScreen(
                         onValueChange = { nuevoTexto -> textoPassword.value = nuevoTexto }, // Actualiza el texto
                         placeholder = { Text("password") }, // Texto de ejemplo
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = androidx.compose.ui.text.TextStyle(color = Color.Black),
+                        textStyle = TextStyle(color = Color.Black),
                         visualTransformation = if (isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
                         trailingIcon = {
                             Row {
@@ -172,7 +173,7 @@ fun SignInScreen(
                                 // TODO: lógica para abrir el enlace
                             }
                             .align(Alignment.CenterHorizontally), // Asegura que esté centrado
-                        style = androidx.compose.ui.text.TextStyle(
+                        style = TextStyle(
                             textDecoration = TextDecoration.Underline, // Subrayado
                             color = Color(0, 128, 255)
                         )

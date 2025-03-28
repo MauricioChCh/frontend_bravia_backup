@@ -1,4 +1,4 @@
-package com.example.bravia.presentation.ui.screens
+package com.example.bravia.presentation.ui.screens.start
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
