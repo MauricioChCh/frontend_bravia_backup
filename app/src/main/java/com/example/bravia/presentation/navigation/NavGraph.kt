@@ -9,25 +9,22 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.compose.ui.unit.dp
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.screens.HomeScreen
 import com.example.bravia.presentation.ui.screens.InterestsScreen
-
 import com.example.bravia.presentation.ui.screens.InternshipDetailScreen
-import com.example.bravia.presentation.ui.screens.InternshipScreen
+import com.example.bravia.presentation.ui.screens.LoginSavedScreen
+import com.example.bravia.presentation.ui.screens.LoginScreen
 import com.example.bravia.presentation.ui.screens.ProfileScreen
 import com.example.bravia.presentation.ui.screens.SavedInternshipsScreen
-import com.example.bravia.presentation.ui.screens.SignUpScreen
-import com.example.bravia.presentation.ui.screens.SignUpProfileScreen
-import com.example.bravia.presentation.ui.screens.LoginScreen
-import com.example.bravia.presentation.ui.screens.LoginSavedScreen
 import com.example.bravia.presentation.ui.screens.SignInScreen
+import com.example.bravia.presentation.ui.screens.SignUpProfileScreen
+import com.example.bravia.presentation.ui.screens.SignUpScreen
 import com.example.bravia.presentation.ui.screens.StartScreen
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
-import com.example.bravia.presentation.viewmodel.SignupViewModel
 import com.example.bravia.presentation.viewmodel.LoginViewModel
+import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 
 @Composable
@@ -145,9 +142,9 @@ fun NavGraph(
             )
         }
 
-        // Pantalla de interships
+        // Pantalla de interviews
         composable(
-            route = BottomNavBar.Routes.INTERNSHIP,
+            route = BottomNavBar.Routes.INTERVIEW,
             arguments = emptyList()
         ) {
 //            InternshipScreen(

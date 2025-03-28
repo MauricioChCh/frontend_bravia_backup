@@ -15,10 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.bravia.presentation.ui.theme.BravIATheme
 import com.example.bravia.presentation.ui.theme.LightGreen
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.LoginViewModel
-import com.example.studentapp.presentation.ui.theme.BravIATheme
 import kotlinx.coroutines.delay
 
 @Preview(showBackground = true)

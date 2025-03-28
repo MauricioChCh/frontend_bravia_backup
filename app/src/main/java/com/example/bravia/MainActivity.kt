@@ -3,31 +3,24 @@ package com.example.bravia
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.bravia.data.datasource.InterestDataSourceImpl
 import com.example.bravia.data.datasource.InternshipDataSourceImpl
-import com.example.bravia.data.mapper.InterestMapper
 import com.example.bravia.data.mapper.InternshipMapper
-import com.example.bravia.data.repository.InterestRepositoryImpl
 import com.example.bravia.data.repository.InternshipRepositoryImpl
 import com.example.bravia.navigation.NavGraph
 import com.example.bravia.presentation.factory.InternshipViewModelFactory
-import com.example.bravia.presentation.factory.SignupViewModelFactory
+import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.BottomNavigationBar
-
+import com.example.bravia.presentation.ui.theme.BravIATheme
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
-import com.example.studentapp.presentation.ui.theme.BravIATheme
 
 class MainActivity : ComponentActivity() {
 
@@ -49,6 +42,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             BravIATheme {
                 //MainScreen(internshipViewModel)
@@ -67,17 +61,15 @@ fun MainScreen(singUpViewModel: SignupViewModel, internshipViewModel: Internship
 
     Scaffold (
         bottomBar = {
-
-
             when (currentRoute) {
-                "login" -> "Nada"
-                "start" -> "Nada"
-                "loginSaved" -> "Nada"
-                "signIn" -> "Nada"
-                "signup" -> "Nada"
-                "interestsSignup" -> "Nada"
-                "profileSignup" -> "Nada"
-                "internshipDetail" -> "Nada"
+                NavRoutes.Login.ROUTE,
+                NavRoutes.Start.ROUTE,
+                NavRoutes.LoginSaved.ROUTE,
+                NavRoutes.SignIn.ROUTE,
+                NavRoutes.SignUp.ROUTE,
+                NavRoutes.InterestsSignUp.ROUTE,
+                NavRoutes.ProfileSignUp.ROUTE,
+                NavRoutes.InternshipDetail.ROUTE -> {} // Do nothing (oculta el bottom bar)
                 else -> BottomNavigationBar(navController = navController)
             }
         }
@@ -91,7 +83,6 @@ fun MainScreen(singUpViewModel: SignupViewModel, internshipViewModel: Internship
         )
     }
 }
-
 
 
 //Joshua

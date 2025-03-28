@@ -2,10 +2,10 @@ package com.example.bravia.presentation.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.bravia.R
 
@@ -15,12 +15,12 @@ sealed class BottomNavBar(
     val icon: ImageVector
 ) {
     /**
-     * Contiene todas las posibles rutas de navegación como constantes.
+     * Contiene todas las posibles rutas de navegación  del navbar como constantes.
      */
     object Routes {
         const val HOME = "home"
         const val SAVED = "saved"
-        const val INTERNSHIP = "internship"
+        const val INTERVIEW = "interview"
         const val PROFILE = "profile"
     }
 
@@ -35,20 +35,27 @@ sealed class BottomNavBar(
     )
 
     /**
-     * Mentorships representa el elemento de navegación para la pantalla de interhsips.
-     * Esta pantalla muestra las interships disponibles para el estudiante.
+     * Saved representa el elemento de navegación para la pantalla de saved.
+     * Esta pantalla muestra las interships guardadas o inscritas por el estudiante
      */
-    data object Internship : BottomNavBar(
-        Routes.INTERNSHIP,
-        R.string.internship,
-        Icons.Filled.Info
-    )
-
     data object Saved : BottomNavBar(
         Routes.SAVED,
         R.string.saved,
-        Icons.Filled.AccountBox
+        Icons.Filled.Inventory2
     )
+
+
+    /**
+     * Interview representa el elemento de navegación para la pantalla de Interview.
+     * Esta pantalla muestra las interviews que el usuario podra hacer con la ia en base a una intership
+     */
+    data object Interview : BottomNavBar(
+        Routes.INTERVIEW,
+        R.string.interview,
+        Icons.Filled.SupportAgent
+    )
+
+
 
 
     /**
@@ -67,7 +74,7 @@ sealed class BottomNavBar(
         /**
          * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
          */
-        fun items() = listOf(Home, Saved, Internship, Profile)
+        fun items() = listOf(Home, Saved, Interview, Profile)
 
         /**
          * Determina si la ruta proporcionada coincide con cualquier ruta de elemento de navegación inferior.
@@ -76,7 +83,7 @@ sealed class BottomNavBar(
          * @return True si la ruta coincide con un elemento de navegación inferior, false en caso contrario
          */
         fun isBottomNavRoute(route: String): Boolean {
-            return route == Routes.HOME || route == Routes.INTERNSHIP || route == Routes.PROFILE || route == Routes.SAVED
+            return route == Routes.HOME || route == Routes.INTERVIEW || route == Routes.PROFILE || route == Routes.SAVED
         }
     }
 }

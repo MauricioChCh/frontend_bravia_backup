@@ -26,7 +26,7 @@ import androidx.navigation.NavController
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.ui.theme.LightGreen
 import com.example.bravia.presentation.viewmodel.LoginViewModel
-import com.example.studentapp.presentation.ui.theme.ThemeDefaults
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 
 @Composable

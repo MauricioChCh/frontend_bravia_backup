@@ -26,9 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
+import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
-import com.example.studentapp.presentation.ui.theme.ThemeDefaults
-import com.example.bravia.presentation.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable

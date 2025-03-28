@@ -2,8 +2,6 @@ package com.example.bravia.presentation.ui.screens
 
 
 import android.util.Patterns
-import android.R.attr.onClick
-import android.content.res.Resources
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -43,11 +41,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.studentapp.presentation.ui.theme.ThemeDefaults
-import com.example.bravia.presentation.ui.theme.*
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
+import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
-
-
 
 
 @Composable

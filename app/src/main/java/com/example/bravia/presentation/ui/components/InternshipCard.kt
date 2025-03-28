@@ -33,7 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.bravia.domain.model.Internship
-import com.example.studentapp.presentation.ui.theme.ThemeDefaults
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
 
 @Composable
 fun InternshipCard(
@@ -50,7 +50,7 @@ fun InternshipCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(ThemeDefaults.roundedSmall),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -65,7 +65,7 @@ fun InternshipCard(
             // Imagen de la empresa (placeholder)
             Box(
                 modifier = Modifier
-                    .size(50.dp)
+                    .size(68.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.secondary),
                 contentAlignment = Alignment.Center

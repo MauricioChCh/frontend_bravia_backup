@@ -1,23 +1,16 @@
-package com.example.studentapp.presentation.ui.theme
+package com.example.bravia.presentation.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import com.example.bravia.presentation.ui.theme.BackgroundWhite
-import com.example.bravia.presentation.ui.theme.DarkText
-import com.example.bravia.presentation.ui.theme.GreenAccent
-import com.example.bravia.presentation.ui.theme.LightGreen
-import com.example.bravia.presentation.ui.theme.Typography
 
 // Colores basados en el diseño de Figma
 
@@ -32,6 +25,7 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = Color.White,
     onBackground = DarkText,
     onSurface = DarkText,
+
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -49,6 +43,8 @@ private val DarkColorScheme = darkColorScheme(
 
 object ThemeDefaults {
     val screenPadding = 16.dp
+    val spacerHeightExtraSmall = 8.dp
+    val spacerHeightSmall = 12.dp
     val spacerHeight = 24.dp
     val spacerHeightLarge = 50.dp
     val spacerHeightMedium = 32.dp
