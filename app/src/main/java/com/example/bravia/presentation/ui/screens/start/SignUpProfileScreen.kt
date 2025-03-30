@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -129,19 +130,21 @@ fun SignUpProfileScreen (
 
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
-        RedirectToLogin(navController)
+        RedirectLogin(navController)
     }
 }
 
 @Composable
-fun RedirectToLogin(
+fun RedirectLogin(
     navController: NavController
 ) {
     Button(
-        onClick = { /* TODO Acción de ir a login */ },
+        onClick = { navController.navigate("login") },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 50.dp)
+            .padding(horizontal = 50.dp),
+        enabled = true,
+        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary)
     ) {
         Text(
             text = "Login",
@@ -293,17 +296,18 @@ fun BusinessArea(
     ) {
 
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(ThemeDefaults.textFieldPadding)
+                .clickable { expandedBusinessArea = true }
+                .menuAnchor(),
             value = selectedOptionBussinesArea,
             onValueChange = {},
             readOnly = true,
             trailingIcon = {
                 Icon(Icons.Default.ArrowDropDown, contentDescription = null)
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(ThemeDefaults.textFieldPadding)
-                .clickable { expandedBusinessArea = true }
-                .menuAnchor()
+            isError = !isSelectedOptionValid
         )
         ExposedDropdownMenu(
             expanded = expandedBusinessArea,
@@ -527,17 +531,18 @@ fun Degree( // TODO
     ) {
 
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(ThemeDefaults.textFieldPadding)
+                .clickable { expandedDegree = true }
+                .menuAnchor(),
             value = selectedOptionDegree,
             onValueChange = {},
             readOnly = true,
             trailingIcon = {
                 Icon(Icons.Default.ArrowDropDown, contentDescription = null)
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(ThemeDefaults.textFieldPadding)
-                .clickable { expandedDegree = true }
-                .menuAnchor()
+            isError = !isSelectedOptionValid
         )
         ExposedDropdownMenu(
             expanded = expandedDegree,
@@ -579,17 +584,18 @@ fun College( // TODO
     ) {
 
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(ThemeDefaults.textFieldPadding)
+                .clickable { expandedCollege = true }
+                .menuAnchor(),
             value = selectedOptionCollege,
             onValueChange = {},
             readOnly = true,
             trailingIcon = {
                 Icon(Icons.Default.ArrowDropDown, contentDescription = null)
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(ThemeDefaults.textFieldPadding)
-                .clickable { expandedCollege = true }
-                .menuAnchor()
+            isError = !isSelectedOptionValid
         )
         ExposedDropdownMenu(
             expanded = expandedCollege,

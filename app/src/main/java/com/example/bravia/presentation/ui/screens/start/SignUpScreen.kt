@@ -156,7 +156,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
-        RedirectToLogin()
+        RedirectToLogin(navController)
 
     }
 }
@@ -185,17 +185,19 @@ fun AccountType(
     ) {
 
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(ThemeDefaults.textFieldPadding)
+                .clickable { expanded = true }
+                .menuAnchor(),
             value = selectedOption,
             onValueChange = {},
             readOnly = true,
             trailingIcon = {
                 Icon(Icons.Default.ArrowDropDown, contentDescription = null)
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(ThemeDefaults.textFieldPadding)
-                .clickable { expanded = true }
-                .menuAnchor()
+            isError = !isSelectedOptionValid
+
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -217,13 +219,13 @@ fun AccountType(
 
 @Composable
 fun RedirectToLogin(
-
+    navController: NavController
 ) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 50.dp),
-        onClick = { /* TODO Acción de ir a login */ },
+        onClick = { navController.navigate("login") },
         enabled = true,
         colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary)
 
@@ -303,7 +305,14 @@ fun ConfirmPassword(
         } else {
             PasswordVisualTransformation()
         },
-        isError = !isValid,
+        isError = showSupportingText && !isValid,
+        placeholder = {
+            Text(
+                text = "Confirm Password",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        },
         supportingText = { if (showSupportingText && !isValid) Text("Passwords do not match") }
     )
 }
@@ -350,7 +359,14 @@ fun Password(
         } else {
             PasswordVisualTransformation()
         },
-        isError = !isValid,
+        isError = showSupportingText && !isValid,
+        placeholder = {
+            Text(
+                text = "Password",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        },
         supportingText = { if (showSupportingText && !isValid) Text("The password must be at least 8 characters.") }
     )
 }
@@ -381,7 +397,14 @@ fun Email(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         maxLines = 1,
         singleLine = true,
-        isError = !isValid,
+        isError = showSupportingText && !isValid,
+        placeholder = {
+            Text(
+                text = "example@example.com",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        },
         supportingText = { if (showSupportingText && !isValid) Text("Ex. mail@mail.com") }
     )
 }
