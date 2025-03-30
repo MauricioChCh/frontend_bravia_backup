@@ -19,14 +19,30 @@ class SignupViewModel (
 //    private val getInterestByIdUseCase : GetInterestByIdUseCase,
 
 ) : ViewModel() {
+
+
+
     var email by mutableStateOf("")
         private set
-
     var password by mutableStateOf("")
         private set
-
     var confirmPassword by mutableStateOf("")
         private set
+    var firstName by mutableStateOf("")
+        private set
+    var lastName by mutableStateOf("")
+        private set
+    var college by mutableStateOf("")
+        private set
+    var degree by mutableStateOf("")
+        private set
+    var companyName by mutableStateOf("")
+        private set
+    var businessArea by mutableStateOf("")
+        private set
+    var interests by mutableStateOf<List<String>>(emptyList())
+        private set
+
 
     fun onEmailChange(email: String) {
         this.email = email
@@ -38,6 +54,39 @@ class SignupViewModel (
 
     fun onConfirmPasswordChange(confirmPassword: String) {
         this.confirmPassword = confirmPassword
+    }
+
+    fun onFirstNameChange(firstName: String) {
+        this.firstName = firstName
+    }
+    fun onLastNameChange(lastName: String) {
+        this.lastName = lastName
+    }
+    fun onCollegeChange(college: String) {
+        this.college = college
+    }
+    fun onDegreeChange(degree: String) {
+        this.degree = degree
+    }
+
+    fun onCompanyNameChange(companyName: String) {
+        this.companyName = companyName
+    }
+    fun onBusinessAreaChange(businessArea: String) {
+        this.businessArea = businessArea
+    }
+
+    fun onInterestsChange(interests: List<String>) {
+        this.interests = interests
+    }
+    fun onInterestsChange(interest: String) {
+        this.interests = interests + interest
+    }
+    fun onInterestsRemove(interest: String) {
+        this.interests = interests - interest
+    }
+    fun onInterestsClear() {
+        this.interests = emptyList()
     }
 
     fun signUp() {

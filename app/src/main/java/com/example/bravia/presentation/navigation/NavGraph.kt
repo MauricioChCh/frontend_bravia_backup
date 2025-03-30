@@ -92,28 +92,10 @@ fun NavGraph(
         // Sign up Profile Screen
         composable(
             route = NavRoutes.ProfileSignUp.ROUTE,
-            arguments = listOf(
-                navArgument(NavRoutes.ProfileSignUp.ARG_EMAIL) {
-                    type = NavType.StringType
-                },
-                navArgument(NavRoutes.ProfileSignUp.ARG_PASSWORD) {
-                    type = NavType.StringType
-                },
-                navArgument(NavRoutes.ProfileSignUp.ARG_TYPE_ACCOUNT) {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val email = backStackEntry.arguments?.getString(NavRoutes.ProfileSignUp.ARG_EMAIL) ?: ""
-            val password = backStackEntry.arguments?.getString(NavRoutes.ProfileSignUp.ARG_PASSWORD) ?: ""
-            val typeAccount = backStackEntry.arguments?.getString(NavRoutes.ProfileSignUp.ARG_TYPE_ACCOUNT) ?: ""
+        ) {
             SignUpProfileScreen(
                 navController = navController,
-                paddingValues = paddingValues,
-                signupViewModel = signUpViewModel,
-                email = email,
-                password = password,
-                typeAccount = typeAccount
+                signupViewModel = signUpViewModel
             )
         }
 
