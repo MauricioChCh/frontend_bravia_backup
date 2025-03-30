@@ -1,7 +1,6 @@
-package com.example.bravia.data.datasource
+package com.example.bravia.data.datasource.intership
 
 import com.example.bravia.data.datasource.model.InternshipDto
-import com.example.bravia.domain.model.Internship
 import java.util.Date
 
 object InternshipProvider {

@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bravia.domain.model.College
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
@@ -111,7 +112,8 @@ fun SignUpProfileScreen (
                 isSelectedOptionCollegeValid = isSelectedOptionCollegeValid,
                 onSelectedOptionCollegeValidChange = { isSelectedOptionCollegeValid = it },
                 isSelectedOptionDegreeValid = isSelectedOptionDegreeValid,
-                onSelectedOptionDegreeValidChange = { isSelectedOptionDegreeValid = it }
+                onSelectedOptionDegreeValidChange = { isSelectedOptionDegreeValid = it },
+                optionsCollege = signupViewModel.getAllColleges()
             )
 
         } else if (selectedUserType == "Business") {
@@ -509,8 +511,8 @@ fun Student(
     isSelectedOptionCollegeValid: Boolean,
     onSelectedOptionCollegeValidChange: (Boolean) -> Unit,
     isSelectedOptionDegreeValid: Boolean,
-    onSelectedOptionDegreeValidChange: (Boolean) -> Unit
-
+    onSelectedOptionDegreeValidChange: (Boolean) -> Unit,
+    optionsCollege: List<College>
 ) {
     val optionsAcademicDegree = listOf(
         "High School",
@@ -533,24 +535,24 @@ fun Student(
         "Postdoctoral"
     ) // TODO: Change this
 
-    val optionsCollege = listOf(
-        "University of Costa Rica",
-        "National University",
-        "Costa Rica Institute of Technology",
-        "Distance State University",
-        "Latin University of Costa Rica",
-        "Veritas University",
-        "Hispanoamerican University",
-        "Catholic University of Costa Rica",
-        "American University",
-        "Autonomous University of Central America",
-        "International University of the Americas",
-        "Business University of Costa Rica",
-        "University for Peace",
-        "University of Ibero-America",
-        "Fidelitas University",
-        "EARTH University"
-    ) // TODO: Change this
+//    val optionsCollege = listOf(
+//        "University of Costa Rica",
+//        "National University",
+//        "Costa Rica Institute of Technology",
+//        "Distance State University",
+//        "Latin University of Costa Rica",
+//        "Veritas University",
+//        "Hispanoamerican University",
+//        "Catholic University of Costa Rica",
+//        "American University",
+//        "Autonomous University of Central America",
+//        "International University of the Americas",
+//        "Business University of Costa Rica",
+//        "University for Peace",
+//        "University of Ibero-America",
+//        "Fidelitas University",
+//        "EARTH University"
+//    ) // TODO: Remove this
 
 
 
@@ -658,7 +660,7 @@ fun Degree(
 @Composable
 fun College(
     onSelectedOption: (String) -> Unit,
-    optionsCollege: List<String>, // TODO: Change this
+    optionsCollege: List<College>, // TODO: Change this
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange : (Boolean) -> Unit
 ) {
@@ -696,10 +698,10 @@ fun College(
         ) {
             optionsCollege.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(option.name) },
                     onClick = {
-                        selectedOptionCollege = option
-                        onSelectedOption(selectedOptionCollege)
+                        selectedOptionCollege = option.name
+                        onSelectedOption(option.name)
                         expandedCollege = false
                         onSelectedOptionValidChange( selectedOptionCollege != "Select option" )
                     }

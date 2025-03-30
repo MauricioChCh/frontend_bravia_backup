@@ -1,6 +1,6 @@
 package com.example.bravia.data.repository
 
-import com.example.bravia.data.datasource.InternshipDataSource
+import com.example.bravia.data.datasource.intership.InternshipDataSource
 import com.example.bravia.data.mapper.InternshipMapper
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.repository.InternshipRepository

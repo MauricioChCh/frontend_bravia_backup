@@ -1,6 +1,6 @@
 package com.example.bravia.data.repository
 
-import com.example.bravia.data.datasource.InterestDataSource
+import com.example.bravia.data.datasource.interest.InterestDataSource
 import com.example.bravia.data.mapper.InterestMapper
 import com.example.bravia.domain.model.Interest
 import com.example.bravia.domain.repository.InterestRepository

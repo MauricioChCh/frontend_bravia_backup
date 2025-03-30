@@ -1,4 +1,4 @@
-package com.example.bravia.data.datasource
+package com.example.bravia.data.datasource.interest
 
 import com.example.bravia.data.datasource.model.InterestDTO
 

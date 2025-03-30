@@ -1,5 +1,6 @@
-package com.example.bravia.data.datasource
+package com.example.bravia.data.datasource.interest
 
+import com.example.bravia.data.datasource.interest.InterestProvider
 import com.example.bravia.data.datasource.model.InterestDTO
 
 class InterestDataSourceImpl : InterestDataSource {
@@ -8,6 +9,7 @@ class InterestDataSourceImpl : InterestDataSource {
     }
 
     override fun getInterestById(id: Long): InterestDTO? {
-        return InterestProvider.interests.find { it.id == id }
+        return null
+//        return InterestProvider.interests.find { it.id == id }
     }
 }
