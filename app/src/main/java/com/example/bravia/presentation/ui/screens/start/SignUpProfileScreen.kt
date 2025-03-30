@@ -3,8 +3,9 @@ package com.example.bravia.presentation.ui.screens.start
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,18 +42,12 @@ import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 
+
 @Composable
 fun SignUpProfileScreen (
     navController: NavController,
-    paddingValues: PaddingValues,
     signupViewModel: SignupViewModel,
-    email: String,
-    password: String,
-    typeAccount: String
 ) {
-
-    Log.d("SignUpProfileScreen", "email: $email, password: $password, typeAccount: $typeAccount")
-
     var name by remember { mutableStateOf("") }
     var lastname by remember { mutableStateOf("") }
 
@@ -60,9 +55,20 @@ fun SignUpProfileScreen (
     var recruiterLastname by remember { mutableStateOf("") }
     var companyName by remember { mutableStateOf("") }
 
+    var collegeOption by remember { mutableStateOf("") }
+    var degreeOption by remember { mutableStateOf("") }
+    var businessAreaOption by remember { mutableStateOf("") }
+
     var isSelectedOptionCollegeValid by remember { mutableStateOf(false) }
     var isSelectedOptionBusinessValid by remember { mutableStateOf(false) }
     var isSelectedOptionDegreeValid by remember { mutableStateOf(false) }
+
+    var  selectedUserType by remember { mutableStateOf("Student") }
+
+    Log.d("SignupViewModel", "SignUpProfileScreen email: ${signupViewModel.email}")
+    Log.d("SignupViewModel", "SignUpProfileScreen password: ${signupViewModel.password}")
+    Log.d("SignupViewModel", "SignUpProfileScreen confirmPassword: ${signupViewModel.confirmPassword}")
+    Log.d("Account type", "SignUpProfileScreen: ${selectedUserType}")
 
 
     Column (
@@ -82,22 +88,33 @@ fun SignUpProfileScreen (
 
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
 
+        AccountType(
+            selectedUserType = selectedUserType,
+            onSelectedUserTypeChange = { selectedUserType = it }
+        )
 
-
-        if (typeAccount == "Student") {
+        if (selectedUserType == "Student") {
 
             Student(
                 name = name,
                 onNameChange = { name = it },
                 lastname = lastname,
                 onLastNameChange = { lastname = it },
+                onCollegeOptionChange = {
+                    collegeOption = it
+                    Log.d("College", "SignUpProfileScreen: ${collegeOption}")
+                },
+                onDegreeOptionChange = {
+                    degreeOption = it
+                    Log.d("Degree", "SignUpProfileScreen: ${degreeOption}")
+                },
                 isSelectedOptionCollegeValid = isSelectedOptionCollegeValid,
                 onSelectedOptionCollegeValidChange = { isSelectedOptionCollegeValid = it },
                 isSelectedOptionDegreeValid = isSelectedOptionDegreeValid,
                 onSelectedOptionDegreeValidChange = { isSelectedOptionDegreeValid = it }
             )
 
-        } else {
+        } else if (selectedUserType == "Business") {
 
             Business(
                 recruiterName = recruiterName,
@@ -106,6 +123,10 @@ fun SignUpProfileScreen (
                 onRecruiterLastname = { recruiterLastname = it },
                 companyName = companyName,
                 onCompanyName = { companyName = it },
+                onBusinessAreaOption = {
+                    businessAreaOption = it
+                    Log.d("Business Area", "SignUpProfileScreen: ${businessAreaOption}")
+                },
                 isSelectedOptionBusinessValid = isSelectedOptionBusinessValid,
                 onSelectedOptionBusinessValidChange = { isSelectedOptionBusinessValid = it }
             )
@@ -116,13 +137,17 @@ fun SignUpProfileScreen (
 
         // Button
         ContinueButton(
-            typeAccount = typeAccount,
+            typeAccount = selectedUserType,
             navController = navController,
+            signupViewModel = signupViewModel,
             studentName = name,
             studentLastname = lastname,
+            collegeOption = collegeOption,
+            degreeOption = degreeOption,
             recruiterName = recruiterName,
             recruiterLastname = recruiterLastname,
             companyName = companyName,
+            businessAreaOption = businessAreaOption,
             isSelectedOptionCollegeValid = isSelectedOptionCollegeValid,
             isSelectedOptionBusinessValid = isSelectedOptionBusinessValid,
             isSelectedOptionDegreeValid = isSelectedOptionDegreeValid
@@ -133,6 +158,51 @@ fun SignUpProfileScreen (
         RedirectLogin(navController)
     }
 }
+
+@Composable
+fun AccountType(
+    selectedUserType: String,
+    onSelectedUserTypeChange: (String) -> Unit
+) {
+    Row (
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = ThemeDefaults.textFieldPadding)
+    ) {
+        Text(
+            text = "Sign Up",
+            style = MaterialTheme.typography.displayMedium
+        )
+        Row (
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = ThemeDefaults.textFieldPadding)
+        ) {
+            Button(
+                onClick = {
+                    onSelectedUserTypeChange("Student")
+                },
+                colors = ButtonDefaults.buttonColors( if (selectedUserType=="Student") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary ),
+                shape = RoundedCornerShape(15.dp, 0.dp, 0.dp, 15.dp),
+            ) {
+                Text("Student")
+            }
+            Button(
+                onClick = {
+                    onSelectedUserTypeChange("Business")
+                },
+                colors = ButtonDefaults.buttonColors( if (selectedUserType=="Business") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary ),
+                shape = RoundedCornerShape(0.dp, 15.dp, 15.dp, 0.dp),
+            ) {
+                Text("Business")
+            }
+        }
+    }
+}
+
+
 
 @Composable
 fun RedirectLogin(
@@ -157,11 +227,15 @@ fun RedirectLogin(
 fun ContinueButton(
     typeAccount: String,
     navController: NavController,
+    signupViewModel: SignupViewModel,
     studentName: String,
     studentLastname: String,
+    collegeOption: String,
+    degreeOption: String,
     recruiterName: String,
     recruiterLastname: String,
     companyName: String,
+    businessAreaOption: String,
     isSelectedOptionCollegeValid: Boolean,
     isSelectedOptionBusinessValid: Boolean,
     isSelectedOptionDegreeValid: Boolean
@@ -172,8 +246,16 @@ fun ContinueButton(
             .padding(horizontal = 70.dp),
         onClick = {
             if (typeAccount == "Student") {
+                signupViewModel.onFirstNameChange(studentName)
+                signupViewModel.onLastNameChange(studentLastname)
+                signupViewModel.onCollegeChange(collegeOption)
+                signupViewModel.onDegreeChange(degreeOption)
                 navController.navigate("interestsSignup")
             } else if (typeAccount == "Business") {
+                signupViewModel.onFirstNameChange(recruiterName)
+                signupViewModel.onLastNameChange(recruiterLastname)
+                signupViewModel.onCompanyNameChange(companyName)
+                signupViewModel.onBusinessAreaChange(businessAreaOption)
                 navController.navigate("home")
             }
         },
@@ -203,6 +285,7 @@ fun Business(
     onRecruiterLastname: (String) -> Unit,
     companyName: String,
     onCompanyName: (String) -> Unit,
+    onBusinessAreaOption: (String) -> Unit,
     isSelectedOptionBusinessValid: Boolean,
     onSelectedOptionBusinessValidChange: (Boolean) -> Unit
 ) {
@@ -228,11 +311,6 @@ fun Business(
         "Real Estate",
         "Arts and Culture"
     ) // TODO: Change this
-
-    Text(
-        text = "Business Sign Up",
-        style = MaterialTheme.typography.displayMedium
-    )
 
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
@@ -263,6 +341,9 @@ fun Business(
         )
 
         BusinessArea(
+            onSelectedOptionBusinessArea = {
+                onBusinessAreaOption(it)
+            },
             optionsBusinessArea = optionsBusinessArea,
             isSelectedOptionValid = isSelectedOptionBusinessValid,
             onSelectedOptionValidChange = { onSelectedOptionBusinessValidChange(it) }
@@ -277,6 +358,7 @@ fun Business(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusinessArea(
+    onSelectedOptionBusinessArea: (String) -> Unit,
     optionsBusinessArea: List<String>, // TODO: Change this
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange: (Boolean) -> Unit
@@ -318,6 +400,7 @@ fun BusinessArea(
                     text = { Text(option) },
                     onClick = {
                         selectedOptionBussinesArea = option
+                        onSelectedOptionBusinessArea(selectedOptionBussinesArea)
                         expandedBusinessArea = false
                         onSelectedOptionValidChange( selectedOptionBussinesArea != "Select option" )
                     }
@@ -421,6 +504,8 @@ fun Student(
     onNameChange: (String) -> Unit,
     lastname: String,
     onLastNameChange: (String) -> Unit,
+    onCollegeOptionChange: (String) -> Unit,
+    onDegreeOptionChange: (String) -> Unit,
     isSelectedOptionCollegeValid: Boolean,
     onSelectedOptionCollegeValidChange: (Boolean) -> Unit,
     isSelectedOptionDegreeValid: Boolean,
@@ -467,10 +552,7 @@ fun Student(
         "EARTH University"
     ) // TODO: Change this
 
-    Text(
-        text = "Student Sign Up",
-        style = MaterialTheme.typography.displayMedium
-    )
+
 
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
@@ -496,22 +578,31 @@ fun Student(
         )
 
         College(
+            onSelectedOption = {
+                onCollegeOptionChange(it)
+            },
             optionsCollege = optionsCollege,
             isSelectedOptionValid = isSelectedOptionCollegeValid,
             onSelectedOptionValidChange = { onSelectedOptionCollegeValidChange(it) }
         )
 
         Degree(
+            onSelectOption = {
+                onDegreeOptionChange(it)
+            },
             optionsAcademicDegree = optionsAcademicDegree,
             isSelectedOptionValid = isSelectedOptionDegreeValid,
             onSelectedOptionValidChange = { onSelectedOptionDegreeValidChange(it) }
         )
+
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Degree( // TODO
+fun Degree(
+    onSelectOption: (String) -> Unit,
     optionsAcademicDegree: List<String>, // TODO: Change this
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange : (Boolean) -> Unit
@@ -553,6 +644,7 @@ fun Degree( // TODO
                     text = { Text(option) },
                     onClick = {
                         selectedOptionDegree = option
+                        onSelectOption(selectedOptionDegree)
                         expandedDegree = false
                         onSelectedOptionValidChange( selectedOptionDegree != "Select option" )
                     }
@@ -564,7 +656,8 @@ fun Degree( // TODO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun College( // TODO
+fun College(
+    onSelectedOption: (String) -> Unit,
     optionsCollege: List<String>, // TODO: Change this
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange : (Boolean) -> Unit
@@ -606,6 +699,7 @@ fun College( // TODO
                     text = { Text(option) },
                     onClick = {
                         selectedOptionCollege = option
+                        onSelectedOption(selectedOptionCollege)
                         expandedCollege = false
                         onSelectedOptionValidChange( selectedOptionCollege != "Select option" )
                     }
