@@ -5,7 +5,7 @@ import com.example.bravia.data.datasource.model.CollegeDTO
 
 class CollegeMapper {
 
-    fun mapToDomain(dto: CollegeDTO, isBookmarked: Boolean = false): College {
+    fun mapToDomain(dto: CollegeDTO): College {
         return College(
             id = dto.id,
             name = dto.name

@@ -10,14 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.bravia.data.datasource.businessArea.BusinessAreaDataSourceImpl
 import com.example.bravia.data.datasource.college.CollegeDataSourceImpl
 import com.example.bravia.data.datasource.degree.DegreeDataSourceImpl
 import com.example.bravia.data.datasource.interest.InterestDataSourceImpl
 import com.example.bravia.data.datasource.intership.InternshipDataSourceImpl
+import com.example.bravia.data.mapper.BusinessAreaMapper
 import com.example.bravia.data.mapper.CollegeMapper
 import com.example.bravia.data.mapper.DegreeMapper
 import com.example.bravia.data.mapper.InterestMapper
 import com.example.bravia.data.mapper.InternshipMapper
+import com.example.bravia.data.repository.BusinessAreaRepositoryImpl
 import com.example.bravia.data.repository.CollegeRepositoryImpl
 import com.example.bravia.data.repository.DegreeRepositoryImpl
 import com.example.bravia.data.repository.InterestRepositoryImpl
@@ -38,20 +41,23 @@ class MainActivity : ComponentActivity() {
     private val interestMapper = InterestMapper()
     private val collegeMapper = CollegeMapper()
     private val degreeMapper = DegreeMapper()
+    private val businessAreaMapper = BusinessAreaMapper()
 
     // Inicialización de las fuentes de datos
     private val interestDataSource = InterestDataSourceImpl()
     private val collegeDataSource = CollegeDataSourceImpl()
     private val degreeDataSource = DegreeDataSourceImpl()
+    private val businessAreaDataSource = BusinessAreaDataSourceImpl()
 
     // Inicialización de los repositorios
     private val interestRepository = InterestRepositoryImpl(interestDataSource, interestMapper)
     private val collegeRepository = CollegeRepositoryImpl(collegeDataSource, collegeMapper)
     private val degreeRepository = DegreeRepositoryImpl(degreeDataSource, degreeMapper)
+    private val businessAreaRepository = BusinessAreaRepositoryImpl(businessAreaDataSource, businessAreaMapper)
 
     // Inicialización de los ViewModel
     private val signUpViewModel: SignupViewModel by viewModels {
-        SignupViewModelFactory(interestRepository, collegeRepository, degreeRepository)
+        SignupViewModelFactory(interestRepository, collegeRepository, degreeRepository, businessAreaRepository)
     }
 
     private val loginViewModel : LoginViewModel by viewModels()

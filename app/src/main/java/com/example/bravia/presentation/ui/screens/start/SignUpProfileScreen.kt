@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bravia.domain.model.BusinessArea
 import com.example.bravia.domain.model.College
 import com.example.bravia.domain.model.Degree
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
@@ -132,7 +133,8 @@ fun SignUpProfileScreen (
                     Log.d("Business Area", "SignUpProfileScreen: ${businessAreaOption}")
                 },
                 isSelectedOptionBusinessValid = isSelectedOptionBusinessValid,
-                onSelectedOptionBusinessValidChange = { isSelectedOptionBusinessValid = it }
+                onSelectedOptionBusinessValidChange = { isSelectedOptionBusinessValid = it },
+                optionsBusinessArea = signupViewModel.getAllBusinessAreas()
             )
 
         }
@@ -291,30 +293,31 @@ fun Business(
     onCompanyName: (String) -> Unit,
     onBusinessAreaOption: (String) -> Unit,
     isSelectedOptionBusinessValid: Boolean,
-    onSelectedOptionBusinessValidChange: (Boolean) -> Unit
+    onSelectedOptionBusinessValidChange: (Boolean) -> Unit,
+    optionsBusinessArea: List<BusinessArea>
 ) {
-    val optionsBusinessArea = listOf(
-        "Technology",
-        "Finance",
-        "Marketing",
-        "Human Resources",
-        "Logistics",
-        "Education",
-        "Healthcare",
-        "Retail",
-        "Construction",
-        "Energy",
-        "Manufacturing",
-        "Tourism",
-        "Consulting",
-        "Agriculture",
-        "Automotive",
-        "Entertainment",
-        "Media",
-        "Legal",
-        "Real Estate",
-        "Arts and Culture"
-    ) // TODO: Change this
+//    val optionsBusinessArea = listOf(
+//        "Technology",
+//        "Finance",
+//        "Marketing",
+//        "Human Resources",
+//        "Logistics",
+//        "Education",
+//        "Healthcare",
+//        "Retail",
+//        "Construction",
+//        "Energy",
+//        "Manufacturing",
+//        "Tourism",
+//        "Consulting",
+//        "Agriculture",
+//        "Automotive",
+//        "Entertainment",
+//        "Media",
+//        "Legal",
+//        "Real Estate",
+//        "Arts and Culture"
+//    ) // TODO: Change this
 
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
@@ -363,7 +366,7 @@ fun Business(
 @Composable
 fun BusinessArea(
     onSelectedOptionBusinessArea: (String) -> Unit,
-    optionsBusinessArea: List<String>, // TODO: Change this
+    optionsBusinessArea: List<BusinessArea>,
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange: (Boolean) -> Unit
 ) {
@@ -401,10 +404,10 @@ fun BusinessArea(
         ) {
             optionsBusinessArea.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(option.name) },
                     onClick = {
-                        selectedOptionBussinesArea = option
-                        onSelectedOptionBusinessArea(selectedOptionBussinesArea)
+                        selectedOptionBussinesArea = option.name
+                        onSelectedOptionBusinessArea(option.name)
                         expandedBusinessArea = false
                         onSelectedOptionValidChange( selectedOptionBussinesArea != "Select option" )
                     }
@@ -517,48 +520,6 @@ fun Student(
     optionsCollege: List<College>,
     optionsAcademicDegree: List<Degree>
 ) {
-//    val optionsAcademicDegree = listOf(
-//        "High School",
-//        "Associate's Degree",
-//        "Bachelor's Degree",
-//        "Master's Degree",
-//        "Doctorate",
-//        "PhD",
-//        "MD",
-//        "MBA",
-//        "JD",
-//        "MFA",
-//        "MSc",
-//        "BSc",
-//        "MA",
-//        "BA",
-//        "EdD",
-//        "DVM",
-//        "LLM",
-//        "Postdoctoral"
-//    ) // TODO: Change this
-
-//    val optionsCollege = listOf(
-//        "University of Costa Rica",
-//        "National University",
-//        "Costa Rica Institute of Technology",
-//        "Distance State University",
-//        "Latin University of Costa Rica",
-//        "Veritas University",
-//        "Hispanoamerican University",
-//        "Catholic University of Costa Rica",
-//        "American University",
-//        "Autonomous University of Central America",
-//        "International University of the Americas",
-//        "Business University of Costa Rica",
-//        "University for Peace",
-//        "University of Ibero-America",
-//        "Fidelitas University",
-//        "EARTH University"
-//    ) // TODO: Remove this
-
-
-
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
     Card(

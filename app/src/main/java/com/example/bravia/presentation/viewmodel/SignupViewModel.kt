@@ -4,8 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.bravia.domain.model.BusinessArea
 import com.example.bravia.domain.model.College
 import com.example.bravia.domain.model.Degree
+import com.example.bravia.domain.usecase.GetAllBusinessAreaUseCase
 import com.example.bravia.domain.usecase.GetAllCollegesUseCase
 import com.example.bravia.domain.usecase.GetAllDegreesUseCase
 import com.example.bravia.domain.usecase.GetAllInterestUseCase
@@ -23,12 +25,14 @@ class SignupViewModel (
     private val getAllInterestsUseCase : GetAllInterestUseCase,
     private val getInterestByIdUseCase : GetInterestByIdUseCase,
     private val getAllCollegesUseCase: GetAllCollegesUseCase,
-    private val getAllDegreesUseCase: GetAllDegreesUseCase
+    private val getAllDegreesUseCase: GetAllDegreesUseCase,
+    private val getAllBusinessAreasUseCase: GetAllBusinessAreaUseCase
 ) : ViewModel() {
 
 
     var _listofCollege: List<College> = emptyList()
     var _listofDegree: List<Degree> = emptyList()
+    var _listofBusinessArea: List<BusinessArea> = emptyList()
 
     var email by mutableStateOf("")
         private set
@@ -99,7 +103,9 @@ class SignupViewModel (
     }
     fun findAllDegrees() {
         _listofDegree = getAllDegreesUseCase()
-        // TODO Implement find all degrees logic here
+    }
+    fun findAllBusinessAreas() {
+        _listofBusinessArea = getAllBusinessAreasUseCase()
     }
 
     fun getAllColleges(): List<College> {
@@ -107,6 +113,9 @@ class SignupViewModel (
     }
     fun getAllDegrees(): List<Degree> {
         return _listofDegree
+    }
+    fun getAllBusinessAreas(): List<BusinessArea> {
+        return _listofBusinessArea
     }
 
     fun signUp() {
@@ -116,6 +125,7 @@ class SignupViewModel (
     init {
         findAllColleges()
         findAllDegrees()
+        findAllBusinessAreas()
     }
 
 }
