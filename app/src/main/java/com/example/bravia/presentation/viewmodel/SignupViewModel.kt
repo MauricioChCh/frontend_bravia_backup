@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.bravia.domain.model.BusinessArea
 import com.example.bravia.domain.model.College
 import com.example.bravia.domain.model.Degree
+import com.example.bravia.domain.model.Interest
 import com.example.bravia.domain.usecase.GetAllBusinessAreaUseCase
 import com.example.bravia.domain.usecase.GetAllCollegesUseCase
 import com.example.bravia.domain.usecase.GetAllDegreesUseCase
@@ -33,6 +34,8 @@ class SignupViewModel (
     var _listofCollege: List<College> = emptyList()
     var _listofDegree: List<Degree> = emptyList()
     var _listofBusinessArea: List<BusinessArea> = emptyList()
+    var _listofInterest: List<Interest> = emptyList()
+        private set
 
     var email by mutableStateOf("")
         private set
@@ -107,6 +110,9 @@ class SignupViewModel (
     fun findAllBusinessAreas() {
         _listofBusinessArea = getAllBusinessAreasUseCase()
     }
+    fun findAllInterests() {
+        _listofInterest = getAllInterestsUseCase()
+    }
 
     fun getAllColleges(): List<College> {
         return _listofCollege
@@ -117,6 +123,9 @@ class SignupViewModel (
     fun getAllBusinessAreas(): List<BusinessArea> {
         return _listofBusinessArea
     }
+    fun getAllInterests(): List<Interest> {
+        return _listofInterest
+    }
 
     fun signUp() {
         // Implement sign up logic here
@@ -126,6 +135,7 @@ class SignupViewModel (
         findAllColleges()
         findAllDegrees()
         findAllBusinessAreas()
+        findAllInterests()
     }
 
 }

@@ -26,15 +26,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bravia.domain.model.Interest
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
-/*
- * InterestsScreen.kt
- * This screen allows users to select their interests from a list of options.
- * The selected interests are stored in a mutable state.
- * The screen also includes buttons for creating an account and canceling the process.
+/**
+ * InterestsScreen is a Composable function that displays a screen for selecting user interests.
+ * It allows users to choose from a list of interests represented as chips.
+ *
+ * @param navController The NavController used for navigation.
+ * @param paddingValues Padding values for the screen.
+ * @param signupViewModel The ViewModel responsible for managing the signup process.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -43,54 +46,21 @@ fun InterestsScreen(
     paddingValues: PaddingValues,
     signupViewModel: SignupViewModel
 ) {
-    // Example list of interests
-    val interests = listOf(
-        "Android",
-        "iOS",
-        "Web",
-        "Machine Learning",
-        "Data Science",
-        "UI/UX",
-        "Game Development",
-        "Cybersecurity",
-        "Cloud Computing",
-        "Blockchain",
-        "IoT",
-        "AR/VR",
-        "Robotics",
-        "Quantum Computing",
-        "5G",
-        "Big Data",
-        "Artificial Intelligence",
-        "Digital Marketing",
-        "Product Management",
-        "Finance",
-        "Human Resources",
-        "Operations",
-        "Sales",
-        "Customer Service",
-        "Legal",
-        "Research",
-        "Education",
-        "Healthcare",
-        "Social Work",
-        "Nonprofit",
-        "Other"
-    ) //TODO CHANGE THIS TO A PROVIDER
+    var interests = signupViewModel.getAllInterests()
 
     /*
-     * Mutable state to keep track of selected interests.
-     * This state will be updated when a user selects or deselects an interest.
+     * State to hold the selected interests.
+     * It uses a mutable state to keep track of the selected interests.
      */
     val (selectedInterests, setSelectedInterests) = remember {
-        mutableStateOf<Set<String>>(emptySet())
+        mutableStateOf<Set<Interest>>(emptySet())
     }
 
     /*
-     * Function to handle interest selection.
-     * It updates the selected interests based on user interaction.
+     * Function to handle the click event on an interest chip.
+     * It updates the selected interests based on whether the interest is already selected or not.
      */
-    fun onInterestClick(interest: String) {
+    fun onInterestClick(interest: Interest) {
         setSelectedInterests(
             if (interest in selectedInterests)
                 selectedInterests - interest
@@ -120,9 +90,6 @@ fun InterestsScreen(
             .padding(top = 150.dp)
     ) {
 
-
-
-        // FlowRow to display chips in multiple lines
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -139,18 +106,18 @@ fun InterestsScreen(
                     selected = interest in selectedInterests,
                     onClick = { onInterestClick(interest) },
                     label = {
-                        Text(text = interest)
+                        Text(text = interest.name)
                     }
                 )
             }
         }
 
-        // "Create account" button
+
         CreateAccountButton(navController = navController)
 
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
-        // "Cancel" button
+
         RedirectToLoginButton(navController = navController)
 
         Spacer(modifier = Modifier.height(60.dp))
