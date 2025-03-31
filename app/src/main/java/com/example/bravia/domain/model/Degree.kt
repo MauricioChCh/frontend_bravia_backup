@@ -1,15 +1,13 @@
 package com.example.bravia.domain.model
 
-class Degree {
-    var id: Long = 0
-    var name: String = ""
-    constructor()
 
-    constructor(
-        id: Long,
-        name: String
-    ) {
-        this.id = id
-        this.name = name
-    }
-}
+/**
+ * Data class representing a degree.
+ *
+ * @property id The unique identifier of the degree.
+ * @property name The name of the degree.
+ */
+data class Degree (
+    var id: Long = 0,
+    var name: String = ""
+)

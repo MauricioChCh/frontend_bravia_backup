@@ -1,9 +1,8 @@
 package com.example.bravia.presentation.navigation
 
 /**
- * Contiene todas las constantes de rutas de navegación para la aplicación.
- *
- * El uso de una clase sellada con objetos garantiza la seguridad de tipos y evita errores por cadenas de ruta mal escritas.
+ * NavRoutes is a sealed class that defines the navigation routes for the application.
+ * It contains various data objects representing different screens or destinations in the app.
  */
 sealed class NavRoutes {
     //START=====================================

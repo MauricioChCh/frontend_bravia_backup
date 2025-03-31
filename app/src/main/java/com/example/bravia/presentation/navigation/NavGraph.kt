@@ -27,6 +27,16 @@ import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 
+/**
+ * NavGraph is a composable function that defines the navigation graph for the application.
+ * It sets up the navigation host and specifies the different screens and their corresponding routes.
+ *
+ * @param navController The NavHostController used for navigation.
+ * @param paddingValues The padding values to be applied to the screens.
+ * @param internshipViewModel The ViewModel for managing internship-related data.
+ * @param signUpViewModel The ViewModel for managing sign-up-related data.
+ * @param loginViewModel The ViewModel for managing login-related data.
+ */
 @Composable
 fun NavGraph(
     navController: NavHostController,

@@ -42,6 +42,14 @@ import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 
+/**
+ * SignUpScreen is a composable function that represents the sign-up screen of the application.
+ * It allows users to enter their email, password, and confirm password.
+ *
+ * @param navController The NavController used for navigation between screens.
+ * @param paddingValues The padding values to be applied to the screen.
+ * @param signUpViewModel The ViewModel responsible for handling sign-up logic.
+ */
 @Composable
 fun SignUpScreen(
     navController: NavController,
@@ -145,7 +153,11 @@ fun SignUpScreen(
     }
 }
 
-
+/**
+ * RedirectToLogin is a composable function that displays a button to redirect the user to the login screen.
+ *
+ * @param navController The NavController used for navigation between screens.
+ */
 @Composable
 fun RedirectToLogin(
     navController: NavController
@@ -166,6 +178,17 @@ fun RedirectToLogin(
     }
 }
 
+/**
+ * ContinueButton is a composable function that displays a button to continue to the next screen.
+ *
+ * @param isValidEmail Indicates whether the email is valid.
+ * @param isValidPassword Indicates whether the password is valid.
+ * @param isValidConfirmPassword Indicates whether the confirm password is valid.
+ * @param email The email entered by the user.
+ * @param password The password entered by the user.
+ * @param navController The NavController used for navigation between screens.
+ * @param signupViewModel The ViewModel responsible for handling sign-up logic.
+ */
 @Composable
 fun ContinueButton(
     isValidEmail: Boolean,
@@ -197,6 +220,15 @@ fun ContinueButton(
 }
 
 
+/**
+ * ConfirmPassword is a composable function that displays a text field for confirming the password.
+ *
+ * @param confirmPassword The password entered by the user.
+ * @param onConfirmPasswordChange Callback function to handle changes in the confirm password field.
+ * @param confirmPasswordVisible Indicates whether the confirm password is visible.
+ * @param onConfirmPasswordVisibilityChange Callback function to handle changes in the visibility of the confirm password field.
+ * @param isValid Indicates whether the confirm password is valid.
+ */
 @Composable
 fun ConfirmPassword(
     confirmPassword: String,
@@ -250,7 +282,15 @@ fun ConfirmPassword(
     )
 }
 
-
+/**
+ * Password is a composable function that displays a text field for entering the password.
+ *
+ * @param password The password entered by the user.
+ * @param onPasswordChange Callback function to handle changes in the password field.
+ * @param passwordVisible Indicates whether the password is visible.
+ * @param onPasswordVisibilityChange Callback function to handle changes in the visibility of the password field.
+ * @param isValid Indicates whether the password is valid.
+ */
 @Composable
 fun Password(
     password: String,
@@ -304,6 +344,13 @@ fun Password(
     )
 }
 
+/**
+ * Email is a composable function that displays a text field for entering the email address.
+ *
+ * @param email The email entered by the user.
+ * @param onEmailChange Callback function to handle changes in the email field.
+ * @param isValid Indicates whether the email is valid.
+ */
 @Composable
 fun Email(
     email: String,

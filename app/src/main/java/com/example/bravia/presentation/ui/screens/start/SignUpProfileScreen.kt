@@ -45,7 +45,13 @@ import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 
-
+/**
+ * SignUpProfileScreen is a Composable function that represents the profile screen of the sign-up process.
+ * It allows users to enter their personal information based on their selected account type (Student or Business).
+ *
+ * @param navController The NavController used for navigation between screens.
+ * @param signupViewModel The ViewModel responsible for managing the sign-up process.
+ */
 @Composable
 fun SignUpProfileScreen (
     navController: NavController,
@@ -165,6 +171,14 @@ fun SignUpProfileScreen (
     }
 }
 
+
+/**
+ * AccountType is a Composable function that displays the account type selection buttons (Student and Business).
+ * It allows users to choose between the two account types.
+ *
+ * @param selectedUserType The currently selected user type (Student or Business).
+ * @param onSelectedUserTypeChange A lambda function to handle changes in the selected user type.
+ */
 @Composable
 fun AccountType(
     selectedUserType: String,
@@ -208,8 +222,11 @@ fun AccountType(
     }
 }
 
-
-
+/**
+ * RedirectLogin is a Composable function that displays a button to redirect users to the login screen.
+ *
+ * @param navController The NavController used for navigation between screens.
+ */
 @Composable
 fun RedirectLogin(
     navController: NavController
@@ -229,6 +246,22 @@ fun RedirectLogin(
     }
 }
 
+/**
+ * ContinueButton is a Composable function that displays a button to continue the sign-up process.
+ * It navigates to different screens based on the selected account type (Student or Business).
+ *
+ * @param typeAccount The type of account selected (Student or Business).
+ * @param navController The NavController used for navigation between screens.
+ * @param signupViewModel The ViewModel responsible for managing the sign-up process.
+ * @param studentName The name of the student.
+ * @param studentLastname The last name of the student.
+ * @param collegeOption The selected college option.
+ * @param degreeOption The selected degree option.
+ * @param recruiterName The name of the recruiter.
+ * @param recruiterLastname The last name of the recruiter.
+ * @param companyName The name of the company.
+ * @param businessAreaOption The selected business area option.
+ */
 @Composable
 fun ContinueButton(
     typeAccount: String,
@@ -283,6 +316,21 @@ fun ContinueButton(
     }
 }
 
+/**
+ * Business is a Composable function that displays the business-related input fields for the sign-up process.
+ * It allows users to enter their recruiter name, last name, company name, and select a business area.
+ *
+ * @param recruiterName The name of the recruiter.
+ * @param onRecruiterName A lambda function to handle changes in the recruiter name.
+ * @param recruiterLastname The last name of the recruiter.
+ * @param onRecruiterLastname A lambda function to handle changes in the recruiter last name.
+ * @param companyName The name of the company.
+ * @param onCompanyName A lambda function to handle changes in the company name.
+ * @param onBusinessAreaOption A lambda function to handle changes in the selected business area option.
+ * @param isSelectedOptionBusinessValid A boolean indicating whether a valid business area option is selected.
+ * @param onSelectedOptionBusinessValidChange A lambda function to handle changes in the validity of the selected business area option.
+ * @param optionsBusinessArea A list of available business area options.
+ */
 @Composable
 fun Business(
     recruiterName: String,
@@ -296,29 +344,6 @@ fun Business(
     onSelectedOptionBusinessValidChange: (Boolean) -> Unit,
     optionsBusinessArea: List<BusinessArea>
 ) {
-//    val optionsBusinessArea = listOf(
-//        "Technology",
-//        "Finance",
-//        "Marketing",
-//        "Human Resources",
-//        "Logistics",
-//        "Education",
-//        "Healthcare",
-//        "Retail",
-//        "Construction",
-//        "Energy",
-//        "Manufacturing",
-//        "Tourism",
-//        "Consulting",
-//        "Agriculture",
-//        "Automotive",
-//        "Entertainment",
-//        "Media",
-//        "Legal",
-//        "Real Estate",
-//        "Arts and Culture"
-//    ) // TODO: Change this
-
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
     Card(
@@ -362,6 +387,16 @@ fun Business(
     }
 }
 
+
+/**
+ * BusinessArea is a Composable function that displays a dropdown menu for selecting a business area.
+ * It allows users to choose from a list of available business areas.
+ *
+ * @param onSelectedOptionBusinessArea A lambda function to handle changes in the selected business area option.
+ * @param optionsBusinessArea A list of available business area options.
+ * @param isSelectedOptionValid A boolean indicating whether a valid business area option is selected.
+ * @param onSelectedOptionValidChange A lambda function to handle changes in the validity of the selected business area option.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusinessArea(
@@ -417,6 +452,14 @@ fun BusinessArea(
     }
 }
 
+
+/**
+ * CompanyName is a Composable function that displays an input field for entering the company name.
+ * It allows users to enter the name of their company.
+ *
+ * @param name The name of the company.
+ * @param onNameChange A lambda function to handle changes in the company name.
+ */
 @Composable
 fun CompanyName(
     name: String,
@@ -446,6 +489,14 @@ fun CompanyName(
     )
 }
 
+
+/**
+ * RecruiterName is a Composable function that displays an input field for entering the recruiter's name.
+ * It allows users to enter the name of the recruiter.
+ *
+ * @param name The name of the recruiter.
+ * @param onNameChange A lambda function to handle changes in the recruiter's name.
+ */
 @Composable
 fun RecruiterLastname(
     lastname: String,
@@ -475,6 +526,14 @@ fun RecruiterLastname(
     )
 }
 
+
+/**
+ * RecruiterName is a Composable function that displays an input field for entering the recruiter's name.
+ * It allows users to enter the name of the recruiter.
+ *
+ * @param name The name of the recruiter.
+ * @param onNameChange A lambda function to handle changes in the recruiter's name.
+ */
 @Composable
 fun RecruiterName(
     name: String,
@@ -505,6 +564,23 @@ fun RecruiterName(
 }
 
 
+/**
+ * Student is a Composable function that displays the student-related input fields for the sign-up process.
+ * It allows users to enter their name, last name, and select a college and degree.
+ *
+ * @param name The name of the student.
+ * @param onNameChange A lambda function to handle changes in the student's name.
+ * @param lastname The last name of the student.
+ * @param onLastNameChange A lambda function to handle changes in the student's last name.
+ * @param onCollegeOptionChange A lambda function to handle changes in the selected college option.
+ * @param onDegreeOptionChange A lambda function to handle changes in the selected degree option.
+ * @param isSelectedOptionCollegeValid A boolean indicating whether a valid college option is selected.
+ * @param onSelectedOptionCollegeValidChange A lambda function to handle changes in the validity of the selected college option.
+ * @param isSelectedOptionDegreeValid A boolean indicating whether a valid degree option is selected.
+ * @param onSelectedOptionDegreeValidChange A lambda function to handle changes in the validity of the selected degree option.
+ * @param optionsCollege A list of available college options.
+ * @param optionsAcademicDegree A list of available academic degree options.
+ */
 @Composable
 fun Student(
     name: String,
@@ -565,6 +641,16 @@ fun Student(
     }
 }
 
+
+/**
+ * Degree is a Composable function that displays a dropdown menu for selecting an academic degree.
+ * It allows users to choose from a list of available academic degrees.
+ *
+ * @param onSelectOption A lambda function to handle changes in the selected degree option.
+ * @param optionsAcademicDegree A list of available academic degree options.
+ * @param isSelectedOptionValid A boolean indicating whether a valid degree option is selected.
+ * @param onSelectedOptionValidChange A lambda function to handle changes in the validity of the selected degree option.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Degree(
@@ -620,6 +706,16 @@ fun Degree(
     }
 }
 
+
+/**
+ * College is a Composable function that displays a dropdown menu for selecting a college.
+ * It allows users to choose from a list of available colleges.
+ *
+ * @param onSelectedOption A lambda function to handle changes in the selected college option.
+ * @param optionsCollege A list of available college options.
+ * @param isSelectedOptionValid A boolean indicating whether a valid college option is selected.
+ * @param onSelectedOptionValidChange A lambda function to handle changes in the validity of the selected college option.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun College(
@@ -676,6 +772,13 @@ fun College(
 }
 
 
+/**
+ * StudentName is a Composable function that displays an input field for entering the student's name.
+ * It allows users to enter the name of the student.
+ *
+ * @param name The name of the student.
+ * @param onNameChange A lambda function to handle changes in the student's name.
+ */
 @Composable
 fun StudentName(
     name: String,
@@ -705,6 +808,14 @@ fun StudentName(
     )
 }
 
+
+/**
+ * StudentLastName is a Composable function that displays an input field for entering the student's last name.
+ * It allows users to enter the last name of the student.
+ *
+ * @param lastname The last name of the student.
+ * @param onLastNameChange A lambda function to handle changes in the student's last name.
+ */
 @Composable
 fun StudentLastName(
     lastname: String,

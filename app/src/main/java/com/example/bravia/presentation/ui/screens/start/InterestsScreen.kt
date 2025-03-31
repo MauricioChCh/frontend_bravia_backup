@@ -30,6 +30,12 @@ import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
+/*
+ * InterestsScreen.kt
+ * This screen allows users to select their interests from a list of options.
+ * The selected interests are stored in a mutable state.
+ * The screen also includes buttons for creating an account and canceling the process.
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun InterestsScreen(
@@ -70,14 +76,20 @@ fun InterestsScreen(
         "Social Work",
         "Nonprofit",
         "Other"
-    )
+    ) //TODO CHANGE THIS TO A PROVIDER
 
-    // Mutable state to hold the selected interests
+    /*
+     * Mutable state to keep track of selected interests.
+     * This state will be updated when a user selects or deselects an interest.
+     */
     val (selectedInterests, setSelectedInterests) = remember {
         mutableStateOf<Set<String>>(emptySet())
     }
 
-    // Function to handle interest clicks
+    /*
+     * Function to handle interest selection.
+     * It updates the selected interests based on user interaction.
+     */
     fun onInterestClick(interest: String) {
         setSelectedInterests(
             if (interest in selectedInterests)
@@ -147,7 +159,10 @@ fun InterestsScreen(
 
 }
 
-
+/*
+ * Button to redirect to the login screen.
+ * This button is used to cancel the signup process and go back to the login screen.
+ */
 @Composable
 fun RedirectToLoginButton(
     navController: NavController
@@ -166,6 +181,10 @@ fun RedirectToLoginButton(
     }
 }
 
+/*
+ * Button to create an account.
+ * This button is used to proceed with the signup process after selecting interests.
+ */
 @Composable
 fun CreateAccountButton(
     navController: NavController
