@@ -59,9 +59,6 @@ fun SignUpScreen(
     var isConfirmPasswordValid by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
 
-    var selectedOption by remember { mutableStateOf("Select option") }
-    var isSelectedOptionValid by remember { mutableStateOf(false) }
-
     Column (
         modifier = Modifier
             .fillMaxSize()

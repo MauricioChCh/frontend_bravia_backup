@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bravia.domain.model.College
+import com.example.bravia.domain.model.Degree
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
@@ -113,7 +114,8 @@ fun SignUpProfileScreen (
                 onSelectedOptionCollegeValidChange = { isSelectedOptionCollegeValid = it },
                 isSelectedOptionDegreeValid = isSelectedOptionDegreeValid,
                 onSelectedOptionDegreeValidChange = { isSelectedOptionDegreeValid = it },
-                optionsCollege = signupViewModel.getAllColleges()
+                optionsCollege = signupViewModel.getAllColleges(),
+                optionsAcademicDegree = signupViewModel.getAllDegrees()
             )
 
         } else if (selectedUserType == "Business") {
@@ -512,28 +514,29 @@ fun Student(
     onSelectedOptionCollegeValidChange: (Boolean) -> Unit,
     isSelectedOptionDegreeValid: Boolean,
     onSelectedOptionDegreeValidChange: (Boolean) -> Unit,
-    optionsCollege: List<College>
+    optionsCollege: List<College>,
+    optionsAcademicDegree: List<Degree>
 ) {
-    val optionsAcademicDegree = listOf(
-        "High School",
-        "Associate's Degree",
-        "Bachelor's Degree",
-        "Master's Degree",
-        "Doctorate",
-        "PhD",
-        "MD",
-        "MBA",
-        "JD",
-        "MFA",
-        "MSc",
-        "BSc",
-        "MA",
-        "BA",
-        "EdD",
-        "DVM",
-        "LLM",
-        "Postdoctoral"
-    ) // TODO: Change this
+//    val optionsAcademicDegree = listOf(
+//        "High School",
+//        "Associate's Degree",
+//        "Bachelor's Degree",
+//        "Master's Degree",
+//        "Doctorate",
+//        "PhD",
+//        "MD",
+//        "MBA",
+//        "JD",
+//        "MFA",
+//        "MSc",
+//        "BSc",
+//        "MA",
+//        "BA",
+//        "EdD",
+//        "DVM",
+//        "LLM",
+//        "Postdoctoral"
+//    ) // TODO: Change this
 
 //    val optionsCollege = listOf(
 //        "University of Costa Rica",
@@ -605,7 +608,7 @@ fun Student(
 @Composable
 fun Degree(
     onSelectOption: (String) -> Unit,
-    optionsAcademicDegree: List<String>, // TODO: Change this
+    optionsAcademicDegree: List<Degree>,
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange : (Boolean) -> Unit
 ) {
@@ -643,10 +646,10 @@ fun Degree(
         ) {
             optionsAcademicDegree.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(option.name) },
                     onClick = {
-                        selectedOptionDegree = option
-                        onSelectOption(selectedOptionDegree)
+                        selectedOptionDegree = option.name
+                        onSelectOption(option.name)
                         expandedDegree = false
                         onSelectedOptionValidChange( selectedOptionDegree != "Select option" )
                     }
@@ -660,7 +663,7 @@ fun Degree(
 @Composable
 fun College(
     onSelectedOption: (String) -> Unit,
-    optionsCollege: List<College>, // TODO: Change this
+    optionsCollege: List<College>,
     isSelectedOptionValid: Boolean,
     onSelectedOptionValidChange : (Boolean) -> Unit
 ) {
