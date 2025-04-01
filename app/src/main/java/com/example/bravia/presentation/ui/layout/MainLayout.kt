@@ -30,7 +30,7 @@ fun MainLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues),
-        color = MaterialTheme.colorScheme.background
+            color = MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier.fillMaxSize()

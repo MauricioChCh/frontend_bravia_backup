@@ -1,5 +1,6 @@
 package com.example.bravia.presentation.ui.screens.student
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -23,17 +23,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.InternshipCard
-import com.example.bravia.presentation.ui.layout.MainLayout
+import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
-
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -47,16 +50,31 @@ fun HomeScreen(
     // Obtener la lista de pasantías del ViewModel
     val internships by viewModel.internshipList.collectAsState()
 
+    var isRefreshing by remember {
+        mutableStateOf(false)
+    }
+    val scope = rememberCoroutineScope()
+
     // Realizar búsqueda cuando cambia el texto
     LaunchedEffect(searchText) {
         viewModel.searchInternships(searchText)
     }
 
-    MainLayout(paddingValues = paddingValues) {
-        Column(
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(ThemeDefaults.screenPadding)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(
+                    top = 36.dp,
+                    bottom = 12.dp,
+                    start = 18.dp,
+                    end = 10.dp
+                ), // Reducido el padding vertical
         ) {
             // Campo de búsqueda
             OutlinedTextField(
@@ -73,44 +91,59 @@ fun HomeScreen(
             )
 
             Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
-
-            // Lista de pasantías
-            if (internships.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "No hay pasantías disponibles",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            } else {
-                Box() {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(count = internships.size) { index ->
-                            val internship = internships[index]
-                            InternshipCard(
-                                internship = internship,
-                                initialBookmarked = internship.isBookmarked,
-                                onBookmarkChange = { isBookmarked ->
-                                    viewModel.bookmarkInternship(internship.id, isBookmarked)
-                                },
-                                onClick = {
-                                    navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
-                                }
-                            )
-                            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
+        }
+        // Lista de pasantías
+        if (internships.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No hay pasantías disponibles",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(ThemeDefaults.screenPadding)
+                    .padding(bottom = 40.dp)
+            ) {
+                PullToRefreshLazyColumn(
+                    items = internships,
+                    content = { internship ->  // Aquí pasamos la función de renderizado
+                        InternshipCard(
+                            internship = internship,
+                            initialBookmarked = internship.isBookmarked,
+                            onBookmarkChange = { isBookmarked ->
+                                viewModel.bookmarkInternship(internship.id, isBookmarked)
+                            },
+                            onClick = {
+                                navController.navigate(
+                                    NavRoutes.InternshipDetail.createRoute(internship.id)
+                                )
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
+                    },
+                    isRefreshing = isRefreshing,
+                    onRefresh = {
+                        scope.launch {
+                            isRefreshing = true
+                            internships
+                            delay(2000) // Simulación de carga
+                            isRefreshing = false
                         }
                     }
-                }
+                )
             }
         }
     }
 }
+
+
