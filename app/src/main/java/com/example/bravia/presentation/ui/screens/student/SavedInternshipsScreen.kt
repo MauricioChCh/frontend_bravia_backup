@@ -1,6 +1,7 @@
 package com.example.bravia.presentation.ui.screens.student
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -41,68 +42,77 @@ fun SavedInternshipsScreen(
         viewModel.loadAppliedInternships()
     }
 
-    MainLayout(paddingValues = paddingValues) {
-        Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(top = 36.dp, bottom = 12.dp, start = 18.dp, end = 10.dp), // Reducido el padding vertical
+        ) {
+            Column {
+                Text(
+                    text = "My Internships",
+                    style = MaterialTheme.typography.displayMedium,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(vertical = 24.dp, horizontal = 16.dp),
-            ) {
-                Column {
-                    Text(
-                        text = "My Internships",
-                        style = MaterialTheme.typography.displayMedium,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    TabRow(
-                        selectedTabIndex = pagerState.currentPage,
-                        indicator = {}, // Elimina la línea inferior del tab
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 8.dp), // Ajusta el padding para moverlo a la izquierda
-                        divider = {} // Evita que haya una línea separadora
-                    ) {
-                        tabs.forEachIndexed { index, title ->
-                            Tab(
-                                text = {
-                                    Text(
-                                        title,
-                                        color = if (pagerState.currentPage == index)
-                                            MaterialTheme.colorScheme.onPrimary
-                                        else
-                                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
-                                        fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal
-                                    )
-                                },
-                                selected = pagerState.currentPage == index,
-                                onClick = {
-                                    coroutineScope.launch { pagerState.animateScrollToPage(index) }
-                                },
-                                modifier = Modifier.padding(horizontal = 8.dp) // Reduce el padding horizontal para unir más las opciones
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    tabs.forEachIndexed { index, title ->
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .padding(end = 26.dp)
+                                .clickable {
+                                    coroutineScope.launch {
+                                        pagerState.animateScrollToPage(index)
+                                    }
+                                }
+                        ) {
+                            Text(
+                                text = title,
+                                color = if (pagerState.currentPage == index)
+                                    MaterialTheme.colorScheme.onPrimary
+                                else
+                                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                                fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal
                             )
+
+                            // Only show underline for selected tab
+                            if (pagerState.currentPage == index) {
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Box(
+                                    modifier = Modifier
+                                        .width(50.dp)
+                                        .height(1.5.dp)
+                                        .background(MaterialTheme.colorScheme.onSurface)
+                                )
+                                // Añadir espacio de 6dp después del subrayado
+                                Spacer(modifier = Modifier.height(6.dp))
+                            } else {
+                                // Mantener la alineación con el tab seleccionado
+                                Spacer(modifier = Modifier.height(8.dp)) // 4dp + 2dp + 6dp
+                            }
                         }
                     }
                 }
             }
+        }
 
+        Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Contenido de cada tab
-            HorizontalPager(state = pagerState) { page ->
-                val internships = if (page == 0) appliedInternships else bookmarkedInternships
-                InternshipList(
-                    internships = internships,
-                    navController = navController,
-                    viewModel = viewModel
-                )
-            }
+        // Contenido de cada tab
+        HorizontalPager(state = pagerState) { page ->
+            val internships = if (page == 0) appliedInternships else bookmarkedInternships
+            InternshipList(
+                internships = internships,
+                navController = navController,
+                viewModel = viewModel
+            )
         }
     }
 }
@@ -128,7 +138,10 @@ fun InternshipList(
             )
         }
     } else {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        ) {
             items(internships) { internship ->
                 InternshipCard(
                     internship = internship,
