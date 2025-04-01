@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -31,7 +32,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.ui.theme.BravIATheme
-import com.example.bravia.presentation.ui.theme.LightGreen
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.LoginViewModel
@@ -96,7 +96,7 @@ fun LoginSavedScreen(
 
             Button(
                 onClick = { /* TODO Acción de ir a login */ },
-                colors = ButtonDefaults.buttonColors(containerColor = LightGreen),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 90.dp)

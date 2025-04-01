@@ -35,7 +35,7 @@ fun BottomNavigationBar(navController: NavController) {
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
                 thickness = 0.2.dp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.2f)
             )
             NavigationBar(
                 modifier = Modifier.height(56.dp).fillMaxWidth(),

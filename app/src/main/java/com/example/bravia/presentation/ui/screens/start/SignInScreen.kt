@@ -41,7 +41,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.ui.theme.BravIATheme
-import com.example.bravia.presentation.ui.theme.LightGreen
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.LoginViewModel
@@ -188,7 +187,7 @@ fun SignInScreen(
 
             Button(
                 onClick = {  navController.navigate("home")  },
-                colors = ButtonDefaults.buttonColors(containerColor = LightGreen),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 90.dp)

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -94,7 +93,7 @@ fun SignUpScreen(
         Card(
             modifier = Modifier.fillMaxWidth(),
             border = BorderStroke(0.5.dp, Color.Black),
-            shape = RoundedCornerShape(ThemeDefaults.roundedMid),
+            shape = MaterialTheme.shapes.medium,
             colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface ),
             elevation = CardDefaults.cardElevation(ThemeDefaults.cardElevation)
         ) {

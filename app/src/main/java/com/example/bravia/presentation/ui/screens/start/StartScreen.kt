@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.bravia.presentation.ui.theme.BravIATheme
-import com.example.bravia.presentation.ui.theme.LightGreen
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import kotlinx.coroutines.delay
@@ -44,7 +44,7 @@ fun StartScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(LightGreen),
+            .background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center // Centra todo el contenido dentro del Box
     ) {
         Text(

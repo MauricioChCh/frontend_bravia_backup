@@ -105,7 +105,7 @@ fun SavedInternshipsScreen(
                                     modifier = Modifier
                                         .width(50.dp)
                                         .height(1.5.dp)
-                                        .background(MaterialTheme.colorScheme.onSurface)
+                                        .background(MaterialTheme.colorScheme.onPrimary)
                                 )
                                 // Añadir espacio de 6dp después del subrayado
                                 Spacer(modifier = Modifier.height(6.dp))
@@ -196,23 +196,5 @@ fun InternshipList(
             )
         }
 
-//        LazyColumn(
-//            modifier = Modifier.fillMaxSize(),
-//            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-//        ) {
-//            items(internships) { internship ->
-//                InternshipCard(
-//                    internship = internship,
-//                    initialBookmarked = true,
-//                    onBookmarkChange = { isBookmarked ->
-//                        viewModel.bookmarkInternship(internship.id, isBookmarked)
-//                    },
-//                    onClick = {
-//                        navController.navigate(NavRoutes.InternshipDetail.createRoute(internship.id))
-//                    }
-//                )
-//                Spacer(modifier = Modifier.height(ThemeDefaults.cardSpacerHeight))
-//            }
-//        }
     }
 }

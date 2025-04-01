@@ -349,7 +349,7 @@ fun Business(
     Card(
         modifier = Modifier.fillMaxWidth(),
         border = BorderStroke(0.5.dp, Color.Black),
-        shape = RoundedCornerShape(ThemeDefaults.roundedMid),
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface ),
         elevation = CardDefaults.cardElevation(ThemeDefaults.cardElevation)
     ) {
@@ -601,7 +601,7 @@ fun Student(
     Card(
         modifier = Modifier.fillMaxWidth(),
         border = BorderStroke(0.5.dp, Color.Black),
-        shape = RoundedCornerShape(ThemeDefaults.roundedMid),
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface ),
         elevation = CardDefaults.cardElevation(ThemeDefaults.cardElevation)
     ) {
