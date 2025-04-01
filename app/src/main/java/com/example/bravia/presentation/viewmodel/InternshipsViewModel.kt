@@ -84,25 +84,25 @@ class InternshipViewModel(
      * 3. Selects a random internship from the list
      * 4. Updates the internship state and selectedInternship.
      */
-    fun getRandomInternship() {
-        viewModelScope.launch {
-            _internshipState.value = InternshipState.Loading
-
-            // Ensure we have internships to choose from
-            if (_internshipList.value.isEmpty()) {
-                findAllInternships()
-            }
-
-            if (_internshipList.value.isNotEmpty()) {
-                val randomIndex = (0 until _internshipList.value.size).random()
-                val internship = _internshipList.value[randomIndex]
-                _selectedInternship.value = internship
-                _internshipState.value = InternshipState.Success(internship)
-            } else {
-                _internshipState.value = InternshipState.Empty
-            }
-        }
-    }
+//    fun getRandomInternship() {
+//        viewModelScope.launch {
+//            _internshipState.value = InternshipState.Loading
+//
+//            // Ensure we have internships to choose from
+//            if (_internshipList.value.isEmpty()) {
+//                findAllInternships()
+//            }
+//
+//            if (_internshipList.value.isNotEmpty()) {
+//                val randomIndex = (0 until _internshipList.value.size).random()
+//                val internship = _internshipList.value[randomIndex]
+//                _selectedInternship.value = internship
+//                _internshipState.value = InternshipState.Success(internship)
+//            } else {
+//                _internshipState.value = InternshipState.Empty
+//            }
+//        }
+//    }
 
     /**
      * Retrieves all available internships.
