@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.sp
 // Tipografía para la aplicación
 val Typography = Typography(
     // Tamaño base: 16sp
+    // Estilo de texto para el título grande
     displayLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
@@ -30,6 +31,7 @@ val Typography = Typography(
         lineHeight = 32.sp,
         letterSpacing = 0.sp
     ),
+    // Estilo de texto para el título
     headlineLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
@@ -51,6 +53,7 @@ val Typography = Typography(
         lineHeight = 24.sp,
         letterSpacing = 0.sp
     ),
+    // Estilo de texto para titulos
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
@@ -72,6 +75,7 @@ val Typography = Typography(
         lineHeight = 20.sp,
         letterSpacing = 0.5.sp
     ),
+    // Estilo de texto para subtitulos y textos
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -93,6 +97,7 @@ val Typography = Typography(
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
+    // Estilo de texto para etiquetas y botones
     labelLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,

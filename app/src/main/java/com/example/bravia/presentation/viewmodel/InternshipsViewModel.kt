@@ -53,6 +53,10 @@ class InternshipViewModel(
     private val _bookmarkedInternships = MutableStateFlow<List<Internship>>(emptyList())
     val bookmarkedInternships: StateFlow<List<Internship>> = _bookmarkedInternships.asStateFlow()
 
+    //StateFlow to hold the list of applied internships
+    private val _appliedInternships = MutableStateFlow<List<Internship>>(emptyList())
+    val appliedInternships: StateFlow<List<Internship>> = _appliedInternships.asStateFlow()
+
     /**
      * Finds and sets the selected internship by its ID.
      *
@@ -143,6 +147,15 @@ class InternshipViewModel(
     fun loadBookmarkedInternships() {
         viewModelScope.launch {
             _bookmarkedInternships.value = getBookmarkedInternshipsUseCase()
+        }
+    }
+
+    /**
+     * Loads all applied internships.
+     */
+    fun loadAppliedInternships() {
+        viewModelScope.launch {
+//            _appliedInternships.value = getBookmarkedInternshipsUseCase()
         }
     }
 
