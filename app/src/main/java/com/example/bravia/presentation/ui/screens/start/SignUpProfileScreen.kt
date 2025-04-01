@@ -25,9 +25,13 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -184,8 +188,10 @@ fun AccountType(
     selectedUserType: String,
     onSelectedUserTypeChange: (String) -> Unit
 ) {
-    Row (
-        horizontalArrangement = Arrangement.Start,
+    var selectedIndex by remember { mutableIntStateOf(0) }
+    val options = listOf("Student", "Business")
+
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = ThemeDefaults.textFieldPadding)
@@ -194,29 +200,26 @@ fun AccountType(
             text = "Sign Up",
             style = MaterialTheme.typography.displayMedium
         )
-        Row (
-            horizontalArrangement = Arrangement.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = ThemeDefaults.textFieldPadding)
-        ) {
-            Button(
-                onClick = {
-                    onSelectedUserTypeChange("Student")
-                },
-                colors = ButtonDefaults.buttonColors( if (selectedUserType=="Student") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary ),
-                shape = RoundedCornerShape(15.dp, 0.dp, 0.dp, 15.dp),
-            ) {
-                Text("Student")
-            }
-            Button(
-                onClick = {
-                    onSelectedUserTypeChange("Business")
-                },
-                colors = ButtonDefaults.buttonColors( if (selectedUserType=="Business") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary ),
-                shape = RoundedCornerShape(0.dp, 15.dp, 15.dp, 0.dp),
-            ) {
-                Text("Business")
+
+        SingleChoiceSegmentedButtonRow {
+            options.forEachIndexed { index, label ->
+                SegmentedButton(
+                    shape = SegmentedButtonDefaults.itemShape(
+                        index = index,
+                        count = options.size
+                    ),
+                    onClick = {
+                        selectedIndex = index
+                        onSelectedUserTypeChange(label) // Cambié para que se actualice el valor
+                    },
+                    selected = index == selectedIndex,
+                    label = { Text(label) },
+                    colors = if (index == selectedIndex) {
+                        SegmentedButtonDefaults.colors( MaterialTheme.colorScheme.primary )
+                    } else {
+                        SegmentedButtonDefaults.colors( MaterialTheme.colorScheme.surface )
+                    }
+                )
             }
         }
     }
