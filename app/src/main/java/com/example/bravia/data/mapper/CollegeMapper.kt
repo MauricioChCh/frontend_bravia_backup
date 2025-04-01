@@ -1,7 +1,7 @@
 package com.example.bravia.data.mapper
 
 import com.example.bravia.domain.model.College
-import com.example.bravia.data.datasource.model.CollegeDTO
+import com.example.bravia.data.remote.dto.CollegeDTO
 
 /**
  * Mapper class for converting between [CollegeDTO] and [College].

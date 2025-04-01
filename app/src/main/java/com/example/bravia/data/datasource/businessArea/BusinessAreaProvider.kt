@@ -1,6 +1,6 @@
 package com.example.bravia.data.datasource.businessArea
 
-import com.example.bravia.data.datasource.model.BusinessAreaDTO
+import com.example.bravia.data.remote.dto.BusinessAreaDTO
 
 object BusinessAreaProvider {
     val businessAreas = listOf(

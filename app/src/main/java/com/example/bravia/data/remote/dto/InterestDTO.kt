@@ -1,4 +1,4 @@
-package com.example.bravia.data.datasource.model
+package com.example.bravia.data.remote.dto
 
 
 /**

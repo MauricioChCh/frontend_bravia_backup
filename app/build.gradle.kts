@@ -57,6 +57,7 @@ dependencies {
 
 
     implementation(libs.navigation.runtime.android)
+    implementation(libs.transport.runtime)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

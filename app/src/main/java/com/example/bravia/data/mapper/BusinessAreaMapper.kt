@@ -1,7 +1,7 @@
 package com.example.bravia.data.mapper
 
 import com.example.bravia.domain.model.BusinessArea
-import com.example.bravia.data.datasource.model.BusinessAreaDTO
+import com.example.bravia.data.remote.dto.BusinessAreaDTO
 
 /**
  * Mapper class for converting between [BusinessAreaDTO] and [BusinessArea].

@@ -1,6 +1,6 @@
 package com.example.bravia.data.mapper
 
-import com.example.bravia.data.datasource.model.InterestDTO
+import com.example.bravia.data.remote.dto.InterestDTO
 import com.example.bravia.domain.model.Interest
 
 /**

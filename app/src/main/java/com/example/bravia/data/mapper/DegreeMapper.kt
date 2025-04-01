@@ -1,6 +1,6 @@
 package com.example.bravia.data.mapper
 
-import com.example.bravia.data.datasource.model.DegreeDTO
+import com.example.bravia.data.remote.dto.DegreeDTO
 import com.example.bravia.domain.model.Degree
 
 /**
