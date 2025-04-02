@@ -81,7 +81,7 @@ fun HomeScreen(
                 value = searchText,
                 onValueChange = { searchText = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Buscar pasantías...") },
+                placeholder = { Text("Search interships...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(ThemeDefaults.searchFieldShape),
                 colors = TextFieldDefaults.colors(
