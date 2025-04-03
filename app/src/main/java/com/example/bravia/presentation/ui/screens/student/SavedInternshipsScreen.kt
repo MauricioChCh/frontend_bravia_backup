@@ -32,9 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.presentation.navigation.NavRoutes
-import com.example.bravia.presentation.ui.components.InternshipCard
+import com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCard
 import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
-import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import kotlinx.coroutines.delay
