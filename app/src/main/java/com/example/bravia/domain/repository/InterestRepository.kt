@@ -13,9 +13,9 @@ interface InterestRepository {
     /**
      * Retrieves a list of all interests.
      *
-     * @return A list of [Interest] objects representing all interests.
+     * @return A [Result] containing a list of [Interest] objects representing all interests.
      */
-    fun getAllInterests(): List<Interest>
+    suspend fun getAllInterests(): Result<List<Interest>>
 
     /**
      * Retrieves a list of interests by their category.
@@ -23,5 +23,5 @@ interface InterestRepository {
      * @param category The category of interests to retrieve.
      * @return A list of [Interest] objects belonging to the specified category.
      */
-    fun getInterestById(id: Long): Interest?
+    suspend fun getInterestById(id: Long): Result<Interest?>
 }

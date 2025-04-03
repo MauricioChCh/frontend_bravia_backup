@@ -2,6 +2,7 @@ package com.example.bravia.domain.usecase
 
 import com.example.bravia.domain.model.Interest
 import com.example.bravia.domain.repository.InterestRepository
+import javax.inject.Inject
 
 
 /**
@@ -11,14 +12,16 @@ import com.example.bravia.domain.repository.InterestRepository
  *
  * @property repository The repository responsible for managing interest data.
  */
-class GetAllInterestUseCase (private val repository: InterestRepository) {
+class GetAllInterestUseCase @Inject constructor (
+    private val repository: InterestRepository
+) {
 
     /**
      * Invokes the use case to retrieve all interests.
      *
      * @return A list of [Interest] objects representing all interests.
      */
-    operator fun invoke(): List<Interest> {
+    suspend operator fun invoke(): Result<List<Interest>> {
         return repository.getAllInterests()
     }
 }

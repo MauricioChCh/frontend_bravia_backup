@@ -34,6 +34,9 @@ interface SignUpService {
     @GET("signup/interests")
     suspend fun getAllInterests(): Response<List<InterestDTO>>
 
+    @GET("signup/interests/{id}")
+    suspend fun getInterestById(id: Long): Response<InterestDTO?>
+
     /**
      * Retrieves a list of all available degrees from the remote API.
      *

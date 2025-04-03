@@ -2,6 +2,7 @@ package com.example.bravia.domain.usecase
 
 import com.example.bravia.domain.model.BusinessArea
 import com.example.bravia.domain.repository.BusinessAreaRepository
+import javax.inject.Inject
 
 /**
  * Use case for retrieving all business areas.
@@ -10,7 +11,9 @@ import com.example.bravia.domain.repository.BusinessAreaRepository
  *
  * @property repository The repository instance used to retrieve business area data.
  */
-class GetAllBusinessAreaUseCase (
+
+
+class GetAllBusinessAreaUseCase @Inject constructor (
     private val repository: BusinessAreaRepository
 ) {
     /**
@@ -18,7 +21,7 @@ class GetAllBusinessAreaUseCase (
      *
      * @return A list of [BusinessArea] objects representing all business areas.
      */
-    operator fun invoke(): List<BusinessArea> {
+    operator suspend  fun invoke(): Result<List<BusinessArea>> {
         return repository.getAllBusinessAreas()
     }
 }

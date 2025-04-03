@@ -12,7 +12,7 @@ interface CollegeRepository {
     /**
      * Retrieves a list of all colleges.
      *
-     * @return A list of [College] objects representing all colleges.
+     * @return A [Result] containing a list of [College] objects representing all colleges.
      */
-    fun getAllColleges(): List<College>
+    suspend fun getAllColleges(): Result<List<College>>
 }

@@ -2,6 +2,7 @@ package com.example.bravia.domain.usecase
 
 import com.example.bravia.domain.model.College
 import com.example.bravia.domain.repository.CollegeRepository
+import javax.inject.Inject
 
 
 /**
@@ -9,7 +10,7 @@ import com.example.bravia.domain.repository.CollegeRepository
  *
  * @property repository The repository to fetch college data from.
  */
-class GetAllCollegesUseCase (
+class GetAllCollegesUseCase @Inject constructor (
     private val repository: CollegeRepository
 ) {
 
@@ -18,7 +19,7 @@ class GetAllCollegesUseCase (
      *
      * @return A list of [College] objects representing all colleges.
      */
-    operator fun invoke(): List<College> {
+    suspend operator fun invoke(): Result<List<College>> {
         return repository.getAllColleges()
     }
 }

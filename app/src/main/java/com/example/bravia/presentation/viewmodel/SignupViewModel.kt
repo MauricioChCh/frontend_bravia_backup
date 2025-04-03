@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.bravia.domain.model.BusinessArea
 import com.example.bravia.domain.model.College
 import com.example.bravia.domain.model.Degree
@@ -13,6 +14,9 @@ import com.example.bravia.domain.usecase.GetAllCollegesUseCase
 import com.example.bravia.domain.usecase.GetAllDegreesUseCase
 import com.example.bravia.domain.usecase.GetAllInterestUseCase
 import com.example.bravia.domain.usecase.GetInterestByIdUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 sealed class SignUPState {
@@ -22,7 +26,9 @@ sealed class SignUPState {
     data class Error(val message: String) : SignUPState()
 }
 
-class SignupViewModel (
+
+@HiltViewModel
+class SignupViewModel @Inject constructor(
     private val getAllInterestsUseCase : GetAllInterestUseCase,
     private val getInterestByIdUseCase : GetInterestByIdUseCase,
     private val getAllCollegesUseCase: GetAllCollegesUseCase,
@@ -101,17 +107,17 @@ class SignupViewModel (
     }
 
 
-    fun findAllColleges() {
-        _listofCollege = getAllCollegesUseCase()
+    suspend fun findAllColleges() {
+        _listofCollege = getAllCollegesUseCase().getOrNull() ?: emptyList()
     }
-    fun findAllDegrees() {
-        _listofDegree = getAllDegreesUseCase()
+    suspend fun findAllDegrees() {
+        _listofDegree = getAllDegreesUseCase().getOrNull() ?: emptyList()
     }
-    fun findAllBusinessAreas() {
-        _listofBusinessArea = getAllBusinessAreasUseCase()
+    suspend fun findAllBusinessAreas() {
+        _listofBusinessArea = getAllBusinessAreasUseCase().getOrNull() ?: emptyList()
     }
-    fun findAllInterests() {
-        _listofInterest = getAllInterestsUseCase()
+    suspend fun findAllInterests() {
+        _listofInterest = getAllInterestsUseCase().getOrNull() ?: emptyList()
     }
 
     fun getAllColleges(): List<College> {
@@ -128,14 +134,16 @@ class SignupViewModel (
     }
 
     fun signUp() {
-        // Implement sign up logic here
+        // TODO: Implement sign up logic here
     }
 
     init {
-        findAllColleges()
-        findAllDegrees()
-        findAllBusinessAreas()
-        findAllInterests()
+        viewModelScope.launch {
+            findAllColleges()
+            findAllDegrees()
+            findAllBusinessAreas()
+            findAllInterests()
+        }
     }
 
 }

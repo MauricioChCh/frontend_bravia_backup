@@ -14,5 +14,5 @@ interface DegreeRepository {
      *
      * @return A list of [Degree] objects representing all degrees.
      */
-    fun getAllDegrees(): List<Degree>
+    suspend fun getAllDegrees(): Result<List<Degree>>
 }

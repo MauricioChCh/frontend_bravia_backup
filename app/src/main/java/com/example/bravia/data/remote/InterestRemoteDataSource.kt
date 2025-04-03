@@ -20,6 +20,10 @@ class InterestRemoteDataSource @Inject constructor (
         signUpService.getAllInterests()
     }
 
+    suspend fun getInterestById(id: Long): Result<InterestDTO?> = safeApiCall {
+        signUpService.getInterestById(id)
+    }
+
     /**
     * Helper function to handle API calls safely.
     *

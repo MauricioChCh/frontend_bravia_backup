@@ -14,5 +14,5 @@ interface BusinessAreaRepository {
      *
      * @return A list of [BusinessArea] objects representing all business areas.
      */
-    fun getAllBusinessAreas(): List<BusinessArea>
+    suspend fun getAllBusinessAreas(): Result<List<BusinessArea>>
 }

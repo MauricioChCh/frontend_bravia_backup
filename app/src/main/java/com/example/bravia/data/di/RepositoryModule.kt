@@ -7,6 +7,7 @@ import com.example.bravia.data.repository.InterestRepositoryImpl
 import com.example.bravia.domain.repository.BusinessAreaRepository
 import com.example.bravia.domain.repository.CollegeRepository
 import com.example.bravia.domain.repository.DegreeRepository
+import com.example.bravia.domain.repository.InterestRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,31 +17,54 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract  class RepositoryModule {
+abstract class RepositoryModule {
 
-
+    /**
+     * Binds the concrete implementation [BusinessAreaRepositoryImpl] to the [BusinessAreaRepository] interface.
+     *
+     * @param businessAreaRepositoryImpl The implementation instance to be provided when [BusinessAreaRepository] is requested
+     * @return The bound [BusinessAreaRepository] interface
+     */
     @Binds
     @Singleton
     abstract fun bindBusinessAreaRepository(
         businessAreaRepositoryImpl: BusinessAreaRepositoryImpl
     ): BusinessAreaRepository
 
+    /**
+     * Binds the concrete implementation [CollegeRepositoryImpl] to the [CollegeRepository] interface.
+     *
+     * @param collegeRepositoryImpl The implementation instance to be provided when [CollegeRepository] is requested
+     * @return The bound [CollegeRepository] interface
+     */
     @Binds
     @Singleton
     abstract fun bindCollegeRepository(
         collegeRepositoryImpl: CollegeRepositoryImpl
     ): CollegeRepository
 
+    /**
+     * Binds the concrete implementation [DegreeRepositoryImpl] to the [DegreeRepository] interface.
+     *
+     * @param degreeRepositoryImpl The implementation instance to be provided when [DegreeRepository] is requested
+     * @return The bound [DegreeRepository] interface
+     */
     @Binds
     @Singleton
     abstract fun bindDegreeRepository(
         degreeRepositoryImpl: DegreeRepositoryImpl
     ): DegreeRepository
 
+    /**
+     * Binds the concrete implementation [InterestRepositoryImpl] to the [InterestRepository] interface.
+     *
+     * @param interestRepositoryImpl The implementation instance to be provided when [InterestRepository] is requested
+     * @return The bound [InterestRepository] interface
+     */
     @Binds
     @Singleton
     abstract fun bindInterestRepository(
         interestRepositoryImpl: InterestRepositoryImpl
-    ): InterestRepositoryImpl
+    ): InterestRepository
     // Add other repository bindings here as needed
 }

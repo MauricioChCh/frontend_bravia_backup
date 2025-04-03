@@ -2,13 +2,19 @@ package com.example.bravia.data.mapper
 
 import com.example.bravia.data.remote.dto.DegreeDTO
 import com.example.bravia.domain.model.Degree
+import javax.inject.Inject
 
 /**
  * Mapper class for converting between [DegreeDTO] and [Degree] domain model.
  *
  * This class provides methods to map a DegreeDTO to a Degree and vice versa.
  */
-class DegreeMapper {
+
+class DegreeMapper @Inject constructor() {
+
+    fun mapToDomainList(dto: List<DegreeDTO>): List<Degree> {
+        return dto.map { mapToDomain(it) }
+    }
 
     /**
      * Maps a DegreeDTO to a Degree domain model.

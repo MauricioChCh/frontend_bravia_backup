@@ -2,6 +2,7 @@ package com.example.bravia.domain.usecase
 
 import com.example.bravia.domain.model.Degree
 import com.example.bravia.domain.repository.DegreeRepository
+import javax.inject.Inject
 
 
 /**
@@ -11,7 +12,7 @@ import com.example.bravia.domain.repository.DegreeRepository
  *
  * @property repository The repository instance used to retrieve degree data.
  */
-class GetAllDegreesUseCase (
+class GetAllDegreesUseCase @Inject constructor (
     private val repository: DegreeRepository
 ) {
 
@@ -20,7 +21,7 @@ class GetAllDegreesUseCase (
      *
      * @return A list of [Degree] objects representing all degrees.
      */
-    operator fun invoke(): List<Degree> {
+    suspend operator fun invoke(): Result<List<Degree>> {
         return repository.getAllDegrees()
     }
 }
