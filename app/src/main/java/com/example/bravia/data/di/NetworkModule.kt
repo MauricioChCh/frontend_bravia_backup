@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://api.example.com/" // Replace with your actual base URL
+    private const val BASE_URL = "https://bravia.free.beeceptor.com/api/v1/" // Replace with your actual base URL
     private const val DATE_FORMAT = "yyyy-MM-dd" // Replace with your desired date format
 
     /**
