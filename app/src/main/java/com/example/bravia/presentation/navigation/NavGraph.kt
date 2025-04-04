@@ -1,6 +1,7 @@
 // navigation/NavGraph.kt
 package com.example.bravia.navigation
 
+import SettingsScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
@@ -186,5 +187,14 @@ fun NavGraph(
                 paddingValues = paddingValues
             )
         }
+
+        //Shared
+        //Student settings
+        composable(
+            route = NavRoutes.Settings.ROUTE,
+        ) {
+            SettingsScreen()
+        }
+
     }
 }

@@ -34,26 +34,18 @@ sealed class NavRoutes {
         const val ROUTE = "interestsSignup"
     }
 
-    data object Home : NavRoutes() {
-        const val ROUTE = "home"
-    }
-
-    data object Interview : NavRoutes() {
-        const val ROUTE = "interview"
-    }
-
-    data object Saved : NavRoutes() {
-        const val ROUTE = "saved"
-    }
-
-    data object Profile : NavRoutes() {
-        const val ROUTE = "profile"
-    }
 
     data object InternshipDetail : NavRoutes() {
         const val ROUTE = "internshipDetail/{internshipId}"
         const val ARG_INTERNSHIP_ID = "internshipId"
 
         fun createRoute(internshipId: Long) = "internshipDetail/$internshipId"
+    }
+
+    //Shared
+    //student settings
+    data object Settings : NavRoutes(){
+        const val ROUTE = "settings"
+
     }
 }

@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bravia.presentation.navigation.NavRoutes
-import com.example.bravia.presentation.ui.components.InternshipCard
+import com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCard
 import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
@@ -81,7 +81,7 @@ fun HomeScreen(
                 value = searchText,
                 onValueChange = { searchText = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Buscar pasantías...") },
+                placeholder = { Text("Search interships...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(ThemeDefaults.searchFieldShape),
                 colors = TextFieldDefaults.colors(
