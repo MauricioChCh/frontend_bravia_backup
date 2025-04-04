@@ -133,17 +133,26 @@ class SignupViewModel @Inject constructor(
         return _listofInterest
     }
 
+    fun findStudentLists() {
+        if (_listofCollege.isEmpty() || _listofDegree.isEmpty()) {
+            viewModelScope.launch {
+                findAllColleges()
+                findAllDegrees()
+            }
+        }
+    }
+
+    fun findBusinessAreaLists() {
+        if (_listofBusinessArea.isEmpty()) {
+            viewModelScope.launch {
+                findAllBusinessAreas()
+            }
+        }
+    }
+
     fun signUp() {
         // TODO: Implement sign up logic here
     }
 
-    init {
-        viewModelScope.launch {
-            findAllColleges()
-            findAllDegrees()
-            findAllBusinessAreas()
-            findAllInterests()
-        }
-    }
 
 }

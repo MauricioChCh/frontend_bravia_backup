@@ -47,6 +47,9 @@ import com.example.bravia.domain.model.Degree
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import kotlin.math.sign
 
 
 /**
@@ -125,8 +128,7 @@ fun SignUpProfileScreen (
                 onSelectedOptionCollegeValidChange = { isSelectedOptionCollegeValid = it },
                 isSelectedOptionDegreeValid = isSelectedOptionDegreeValid,
                 onSelectedOptionDegreeValidChange = { isSelectedOptionDegreeValid = it },
-                optionsCollege = signupViewModel.getAllColleges(),
-                optionsAcademicDegree = signupViewModel.getAllDegrees()
+                signupViewModel
             )
 
         } else if (selectedUserType == "Business") {
@@ -144,7 +146,7 @@ fun SignUpProfileScreen (
                 },
                 isSelectedOptionBusinessValid = isSelectedOptionBusinessValid,
                 onSelectedOptionBusinessValidChange = { isSelectedOptionBusinessValid = it },
-                optionsBusinessArea = signupViewModel.getAllBusinessAreas()
+                signupViewModel
             )
 
         }
@@ -332,7 +334,7 @@ fun ContinueButton(
  * @param onBusinessAreaOption A lambda function to handle changes in the selected business area option.
  * @param isSelectedOptionBusinessValid A boolean indicating whether a valid business area option is selected.
  * @param onSelectedOptionBusinessValidChange A lambda function to handle changes in the validity of the selected business area option.
- * @param optionsBusinessArea A list of available business area options.
+ * @param signupViewModel The ViewModel responsible for managing the sign-up process.
  */
 @Composable
 fun Business(
@@ -345,8 +347,10 @@ fun Business(
     onBusinessAreaOption: (String) -> Unit,
     isSelectedOptionBusinessValid: Boolean,
     onSelectedOptionBusinessValidChange: (Boolean) -> Unit,
-    optionsBusinessArea: List<BusinessArea>
+    signupViewModel: SignupViewModel
 ) {
+    signupViewModel.findBusinessAreaLists()
+    var optionsBusinessArea: List<BusinessArea> = signupViewModel.getAllBusinessAreas()
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
     Card(
@@ -581,8 +585,7 @@ fun RecruiterName(
  * @param onSelectedOptionCollegeValidChange A lambda function to handle changes in the validity of the selected college option.
  * @param isSelectedOptionDegreeValid A boolean indicating whether a valid degree option is selected.
  * @param onSelectedOptionDegreeValidChange A lambda function to handle changes in the validity of the selected degree option.
- * @param optionsCollege A list of available college options.
- * @param optionsAcademicDegree A list of available academic degree options.
+ * @param signupViewModel The ViewModel responsible for managing the sign-up process.
  */
 @Composable
 fun Student(
@@ -596,9 +599,12 @@ fun Student(
     onSelectedOptionCollegeValidChange: (Boolean) -> Unit,
     isSelectedOptionDegreeValid: Boolean,
     onSelectedOptionDegreeValidChange: (Boolean) -> Unit,
-    optionsCollege: List<College>,
-    optionsAcademicDegree: List<Degree>
+    signupViewModel: SignupViewModel
 ) {
+    signupViewModel.findStudentLists()
+    var optionsCollege = signupViewModel.getAllColleges()
+    var optionsAcademicDegree = signupViewModel.getAllDegrees()
+
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
     Card(
