@@ -3,15 +3,12 @@ package com.example.bravia.presentation.ui.screens.start
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -30,6 +27,8 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -125,8 +124,7 @@ fun SignUpProfileScreen (
                 onSelectedOptionCollegeValidChange = { isSelectedOptionCollegeValid = it },
                 isSelectedOptionDegreeValid = isSelectedOptionDegreeValid,
                 onSelectedOptionDegreeValidChange = { isSelectedOptionDegreeValid = it },
-                optionsCollege = signupViewModel.getAllColleges(),
-                optionsAcademicDegree = signupViewModel.getAllDegrees()
+                signupViewModel
             )
 
         } else if (selectedUserType == "Business") {
@@ -144,7 +142,7 @@ fun SignUpProfileScreen (
                 },
                 isSelectedOptionBusinessValid = isSelectedOptionBusinessValid,
                 onSelectedOptionBusinessValidChange = { isSelectedOptionBusinessValid = it },
-                optionsBusinessArea = signupViewModel.getAllBusinessAreas()
+                signupViewModel
             )
 
         }
@@ -332,7 +330,7 @@ fun ContinueButton(
  * @param onBusinessAreaOption A lambda function to handle changes in the selected business area option.
  * @param isSelectedOptionBusinessValid A boolean indicating whether a valid business area option is selected.
  * @param onSelectedOptionBusinessValidChange A lambda function to handle changes in the validity of the selected business area option.
- * @param optionsBusinessArea A list of available business area options.
+ * @param signupViewModel The ViewModel responsible for managing the sign-up process.
  */
 @Composable
 fun Business(
@@ -345,8 +343,19 @@ fun Business(
     onBusinessAreaOption: (String) -> Unit,
     isSelectedOptionBusinessValid: Boolean,
     onSelectedOptionBusinessValidChange: (Boolean) -> Unit,
-    optionsBusinessArea: List<BusinessArea>
+    signupViewModel: SignupViewModel
 ) {
+
+    var optionsBusinessArea by remember { mutableStateOf(emptyList<BusinessArea>()) }
+
+    signupViewModel.findAllBusinessAreas()
+
+    val businessAreas = signupViewModel.listOfBusinessArea.collectAsState()
+
+    LaunchedEffect(businessAreas.value) {
+        optionsBusinessArea = businessAreas.value
+    }
+
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
     Card(
@@ -581,8 +590,7 @@ fun RecruiterName(
  * @param onSelectedOptionCollegeValidChange A lambda function to handle changes in the validity of the selected college option.
  * @param isSelectedOptionDegreeValid A boolean indicating whether a valid degree option is selected.
  * @param onSelectedOptionDegreeValidChange A lambda function to handle changes in the validity of the selected degree option.
- * @param optionsCollege A list of available college options.
- * @param optionsAcademicDegree A list of available academic degree options.
+ * @param signupViewModel The ViewModel responsible for managing the sign-up process.
  */
 @Composable
 fun Student(
@@ -596,9 +604,22 @@ fun Student(
     onSelectedOptionCollegeValidChange: (Boolean) -> Unit,
     isSelectedOptionDegreeValid: Boolean,
     onSelectedOptionDegreeValidChange: (Boolean) -> Unit,
-    optionsCollege: List<College>,
-    optionsAcademicDegree: List<Degree>
+    signupViewModel: SignupViewModel
 ) {
+    var optionsCollege by remember { mutableStateOf<List<College>>( emptyList() ) }
+    var optionsAcademicDegree by remember { mutableStateOf<List<Degree>>( emptyList() ) }
+
+    signupViewModel.findAllColleges()
+    signupViewModel.findAllDegrees()
+
+    val colleges = signupViewModel.listOfCollege.collectAsState()
+    val degrees = signupViewModel.listOfDegree.collectAsState()
+
+    LaunchedEffect(colleges.value, degrees.value) {
+        optionsCollege = colleges.value
+        optionsAcademicDegree = degrees.value
+    }
+
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
     Card(

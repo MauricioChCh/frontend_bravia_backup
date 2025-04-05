@@ -8,9 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 sealed class LoginState {
-    data class Loading(val message: String) : SignUPState()
-    data class Success(val message: String) : SignUPState()
-    data class Error(val message: String) : SignUPState()
+    data class Loading(val message: String) : LoginState()
+    data class Success(val message: String) : LoginState()
+    data class Error(val message: String) : LoginState()
 }
 
 @HiltViewModel
