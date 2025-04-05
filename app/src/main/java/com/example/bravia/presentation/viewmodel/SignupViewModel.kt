@@ -1,5 +1,6 @@
 package com.example.bravia.presentation.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,33 +16,42 @@ import com.example.bravia.domain.usecase.GetAllDegreesUseCase
 import com.example.bravia.domain.usecase.GetAllInterestUseCase
 import com.example.bravia.domain.usecase.GetInterestByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-sealed class SignUPState {
-    data class Loading(val message: String) : SignUPState()
-    data class Success(val message: String) : SignUPState()
-    data object Empty : SignUPState()
-    data class Error(val message: String) : SignUPState()
+sealed class SignUpState {
+    data object Initial : SignUpState()
+    data object Loading : SignUpState()
+    data class Success(val message: String) : SignUpState()
+    data object Empty : SignUpState()
+    data class Error(val message: String) : SignUpState()
 }
-
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val getAllInterestsUseCase : GetAllInterestUseCase,
-    private val getInterestByIdUseCase : GetInterestByIdUseCase,
+    private val getAllInterestsUseCase: GetAllInterestUseCase,
+    private val getInterestByIdUseCase: GetInterestByIdUseCase,
     private val getAllCollegesUseCase: GetAllCollegesUseCase,
     private val getAllDegreesUseCase: GetAllDegreesUseCase,
     private val getAllBusinessAreasUseCase: GetAllBusinessAreaUseCase
 ) : ViewModel() {
 
+    private val _listOfCollege = MutableStateFlow<List<College>>(emptyList())
+    val listOfCollege = _listOfCollege.asStateFlow()
 
-    var _listofCollege: List<College> = emptyList()
-    var _listofDegree: List<Degree> = emptyList()
-    var _listofBusinessArea: List<BusinessArea> = emptyList()
-    var _listofInterest: List<Interest> = emptyList()
-        private set
+    private val _listOfDegree = MutableStateFlow<List<Degree>>(emptyList())
+    val listOfDegree = _listOfDegree.asStateFlow()
+
+    private val _listOfBusinessArea = MutableStateFlow<List<BusinessArea>>(emptyList())
+    val listOfBusinessArea = _listOfBusinessArea.asStateFlow()
+
+    private val _listOfInterest = MutableStateFlow<List<Interest>>(emptyList())
+    val listOfInterest = _listOfInterest.asStateFlow()
+
+    private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Initial)
+    val signUpState = _signUpState.asStateFlow()
 
     var email by mutableStateOf("")
         private set
@@ -64,88 +74,116 @@ class SignupViewModel @Inject constructor(
     var interests by mutableStateOf<List<String>>(emptyList())
         private set
 
-
+    private var collegesLoaded = false
+    private var degreesLoaded = false
+    private var businessAreasLoaded = false
+    private var interestsLoaded = false
 
     fun onEmailChange(email: String) {
         this.email = email
     }
+
     fun onPasswordChange(password: String) {
         this.password = password
     }
+
     fun onConfirmPasswordChange(confirmPassword: String) {
         this.confirmPassword = confirmPassword
     }
+
     fun onFirstNameChange(firstName: String) {
         this.firstName = firstName
     }
+
     fun onLastNameChange(lastName: String) {
         this.lastName = lastName
     }
+
     fun onCollegeChange(college: String) {
         this.college = college
     }
+
     fun onDegreeChange(degree: String) {
         this.degree = degree
     }
+
     fun onCompanyNameChange(companyName: String) {
         this.companyName = companyName
     }
+
     fun onBusinessAreaChange(businessArea: String) {
         this.businessArea = businessArea
     }
-    fun onInterestsChange(interests: List<String>) {
-        this.interests = interests
-    }
-    fun onInterestsChange(interest: String) {
-        this.interests = interests + interest
-    }
-    fun onInterestsRemove(interest: String) {
-        this.interests = interests - interest
-    }
-    fun onInterestsClear() {
-        this.interests = emptyList()
-    }
 
-
-    suspend fun findAllColleges() {
-        _listofCollege = getAllCollegesUseCase().getOrNull() ?: emptyList()
-    }
-    suspend fun findAllDegrees() {
-        _listofDegree = getAllDegreesUseCase().getOrNull() ?: emptyList()
-    }
-    suspend fun findAllBusinessAreas() {
-        _listofBusinessArea = getAllBusinessAreasUseCase().getOrNull() ?: emptyList()
-    }
-    suspend fun findAllInterests() {
-        _listofInterest = getAllInterestsUseCase().getOrNull() ?: emptyList()
-    }
-
-    fun getAllColleges(): List<College> {
-        return _listofCollege
-    }
-    fun getAllDegrees(): List<Degree> {
-        return _listofDegree
-    }
-    fun getAllBusinessAreas(): List<BusinessArea> {
-        return _listofBusinessArea
-    }
-    fun getAllInterests(): List<Interest> {
-        return _listofInterest
-    }
-
-    fun findStudentLists() {
-        if (_listofCollege.isEmpty() || _listofDegree.isEmpty()) {
+    fun findAllColleges() {
+        if (!collegesLoaded) {
             viewModelScope.launch {
-                findAllColleges()
-                findAllDegrees()
+                _signUpState.value = SignUpState.Loading
+                _listOfCollege.value = emptyList()
+                runCatching {
+                    getAllCollegesUseCase()
+                }.onSuccess { result ->
+                    _listOfCollege.value = result.getOrNull() ?: emptyList()
+                    _signUpState.value = SignUpState.Success("Colleges loaded successfully")
+                    collegesLoaded = true
+                }.onFailure { exception ->
+                    _signUpState.value = SignUpState.Error(exception.message ?: "Unknown error")
+                    Log.e("SignupViewModel", "Error fetching colleges: ${exception.message}")
+                }
             }
         }
     }
 
-    fun findBusinessAreaLists() {
-        if (_listofBusinessArea.isEmpty()) {
+    fun findAllDegrees() {
+        if (!degreesLoaded) {
             viewModelScope.launch {
-                findAllBusinessAreas()
+                _signUpState.value = SignUpState.Loading
+                runCatching {
+                    getAllDegreesUseCase()
+                }.onSuccess { result ->
+                    _listOfDegree.value = result.getOrNull() ?: emptyList()
+                    _signUpState.value = SignUpState.Success("Degrees loaded successfully")
+                    degreesLoaded = true
+                }.onFailure { exception ->
+                    _signUpState.value = SignUpState.Error(exception.message ?: "Unknown error")
+                    Log.e("SignupViewModel", "Error fetching degrees: ${exception.message}")
+                }
+            }
+        }
+    }
+
+    fun findAllBusinessAreas() {
+        if (!businessAreasLoaded) {
+            viewModelScope.launch {
+                _signUpState.value = SignUpState.Loading
+                runCatching {
+                    getAllBusinessAreasUseCase()
+                }.onSuccess { result ->
+                    _listOfBusinessArea.value = result.getOrNull() ?: emptyList()
+                    _signUpState.value = SignUpState.Success("Business areas loaded successfully")
+                    businessAreasLoaded = true
+                }.onFailure { exception ->
+                    _signUpState.value = SignUpState.Error(exception.message ?: "Unknown error")
+                    Log.e("SignupViewModel", "Error fetching business areas: ${exception.message}")
+                }
+            }
+        }
+    }
+
+    fun findAllInterests() {
+        if (!interestsLoaded) {
+            viewModelScope.launch {
+                _signUpState.value = SignUpState.Loading
+                runCatching {
+                    getAllInterestsUseCase()
+                }.onSuccess { result ->
+                    _listOfInterest.value = result.getOrNull() ?: emptyList()
+                    _signUpState.value = SignUpState.Success("Interests loaded successfully")
+                    interestsLoaded = true
+                }.onFailure { exception ->
+                    _signUpState.value = SignUpState.Error(exception.message ?: "Unknown error")
+                    Log.e("SignupViewModel", "Error fetching interests: ${exception.message}")
+                }
             }
         }
     }
@@ -153,6 +191,4 @@ class SignupViewModel @Inject constructor(
     fun signUp() {
         // TODO: Implement sign up logic here
     }
-
-
 }

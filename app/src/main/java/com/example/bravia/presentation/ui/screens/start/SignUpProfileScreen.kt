@@ -3,15 +3,12 @@ package com.example.bravia.presentation.ui.screens.start
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -30,6 +27,8 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -47,9 +46,6 @@ import com.example.bravia.domain.model.Degree
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.SignupViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import kotlin.math.sign
 
 
 /**
@@ -349,8 +345,17 @@ fun Business(
     onSelectedOptionBusinessValidChange: (Boolean) -> Unit,
     signupViewModel: SignupViewModel
 ) {
-    signupViewModel.findBusinessAreaLists()
-    var optionsBusinessArea: List<BusinessArea> = signupViewModel.getAllBusinessAreas()
+
+    var optionsBusinessArea by remember { mutableStateOf(emptyList<BusinessArea>()) }
+
+    signupViewModel.findAllBusinessAreas()
+
+    val businessAreas = signupViewModel.listOfBusinessArea.collectAsState()
+
+    LaunchedEffect(businessAreas.value) {
+        optionsBusinessArea = businessAreas.value
+    }
+
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
     Card(
@@ -601,9 +606,19 @@ fun Student(
     onSelectedOptionDegreeValidChange: (Boolean) -> Unit,
     signupViewModel: SignupViewModel
 ) {
-    signupViewModel.findStudentLists()
-    var optionsCollege = signupViewModel.getAllColleges()
-    var optionsAcademicDegree = signupViewModel.getAllDegrees()
+    var optionsCollege by remember { mutableStateOf<List<College>>( emptyList() ) }
+    var optionsAcademicDegree by remember { mutableStateOf<List<Degree>>( emptyList() ) }
+
+    signupViewModel.findAllColleges()
+    signupViewModel.findAllDegrees()
+
+    val colleges = signupViewModel.listOfCollege.collectAsState()
+    val degrees = signupViewModel.listOfDegree.collectAsState()
+
+    LaunchedEffect(colleges.value, degrees.value) {
+        optionsCollege = colleges.value
+        optionsAcademicDegree = degrees.value
+    }
 
     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
