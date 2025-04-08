@@ -1,10 +1,11 @@
 package com.example.bravia.data.mapper
 
-import com.example.bravia.data.datasource.model.InternshipDto
+import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.domain.model.Internship
+import javax.inject.Inject
 
-class InternshipMapper {
-    fun mapToDomain(dto: InternshipDto, isBookmarked: Boolean = false): Internship {
+class InternshipMapper @Inject constructor()  {
+    fun mapToDomain(dto: InternshipDTO, isBookmarked: Boolean = false): Internship {
         return Internship(
             id = dto.id,
             title = dto.title,
@@ -26,8 +27,8 @@ class InternshipMapper {
         )
     }
 
-    fun mapToDto(domain: Internship): InternshipDto {
-        return InternshipDto(
+    fun mapToDto(domain: Internship): InternshipDTO {
+        return InternshipDTO(
             id = domain.id,
             title = domain.title,
             company = domain.company,

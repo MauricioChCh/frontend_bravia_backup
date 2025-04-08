@@ -3,8 +3,8 @@ package com.example.bravia.domain.repository
 import com.example.bravia.domain.model.Internship
 
 interface InternshipRepository {
-    fun getAllInternships(): List<Internship>
-    fun getInternshipById(id: Long): Internship?
-    fun bookmarkInternship(id: Long, isBookmarked: Boolean)
-    fun getBookmarkedInternships(): List<Internship>
+    suspend fun getRecommendedInternships(): Result<List<Internship>>
+    suspend fun getInternshipById(id: Long): Result<Internship?>
+    suspend fun bookmarkInternship(id: Long, isBookmarked: Boolean)
+    suspend fun getBookmarkedInternships(): Result<List<Internship>>
 }

@@ -4,8 +4,8 @@ import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.repository.InternshipRepository
 import javax.inject.Inject
 
-class GetBookmarkedInternshipsUseCase @Inject constructor (private val repository: InternshipRepository) {
+class GetRecommendedInternshipsUseCase @Inject constructor (private val repository: InternshipRepository) {
     operator suspend fun invoke(): Result<List<Internship>> {
-        return repository.getBookmarkedInternships()
+        return repository.getRecommendedInternships()
     }
 }
