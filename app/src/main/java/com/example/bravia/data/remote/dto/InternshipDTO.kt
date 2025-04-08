@@ -1,8 +1,8 @@
-package com.example.bravia.data.datasource.model
+package com.example.bravia.data.remote.dto
 
 import java.util.Date
 
-data class InternshipDto(
+data class InternshipDTO(
     val id: Long,
     val title: String,
     val company: String,
