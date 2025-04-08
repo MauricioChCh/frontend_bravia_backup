@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.usecase.BookmarkInternshipUseCase
-import com.example.bravia.domain.usecase.GetAllInternshipsUseCase
+import com.example.bravia.domain.usecase.GetRecommendedInternshipsUseCase
 import com.example.bravia.domain.usecase.GetBookmarkedInternshipsUseCase
 import com.example.bravia.domain.usecase.GetInternshipByIdUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 //clase sellada que representa los diferentes estados que puede tener
 sealed class InternshipState {
@@ -30,8 +32,9 @@ sealed class InternshipState {
  * - Internship selection and full internship list management.
  * - Integration with domain use cases for business logic.
  */
-class InternshipViewModel(
-    private val getAllInternshipsUseCase: GetAllInternshipsUseCase,
+@HiltViewModel
+class InternshipViewModel @Inject constructor(
+    private val getAllInternshipsUseCase: GetRecommendedInternshipsUseCase,
     private val getInternshipByIdUseCase: GetInternshipByIdUseCase,
     private val bookmarkInternshipUseCase: BookmarkInternshipUseCase,
     private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase
@@ -62,17 +65,21 @@ class InternshipViewModel(
      *
      * @param internshipId The ID of the internship to retrieve.
      */
-    fun selectInternshipById(internshipId: Long) {
+    fun  selectInternshipById(internshipId: Long) {
         viewModelScope.launch {
             _internshipState.value = InternshipState.Loading
-            val internship = getInternshipByIdUseCase(internshipId)
-            if (internship != null) {
-                _selectedInternship.value = internship
-                _internshipState.value = InternshipState.Success(internship)
-            } else {
-                _internshipState.value = InternshipState.Error("Internship not found")
+            getInternshipByIdUseCase(internshipId).onSuccess { internship ->
+                if (internship != null) {
+                    _selectedInternship.value = internship
+                    _internshipState.value = InternshipState.Success(internship)
+                } else {
+                    _internshipState.value = InternshipState.Error("Internship not found")
+                }
+            }.onFailure {
+                _internshipState.value = InternshipState.Error("Error: ${it.message}")
             }
         }
+
     }
 
     /**
@@ -113,8 +120,12 @@ class InternshipViewModel(
      */
     fun findAllInternships() {
         viewModelScope.launch {
-            val internships = getAllInternshipsUseCase()
-            _internshipList.value = internships
+            getAllInternshipsUseCase().onSuccess { internships ->
+                _internshipList.value = internships
+            }.onFailure {
+                _internshipState.value = InternshipState.Error("Error loading internships: ${it.message}")
+            }
+
         }
     }
 
@@ -126,19 +137,19 @@ class InternshipViewModel(
      */
     fun bookmarkInternship(id: Long, isBookmarked: Boolean) {
         viewModelScope.launch {
-            bookmarkInternshipUseCase(id, isBookmarked)
+            try {
+                bookmarkInternshipUseCase(id, isBookmarked)
+                findAllInternships()
+                loadBookmarkedInternships()
 
-            // Refresh lists to reflect the change
-            findAllInternships()
-            loadBookmarkedInternships()
-
-            // Update selected internship if it's the one being bookmarked
-            _selectedInternship.value?.let { internship ->
-                if (internship.id == id) {
-                    selectInternshipById(id)
+                _selectedInternship.value?.let {
+                    if (it.id == id) selectInternshipById(id)
                 }
+            } catch (e: Exception) {
+                _internshipState.value = InternshipState.Error("Bookmark failed: ${e.message}")
             }
         }
+
     }
 
     /**
@@ -146,8 +157,13 @@ class InternshipViewModel(
      */
     fun loadBookmarkedInternships() {
         viewModelScope.launch {
-            _bookmarkedInternships.value = getBookmarkedInternshipsUseCase()
+            getBookmarkedInternshipsUseCase().onSuccess { list ->
+                _bookmarkedInternships.value = list
+            }.onFailure {
+                _internshipState.value = InternshipState.Error("Error loading bookmarks: ${it.message}")
+            }
         }
+
     }
 
     /**
@@ -172,15 +188,18 @@ class InternshipViewModel(
                 return@launch
             }
 
-            val allInternships = getAllInternshipsUseCase()
-            val filteredList = allInternships.filter { internship ->
-                internship.title.contains(query, ignoreCase = true) ||
-                        internship.company.contains(query, ignoreCase = true) ||
-                        internship.location.contains(query, ignoreCase = true)
+            getAllInternshipsUseCase().onSuccess { allInternships ->
+                val filtered = allInternships.filter {
+                    it.title.contains(query, true) ||
+                            it.company.contains(query, true) ||
+                            it.location.contains(query, true)
+                }
+                _internshipList.value = filtered
+            }.onFailure {
+                _internshipState.value = InternshipState.Error("Search failed: ${it.message}")
             }
-
-            _internshipList.value = filteredList
         }
+
     }
 
     /**

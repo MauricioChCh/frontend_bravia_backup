@@ -1,6 +1,11 @@
 package com.example.bravia.data.di
 
 import com.example.bravia.data.remote.api.SignUpService
+import com.example.bravia.data.remote.api.StudentAreaService
+import com.example.bravia.data.remote.dto.InterestDTO
+import com.example.bravia.data.remote.dto.InternshipDTO
+import com.example.bravia.data.remote.serializer.InterestDeselializer
+import com.example.bravia.data.remote.serializer.InternshipDeserializer
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -17,7 +22,7 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://bravia.free.beeceptor.com/api/v1/" // Replace with your actual base URL
+    private const val BASE_URL = "https://bravia2.free.beeceptor.com/" // Replace with your actual base URL
     private const val DATE_FORMAT = "yyyy-MM-dd" // Replace with your desired date format
 
     /**
@@ -29,8 +34,10 @@ object NetworkModule {
     @Singleton
     fun provideGson(): Gson = GsonBuilder()
         .setDateFormat(DATE_FORMAT)
+        .registerTypeAdapter(InternshipDTO::class.java, InternshipDeserializer())
+        .registerTypeAdapter(InterestDTO::class.java, InterestDeselializer())
         .create()
-
+    //TODO meter esto .registerTypeAdapter(InterestDTO::class.java, InterestDeserializer()) a ver si funciona
     /**
      * Provides a logging interceptor for HTTP request/response logging.
      *
@@ -91,4 +98,10 @@ object NetworkModule {
     @Singleton
     fun provideSignUpService(retrofit: Retrofit): SignUpService =
         retrofit.create(SignUpService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideStudentAreaService(retrofit: Retrofit): StudentAreaService =
+        retrofit.create(StudentAreaService::class.java)
+
 }

@@ -4,10 +4,12 @@ import com.example.bravia.data.repository.BusinessAreaRepositoryImpl
 import com.example.bravia.data.repository.CollegeRepositoryImpl
 import com.example.bravia.data.repository.DegreeRepositoryImpl
 import com.example.bravia.data.repository.InterestRepositoryImpl
+import com.example.bravia.data.repository.InternshipRepositoryImpl
 import com.example.bravia.domain.repository.BusinessAreaRepository
 import com.example.bravia.domain.repository.CollegeRepository
 import com.example.bravia.domain.repository.DegreeRepository
 import com.example.bravia.domain.repository.InterestRepository
+import com.example.bravia.domain.repository.InternshipRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,6 +20,16 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+
+    //STUDENT AREA
+
+    @Binds
+    @Singleton
+    abstract fun bindInternshipsRepository(
+        internshipRepository: InternshipRepositoryImpl
+    ): InternshipRepository
+
+
 
     /**
      * Binds the concrete implementation [BusinessAreaRepositoryImpl] to the [BusinessAreaRepository] interface.
@@ -67,4 +79,9 @@ abstract class RepositoryModule {
         interestRepositoryImpl: InterestRepositoryImpl
     ): InterestRepository
     // Add other repository bindings here as needed
+
+
+
+
+
 }
