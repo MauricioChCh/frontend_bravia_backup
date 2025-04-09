@@ -8,6 +8,7 @@ class InternshipMapper @Inject constructor()  {
     fun mapToDomain(dto: InternshipDTO, isBookmarked: Boolean = false): Internship {
         return Internship(
             id = dto.id,
+            companyId = dto.companyId,
             title = dto.title,
             company = dto.company,
             description = dto.description,
@@ -30,6 +31,7 @@ class InternshipMapper @Inject constructor()  {
     fun mapToDto(domain: Internship): InternshipDTO {
         return InternshipDTO(
             id = domain.id,
+            companyId = domain.companyId,
             title = domain.title,
             company = domain.company,
             description = domain.description,

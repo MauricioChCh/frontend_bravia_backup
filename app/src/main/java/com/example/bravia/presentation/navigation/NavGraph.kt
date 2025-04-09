@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
+import com.example.bravia.presentation.ui.screens.business.BusinessHomeScreen
 import com.example.bravia.presentation.ui.screens.student.HomeScreen
 import com.example.bravia.presentation.ui.screens.start.InterestsScreen
 import com.example.bravia.presentation.ui.screens.student.InternshipDetailScreen
@@ -23,6 +24,7 @@ import com.example.bravia.presentation.ui.screens.start.SignInScreen
 import com.example.bravia.presentation.ui.screens.start.SignUpProfileScreen
 import com.example.bravia.presentation.ui.screens.start.SignUpScreen
 import com.example.bravia.presentation.ui.screens.start.StartScreen
+import com.example.bravia.presentation.viewmodel.BusinessViewModel
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
@@ -45,8 +47,20 @@ fun NavGraph(
     internshipViewModel: InternshipViewModel,
     signUpViewModel: SignupViewModel,
     loginViewModel: LoginViewModel,
+    businessViewModel: BusinessViewModel,
 ) {
-    NavHost(navController = navController, startDestination = NavRoutes.Start.ROUTE) {
+//    NavHost(navController = navController, startDestination = NavRoutes.Start.ROUTE) {
+    NavHost(navController = navController, startDestination = NavRoutes.BusinessHome.ROUTE) {
+        // Business screens=====================================
+        composable(
+            route = NavRoutes.BusinessHome.ROUTE
+        ) {
+            BusinessHomeScreen(
+                navController = navController,
+                businessViewModel = businessViewModel
+            )
+        }
+
 
         //start screens=========================================
         composable(

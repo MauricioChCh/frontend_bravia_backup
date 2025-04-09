@@ -3,6 +3,7 @@ package com.example.bravia.presentation.navigation
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SupportAgent
@@ -22,6 +23,7 @@ sealed class BottomNavBar(
         const val SAVED = "saved"
         const val INTERVIEW = "interview"
         const val PROFILE = "profile"
+        const val BUSINESS_HOME = "business_home"
     }
 
     /**
@@ -68,6 +70,15 @@ sealed class BottomNavBar(
         Icons.Filled.Person
     )
 
+    /**
+     * BusinessHome representa el elemento de navegación para la pantalla de BusinessHome.
+     * Esta pantalla permite al usuario ver y editar su información de perfil.
+     */
+    data object BusinessHome : BottomNavBar(
+        Routes.BUSINESS_HOME,
+        R.string.business_home,
+        Icons.Filled.Inventory
+    )
 
 
     companion object {
@@ -75,6 +86,10 @@ sealed class BottomNavBar(
          * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
          */
         fun items() = listOf(Home, Saved, Interview, Profile)
+        /**
+         * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
+         */
+        fun businessItems() = listOf(BusinessHome)
 
         /**
          * Determina si la ruta proporcionada coincide con cualquier ruta de elemento de navegación inferior.

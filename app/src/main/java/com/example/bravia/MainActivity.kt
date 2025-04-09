@@ -16,6 +16,7 @@ import com.example.bravia.navigation.NavGraph
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.BottomNavigationBar
 import com.example.bravia.presentation.ui.theme.BravIATheme
+import com.example.bravia.presentation.viewmodel.BusinessViewModel
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
     private val signUpViewModel: SignupViewModel by viewModels ()
     private val loginViewModel : LoginViewModel by viewModels()
     private val internshipViewModel: InternshipViewModel by viewModels()
+    private val businessViewModel: BusinessViewModel by viewModels()
 
 
 
@@ -41,7 +43,8 @@ class MainActivity : ComponentActivity() {
                 MainScreen(
                     singUpViewModel = signUpViewModel,
                     internshipViewModel = internshipViewModel,
-                    loginViewModel = loginViewModel
+                    loginViewModel = loginViewModel,
+                    businessViewModel = businessViewModel
                 )
             }
         }
@@ -53,7 +56,8 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(
     singUpViewModel: SignupViewModel,
     internshipViewModel: InternshipViewModel,
-    loginViewModel: LoginViewModel
+    loginViewModel: LoginViewModel,
+    businessViewModel: BusinessViewModel
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -71,7 +75,7 @@ fun MainScreen(
                 NavRoutes.InterestsSignUp.ROUTE,
                 NavRoutes.ProfileSignUp.ROUTE,
                 NavRoutes.InternshipDetail.ROUTE -> {} // Do nothing (oculta el bottom bar)
-                else -> BottomNavigationBar(navController = navController)
+                else -> BottomNavigationBar(navController = navController, currentRoute)
             }
         }
     ) { paddingValues ->
@@ -80,7 +84,8 @@ fun MainScreen(
             paddingValues = paddingValues,
             internshipViewModel = internshipViewModel,
             signUpViewModel = singUpViewModel,
-            loginViewModel = loginViewModel
+            loginViewModel = loginViewModel,
+            businessViewModel = businessViewModel
         )
     }
 }

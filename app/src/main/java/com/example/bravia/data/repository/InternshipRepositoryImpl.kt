@@ -77,6 +77,36 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAllBusinessInternships(id: Long): Result<List<Internship>> {
+        return safeRepositoryCall {
+            val dtoResult = remoteDataSource.getAllBusinessInternships(id)
+
+            // Desenvuelve el Result del DataSource
+            if (dtoResult.isSuccess) {
+                dtoResult.getOrNull()?.map { dto ->
+                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                } ?: emptyList()
+            } else {
+                throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internships")
+            }
+        }
+    }
+
+    override suspend fun getBusinessInternshipById(id: Long): Result<Internship?> {
+        return safeRepositoryCall {
+            val dtoResult = remoteDataSource.getBusinessInternshipById(id)
+
+            // Desenvuelve el Result del DataSource
+            if (dtoResult.isSuccess) {
+                dtoResult.getOrNull()?.let { dto ->
+                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                }
+            } else {
+                throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internship")
+            }
+        }
+    }
+
     /**
      * Helper function to standardize error handling in repository methods.
      *
@@ -92,4 +122,6 @@ class InternshipRepositoryImpl @Inject constructor(
             Result.failure(Exception("Error in repository operation: ${e.message}"))
         }
     }
+
+
 }

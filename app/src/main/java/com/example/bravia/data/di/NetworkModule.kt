@@ -1,5 +1,6 @@
 package com.example.bravia.data.di
 
+import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.remote.api.SignUpService
 import com.example.bravia.data.remote.api.StudentAreaService
 import com.example.bravia.data.remote.dto.InterestDTO
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://bravia2.free.beeceptor.com/" // Replace with your actual base URL
+    private const val BASE_URL = "https://67f6132c913986b16fa68c50.mockapi.io/api/v1/" // Replace with your actual base URL
     private const val DATE_FORMAT = "yyyy-MM-dd" // Replace with your desired date format
 
     /**
@@ -99,9 +100,25 @@ object NetworkModule {
     fun provideSignUpService(retrofit: Retrofit): SignUpService =
         retrofit.create(SignUpService::class.java)
 
+    /**
+     * Provides the StudentAreaService implementation.
+     *
+     * @param retrofit The Retrofit instance to create the service
+     * @return [StudentAreaService] implementation
+     */
     @Provides
     @Singleton
     fun provideStudentAreaService(retrofit: Retrofit): StudentAreaService =
         retrofit.create(StudentAreaService::class.java)
 
+    /**
+     * Provides the BusinessService implementation.
+     *
+     * @param retrofit The Retrofit instance to create the service
+     * @return [BusinessService] implementation
+     */
+    @Provides
+    @Singleton
+    fun provideBusinessService(retrofit: Retrofit): BusinessService =
+        retrofit.create(BusinessService::class.java)
 }

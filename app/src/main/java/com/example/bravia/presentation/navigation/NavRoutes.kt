@@ -5,6 +5,11 @@ package com.example.bravia.presentation.navigation
  * It contains various data objects representing different screens or destinations in the app.
  */
 sealed class NavRoutes {
+    //Business==================================
+    data object BusinessHome : NavRoutes() {
+        const val ROUTE = "businessHome"
+    }
+
     //START=====================================
     data object Login : NavRoutes() {
         const val ROUTE = "login"

@@ -26,6 +26,7 @@ class InternshipDeserializer : JsonDeserializer<InternshipDTO> {
 
         return InternshipDTO(
             id = getLong("id"),
+            companyId = getLong("companyId"),
             title = getString("title"),
             company = getString("company"),
             description = getString("description"),

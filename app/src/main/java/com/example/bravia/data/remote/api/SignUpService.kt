@@ -15,7 +15,7 @@ interface SignUpService {
      *
      * @return [Response] containing a list of [DegreeDTO] objects if successful
      */
-    @GET("signup/colleges")
+    @GET("signup/1/colleges")
     suspend fun getAllColleges(): Response<List<CollegeDTO>>
 
     /**
@@ -23,7 +23,7 @@ interface SignUpService {
      *
      * @return [Response] containing a list of [BusinessAreaDTO] objects if successful
      */
-    @GET("signup/businessAreas")
+    @GET("signup/1/businessAreas")
     suspend fun getAllBusinessAreas(): Response<List<BusinessAreaDTO>>
 
     /**
@@ -31,10 +31,16 @@ interface SignUpService {
      *
      * @return [Response] containing a list of [InterestDTO] objects if successful
      */
-    @GET("signup/interests")
+    @GET("signup/1/interests")
     suspend fun getAllInterests(): Response<List<InterestDTO>>
 
-    @GET("signup/interests/{id}")
+    /**
+     * Retrieves a specific interest by its ID from the remote API.
+     *
+     * @param id The ID of the interest to retrieve.
+     * @return [Response] containing the [InterestDTO] object if successful, or null if not found
+     */
+    @GET("signup/1/interests/{id}")
     suspend fun getInterestById(id: Long): Response<InterestDTO?>
 
     /**
@@ -42,7 +48,7 @@ interface SignUpService {
      *
      * @return [Response] containing a list of [DegreeDTO] objects if successful
      */
-    @GET("signup/degrees")
+    @GET("signup/1/degrees")
     suspend fun getAllDegrees(): Response<List<DegreeDTO>>
 
 }

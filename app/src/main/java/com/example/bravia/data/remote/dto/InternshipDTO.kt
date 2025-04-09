@@ -4,6 +4,7 @@ import java.util.Date
 
 data class InternshipDTO(
     val id: Long,
+    val companyId: Long,
     val title: String,
     val company: String,
     val description: String,
