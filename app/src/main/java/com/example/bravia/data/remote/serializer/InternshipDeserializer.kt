@@ -41,7 +41,8 @@ class InternshipDeserializer : JsonDeserializer<InternshipDTO> {
             percentage = getString("percentage"),
             activities = getString("activities"),
             contact = getString("contact"),
-            link = getString("link")
+            link = getString("link"),
+            isMarked = try { obj.get("isMarked")?.asBoolean ?: false } catch (_: Exception) { false }
         )
     }
 }

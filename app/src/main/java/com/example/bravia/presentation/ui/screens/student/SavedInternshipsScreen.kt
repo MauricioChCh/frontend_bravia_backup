@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -171,7 +174,9 @@ fun InternshipList(
                 content = { internship ->  // Aquí pasamos la función de renderizado
                     InternshipCard(
                         internship = internship,
-                        initialBookmarked = internship.isBookmarked,
+                        initialBookmarked = internship.isMarked,
+                        iconA = Icons.Default.Bookmark,
+                        iconB = Icons.Default.BookmarkBorder,
                         onBookmarkChange = { isBookmarked ->
                             viewModel.bookmarkInternship(internship.id, isBookmarked)
                         },

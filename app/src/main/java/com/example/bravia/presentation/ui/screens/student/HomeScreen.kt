@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -119,7 +121,9 @@ fun HomeScreen(
                     content = { internship ->  // Aquí pasamos la función de renderizado
                         InternshipCard(
                             internship = internship,
-                            initialBookmarked = internship.isBookmarked,
+                            initialBookmarked = internship.isMarked,
+                            iconA = Icons.Default.Bookmark,
+                            iconB = Icons.Default.BookmarkBorder,
                             onBookmarkChange = { isBookmarked ->
                                 viewModel.bookmarkInternship(internship.id, isBookmarked)
                             },

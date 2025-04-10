@@ -19,5 +19,6 @@ data class InternshipDTO(
     val percentage: String,
     val activities: String,
     val contact: String,
-    val link: String
+    val link: String,
+    val isMarked: Boolean
 )

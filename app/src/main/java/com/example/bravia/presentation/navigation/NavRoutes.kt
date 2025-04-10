@@ -10,6 +10,10 @@ sealed class NavRoutes {
         const val ROUTE = "businessHome"
     }
 
+    data object BusinessStarred : NavRoutes() {
+        const val ROUTE = "businessStarred"
+    }
+
     //START=====================================
     data object Login : NavRoutes() {
         const val ROUTE = "login"

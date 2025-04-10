@@ -46,13 +46,17 @@ class BusinessViewModel @Inject constructor(
     private val _bookmarkedInternships = MutableStateFlow<List<Internship>>(emptyList())
     val bookmarkedInternships: StateFlow<List<Internship>> = _bookmarkedInternships.asStateFlow()
 
-    //StateFlow to hold the list of applied internships
-    private val _appliedInternships = MutableStateFlow<List<Internship>>(emptyList())
-    val appliedInternships: StateFlow<List<Internship>> = _appliedInternships.asStateFlow()
+    //StateFlow to hold the list of student internships
+    private val _studentInternships = MutableStateFlow<List<Internship>>(emptyList())  //TODO: Cambiar el tipo de la lista por el correspondiente
+    val studentInternships: StateFlow<List<Internship>> = _studentInternships.asStateFlow()
 
-    fun findAllBusinessOwnerIntership(businessID: Long){
+    //StateFlow to hold the list of draft internships
+    private val _draftInternships = MutableStateFlow<List<Internship>>(emptyList())
+    val draftInternships: StateFlow<List<Internship>> = _draftInternships.asStateFlow()
+
+    fun findAllBusinessOwnerInternship(){
         viewModelScope.launch {
-            getAllBusinessInternshipUseCase(businessID)
+            getAllBusinessInternshipUseCase(1) // TODO: Cambiar por una variable
             .onSuccess {
                 _internshipList.value = it
             }
@@ -84,11 +88,11 @@ class BusinessViewModel @Inject constructor(
      * @param id The ID of the internship to bookmark/unbookmark
      * @param isBookmarked The new bookmark status
      */
-    fun bookmarkInternship(id: Long, isBookmarked: Boolean) {
+    fun markInternship(id: Long, isBookmarked: Boolean) {
         viewModelScope.launch {
             try {
                 bookmarkInternshipUseCase(id, isBookmarked)
-                findAllBusinessOwnerIntership(101) // TODO: Cambiar por una variable
+                findAllBusinessOwnerInternship()
                 loadBookmarkedInternships()
 
                 _selectedInternship.value?.let {
@@ -114,9 +118,17 @@ class BusinessViewModel @Inject constructor(
     }
 
 
-//    init {
-//        // Initialize the ViewModel by loading all internships
-//        findAllBusinessOwnerIntership(101) // TODO: Cambiar por una variable
-//        loadBookmarkedInternships()
-//    }
+    fun findAllBusinessInternshipsStarred() {
+        viewModelScope.launch {
+            getBookmarkedInternshipsUseCase()
+                .onSuccess { internships ->
+                    _bookmarkedInternships.value = internships
+                }
+                .onFailure {
+                    _internshipState.value = InternshipState.Error("Error loading starred internships: ${it.message}")
+                }
+
+        }
+    }
+
 }

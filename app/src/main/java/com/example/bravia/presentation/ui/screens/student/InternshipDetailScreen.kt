@@ -69,7 +69,7 @@ fun InternshipDetailScreen(
     // Actualizar el estado de marcador cuando cambia la pasantía
     LaunchedEffect(internship) {
         internship?.let {
-            isBookmarked = it.isBookmarked
+            isBookmarked = it.isMarked
         }
     }
 

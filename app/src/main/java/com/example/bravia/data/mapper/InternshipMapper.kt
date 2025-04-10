@@ -5,7 +5,7 @@ import com.example.bravia.domain.model.Internship
 import javax.inject.Inject
 
 class InternshipMapper @Inject constructor()  {
-    fun mapToDomain(dto: InternshipDTO, isBookmarked: Boolean = false): Internship {
+    fun mapToDomain(dto: InternshipDTO, isMarked: Boolean = false): Internship {
         return Internship(
             id = dto.id,
             companyId = dto.companyId,
@@ -24,7 +24,7 @@ class InternshipMapper @Inject constructor()  {
             activities = dto.activities,
             contact = dto.contact,
             link = dto.link,
-            isBookmarked = isBookmarked
+            isMarked = isMarked
         )
     }
 
@@ -46,7 +46,8 @@ class InternshipMapper @Inject constructor()  {
             percentage = domain.percentage,
             activities = domain.activities,
             contact = domain.contact,
-            link = domain.link
+            link = domain.link,
+            isMarked = domain.isMarked
         )
     }
 }

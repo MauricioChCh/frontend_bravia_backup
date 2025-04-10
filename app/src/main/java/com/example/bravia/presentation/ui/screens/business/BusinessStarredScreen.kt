@@ -14,21 +14,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.presentation.navigation.NavRoutes
@@ -51,28 +44,23 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun BusinessHomeScreen (
+fun BusinessStarredScreen(
     navController: NavController,
     businessViewModel: BusinessViewModel
 ) {
     Log.d("BusinessHomeScreen", "Recomposición de BusinessHomeScreen")
 
-    val internship by businessViewModel.selectedInternship.collectAsState()
-    val internships by businessViewModel.internshipList.collectAsState()
-    val draftInternships by businessViewModel.draftInternships.collectAsState()
-
-    var isMarked by remember { mutableStateOf(false) }
-
     LaunchedEffect(Unit) {
-        businessViewModel.findAllBusinessOwnerInternship() // Cambia el ID según sea necesario
+        businessViewModel.findAllBusinessOwnerInternship()
+        businessViewModel.findAllBusinessInternshipsStarred() // Cambia el ID según sea necesario
         businessViewModel.loadBookmarkedInternships()
-        internship?.let {
-            isMarked = it.isMarked
-        }
     }
 
+    val bookmarkedInternships by businessViewModel.bookmarkedInternships.collectAsState()
+    val studentInternships by businessViewModel.studentInternships.collectAsState()
+    val internships by businessViewModel.internshipList.collectAsState()
 
-    val tabs = listOf("Published", "Draft")
+    val tabs = listOf("Per Internship", "Students")
     val pagerState = rememberPagerState(pageCount = { tabs.size })
     val coroutineScope = rememberCoroutineScope()
 
@@ -145,18 +133,87 @@ fun BusinessHomeScreen (
             }
         }
 
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
+
         HorizontalPager(state = pagerState) { page ->
             businessViewModel.findAllBusinessInternshipsStarred()
-            val internships = if (page == 0) internships else draftInternships
-            InternshipList(
-                navController = navController,
-                internships = internships,
-                viewModel = businessViewModel
-            )
+            val internships = if (page == 0) bookmarkedInternships else studentInternships
+                InternshipList(
+                    navController = navController,
+                    internships = internships,
+                    viewModel = businessViewModel
+                )
         }
+
     }
 }
 
 
 
+@Composable
+fun InternshipList(
+    internships: List<Internship>,
+    navController: NavController,
+    viewModel: BusinessViewModel
+) {
+    var isRefreshing by remember {
+        mutableStateOf(false)
+    }
+    val scope = rememberCoroutineScope()
 
+    if (internships.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 32.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "No internships available",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(ThemeDefaults.screenPadding)
+                .padding(bottom = 40.dp),
+
+
+            ) {
+            PullToRefreshLazyColumn(
+                items = internships,
+                content = { internship ->  // Aquí pasamos la función de renderizado
+                    InternshipCard(
+                        internship = internship,
+                        initialBookmarked = internship.isMarked,
+                        iconA = Icons.Default.StarRate,
+                        iconB = Icons.Default.StarBorder,
+                        onBookmarkChange = { isBookmarked ->
+                            viewModel.markInternship(internship.id, isBookmarked)
+                        },
+                        onClick = {
+                            navController.navigate(
+                                NavRoutes.InternshipDetail.createRoute(internship.id)
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
+                },
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    scope.launch {
+                        isRefreshing = true
+                        internships
+                        delay(2000) // Simulación de carga
+                        isRefreshing = false
+                    }
+                }
+            )
+        }
+
+    }
+}

@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.screens.business.BusinessHomeScreen
+import com.example.bravia.presentation.ui.screens.business.BusinessStarredScreen
 import com.example.bravia.presentation.ui.screens.student.HomeScreen
 import com.example.bravia.presentation.ui.screens.start.InterestsScreen
 import com.example.bravia.presentation.ui.screens.student.InternshipDetailScreen
@@ -61,6 +62,14 @@ fun NavGraph(
             )
         }
 
+        composable(
+            route = NavRoutes.BusinessStarred.ROUTE
+        ) {
+            BusinessStarredScreen(
+                navController = navController,
+                businessViewModel = businessViewModel
+            )
+        }
 
         //start screens=========================================
         composable(

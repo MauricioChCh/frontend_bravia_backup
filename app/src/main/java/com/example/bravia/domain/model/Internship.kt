@@ -20,6 +20,5 @@ data class Internship(
     val activities: String,
     val contact: String,
     val link: String,
-    val isBookmarked: Boolean = false
-
+    val isMarked: Boolean = false
 )

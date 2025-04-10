@@ -15,6 +15,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -29,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.bravia.domain.model.Internship
@@ -40,6 +44,8 @@ fun InternshipCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     initialBookmarked: Boolean = false,
+    iconA: ImageVector,
+    iconB: ImageVector,
     onBookmarkChange: (Boolean) -> Unit = {}
 ) {
     // Estado para controlar si está marcado como favorito
@@ -120,7 +126,7 @@ fun InternshipCard(
                 }
             ) {
                 Icon(
-                    imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                    imageVector = if (isBookmarked) iconA/*Icons.Default.StarRate*/ else iconB/*Icons.Default.StarBorder*/,
                     contentDescription = if (isBookmarked) "Remove bookmark" else "Add bookmark",
                     tint = if (isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )

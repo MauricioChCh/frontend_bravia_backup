@@ -73,7 +73,7 @@ class InternshipRepositoryImpl @Inject constructor(
     override suspend fun getBookmarkedInternships(): Result<List<Internship>> {
         return safeRepositoryCall {
             //TODO Esto deberia mas bien llamar a la API para obtener los internships con bookmark del usuario
-            getRecommendedInternships().getOrThrow().filter { it.isBookmarked }
+            getRecommendedInternships().getOrThrow().filter { it.isMarked }
         }
     }
 
