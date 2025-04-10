@@ -53,8 +53,11 @@ fun SavedInternshipsScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        viewModel.loadBookmarkedInternships()
-        viewModel.loadAppliedInternships()
+        if (bookmarkedInternships.isEmpty() && appliedInternships.isEmpty()) {
+            viewModel.loadBookmarkedInternships()
+            viewModel.loadAppliedInternships()
+        }
+
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -187,8 +190,8 @@ fun InternshipList(
                 onRefresh = {
                     scope.launch {
                         isRefreshing = true
-                        internships
-                        delay(2000) // Simulación de carga
+                        //Recargar los datos
+                        viewModel.findAllInternships(forceRefresh = true)
                         isRefreshing = false
                     }
                 }
