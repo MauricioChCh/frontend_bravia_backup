@@ -151,7 +151,9 @@ fun BusinessHomeScreen (
             InternshipList(
                 navController = navController,
                 internships = internships,
-                viewModel = businessViewModel
+                viewModel = businessViewModel,
+                page = page,
+                textList = listOf("internships", "draft")
             )
         }
     }

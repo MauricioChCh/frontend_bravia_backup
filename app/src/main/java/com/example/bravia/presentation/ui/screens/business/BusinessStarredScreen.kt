@@ -78,7 +78,7 @@ fun BusinessStarredScreen(
             ) {
 
             Text(
-                text = "My internships",
+                text = "Starred",
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 35.sp,
@@ -141,7 +141,9 @@ fun BusinessStarredScreen(
                 InternshipList(
                     navController = navController,
                     internships = internships,
-                    viewModel = businessViewModel
+                    viewModel = businessViewModel,
+                    page = page,
+                    textList = listOf("internships", "students")
                 )
         }
 
@@ -154,7 +156,9 @@ fun BusinessStarredScreen(
 fun InternshipList(
     internships: List<Internship>,
     navController: NavController,
-    viewModel: BusinessViewModel
+    viewModel: BusinessViewModel,
+    page: Int = 0,
+    textList: List<String>
 ) {
     var isRefreshing by remember {
         mutableStateOf(false)
@@ -169,7 +173,7 @@ fun InternshipList(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "No internships available",
+                text = if (page == 0) "No ${textList[page]} available" else "No ${textList[page]} available",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
