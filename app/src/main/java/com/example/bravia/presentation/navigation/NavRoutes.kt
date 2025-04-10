@@ -47,7 +47,6 @@ sealed class NavRoutes {
     data object InternshipDetail : NavRoutes() {
         const val ROUTE = "internshipDetail/{internshipId}"
         const val ARG_INTERNSHIP_ID = "internshipId"
-
         fun createRoute(internshipId: Long) = "internshipDetail/$internshipId"
     }
 

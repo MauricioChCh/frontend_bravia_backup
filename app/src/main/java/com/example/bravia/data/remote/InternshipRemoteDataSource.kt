@@ -12,13 +12,17 @@ class InternshipRemoteDataSource @Inject constructor(
     private val studentAreaService: StudentAreaService,
     private val businessService: BusinessService
 ) {
-    suspend fun getRecommendedInternships(): Result<List<InternshipDTO>> = ApiCallHandler.safeApiCall {
+    suspend fun getRecommendedInternships(): Result<List<InternshipDTO>> =
+        ApiCallHandler.safeApiCall {
         studentAreaService.getRecommendedInternships() as Response<List<InternshipDTO>>
     }
 
     suspend fun getInternshipById(id: Long): Result<InternshipDTO?> =
-        ApiCallHandler.safeApiCall<InternshipDTO?>{
-            studentAreaService.getInternshipById(id)
+        ApiCallHandler.safeApiCall<InternshipDTO?> {
+            println("Fetching internship with id: $id")
+            val response = studentAreaService.getInternshipById(id)
+            println("Response for internship $id: ${response.body()}")
+            response
         }
 
     suspend fun getAllBusinessInternships(id: Long): Result<List<InternshipDTO>> =

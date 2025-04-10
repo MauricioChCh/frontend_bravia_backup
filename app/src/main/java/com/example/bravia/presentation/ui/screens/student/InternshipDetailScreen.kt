@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +46,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bravia.presentation.ui.screens.shared.ErrorScreen
+import com.example.bravia.presentation.ui.screens.shared.LoadingScreen
+import com.example.bravia.presentation.viewmodel.InternshipState
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,6 +59,20 @@ fun InternshipDetailScreen(
     paddingValues: PaddingValues,
     viewModel: InternshipViewModel
 ) {
+    val state by viewModel.internshipState.collectAsState()
+
+    when (state) {
+        is InternshipState.Loading -> LoadingScreen()
+        is InternshipState.Error -> ErrorScreen(
+            message = "No se pudo cargar la pasantía",
+            onRetry = { viewModel.selectInternshipById(internshipId) }
+        )
+        is InternshipState.Success -> {
+            // Tu contenido actual de la pantalla
+        }
+        else -> ErrorScreen(message = "Datos no disponibles")
+    }
+
     // Cargar la pasantía seleccionada
     LaunchedEffect(internshipId) {
         viewModel.selectInternshipById(internshipId)
@@ -327,4 +345,5 @@ fun InternshipDetailScreen(
             }
         }
     }
+
 }

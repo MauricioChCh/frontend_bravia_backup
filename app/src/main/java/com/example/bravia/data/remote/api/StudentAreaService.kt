@@ -15,12 +15,13 @@ interface StudentAreaService {
 
     // This is the interface for the Student Page API
     // It show the interhips in the main page
-    @GET("student/recommendedInternships")
+//    @GET("student/1/recommended-internships")
+    @GET("internships")
     suspend fun getRecommendedInternships(): Response<List<InternshipDTO>>
 
     //It show a especific internship
-    @GET("student/Internship/{internshipId}")
-    suspend fun getInternshipById(@Path("id") id: Long): Response<InternshipDTO?>
+    @GET("internships/{internshipId}")
+    suspend fun getInternshipById( @Path("internshipId") id: Long): Response<InternshipDTO?>
 
     @GET("student/bookmarkedInternships")
     suspend fun getBookmarkedInternships(): Response<List<InternshipDTO>>
