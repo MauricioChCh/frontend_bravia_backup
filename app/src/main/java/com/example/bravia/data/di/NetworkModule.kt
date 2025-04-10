@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://bravia2.free.beeceptor.com/" // Replace with your actual base URL
+    private const val BASE_URL = "https://67f6132c913986b16fa68c50.mockapi.io/api/v1/" // Replace with your actual base URL
     private const val DATE_FORMAT = "yyyy-MM-dd" // Replace with your desired date format
 
     /**

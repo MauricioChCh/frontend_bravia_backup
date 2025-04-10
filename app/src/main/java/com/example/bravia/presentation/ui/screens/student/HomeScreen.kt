@@ -56,8 +56,11 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
 
     // Realizar búsqueda cuando cambia el texto
-    LaunchedEffect(searchText) {
-        viewModel.searchInternships(searchText)
+    LaunchedEffect(Unit) {
+        // Cargar solo si es necesario (primera vez o datos vacíos)
+        if (internships.isEmpty()) {
+            viewModel.findAllInternships()
+        }
     }
 
 
@@ -135,8 +138,8 @@ fun HomeScreen(
                     onRefresh = {
                         scope.launch {
                             isRefreshing = true
-                            internships
-                            delay(2000) // Simulación de carga
+                            //Recargar los datos
+                            viewModel.findAllInternships(forceRefresh = true)
                             isRefreshing = false
                         }
                     }

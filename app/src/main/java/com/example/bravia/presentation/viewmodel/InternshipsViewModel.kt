@@ -1,5 +1,6 @@
 package com.example.bravia.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bravia.domain.model.Internship
@@ -60,15 +61,21 @@ class InternshipViewModel @Inject constructor(
     private val _appliedInternships = MutableStateFlow<List<Internship>>(emptyList())
     val appliedInternships: StateFlow<List<Internship>> = _appliedInternships.asStateFlow()
 
+    // Sets the initial load state
+    private var _isInitialLoad = true
+
+
     /**
      * Finds and sets the selected internship by its ID.
      *
      * @param internshipId The ID of the internship to retrieve.
      */
-    fun  selectInternshipById(internshipId: Long) {
+    fun selectInternshipById(internshipId: Long) {
+        println("Selecting internship with ID: $internshipId")
         viewModelScope.launch {
             _internshipState.value = InternshipState.Loading
             getInternshipByIdUseCase(internshipId).onSuccess { internship ->
+                Log.d("Received internship:", internship.toString())
                 if (internship != null) {
                     _selectedInternship.value = internship
                     _internshipState.value = InternshipState.Success(internship)
@@ -79,7 +86,6 @@ class InternshipViewModel @Inject constructor(
                 _internshipState.value = InternshipState.Error("Error: ${it.message}")
             }
         }
-
     }
 
     /**
@@ -118,14 +124,24 @@ class InternshipViewModel @Inject constructor(
      * 1. Fetches the complete internship list using the use case.
      * 2. Updates the internshipList state with the retrieved data.
      */
-    fun findAllInternships() {
+    fun findAllInternships(forceRefresh: Boolean = false) {
         viewModelScope.launch {
+            // Si no es carga forzada y ya tenemos datos, no hacemos nada
+            //TODO: Investigar si seria bueno meter que se actualice cada cierto tiempo siempre que elusuario no este en la pagina
+            if (!forceRefresh && _internshipList.value.isNotEmpty()) return@launch
+
+            _internshipState.value = InternshipState.Loading
             getAllInternshipsUseCase().onSuccess { internships ->
                 _internshipList.value = internships
+                _internshipState.value = if (internships.isEmpty()) {
+                    InternshipState.Empty
+                } else {
+                    InternshipState.Success(internships.first())
+                }
+                _isInitialLoad = false
             }.onFailure {
                 _internshipState.value = InternshipState.Error("Error loading internships: ${it.message}")
             }
-
         }
     }
 
