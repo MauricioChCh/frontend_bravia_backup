@@ -40,6 +40,7 @@ import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCard
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
+import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -200,9 +201,16 @@ fun InternshipList(
                             viewModel.markInternship(internship.id, isBookmarked)
                         },
                         onClick = {
-                            navController.navigate(
-                                NavRoutes.InternshipDetail.createRoute(internship.id)
-                            )
+                            if (viewModel is InternshipViewModel){
+                                navController.navigate(
+                                    NavRoutes.InternshipDetail.createRoute(internship.id)
+                                )
+                            }
+                            else if (viewModel is BusinessViewModel) {
+                                navController.navigate(
+                                    NavRoutes.BusinessInternshipDetail.createRoute(internship.id)
+                                )
+                            }
                         }
                     )
                     Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))

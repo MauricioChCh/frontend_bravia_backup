@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.screens.business.BusinessHomeScreen
+import com.example.bravia.presentation.ui.screens.business.BusinessInternshipDetailScreen
 import com.example.bravia.presentation.ui.screens.business.BusinessProfileScreen
 import com.example.bravia.presentation.ui.screens.business.BusinessStarredScreen
 import com.example.bravia.presentation.ui.screens.student.HomeScreen
@@ -60,6 +61,23 @@ fun NavGraph(
             BusinessHomeScreen(
                 navController = navController,
                 businessViewModel = businessViewModel
+            )
+        }
+
+        composable (
+            route = NavRoutes.BusinessInternshipDetail.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.BusinessInternshipDetail.ARG_INTERNSHIP_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backSTackEntry ->
+            val internshipId = backSTackEntry.arguments?.getLong(NavRoutes.BusinessInternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
+            BusinessInternshipDetailScreen(
+                navController = navController,
+                internshipId = internshipId,
+                paddingValues = PaddingValues(0.dp),
+                viewModel = businessViewModel
             )
         }
 
