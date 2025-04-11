@@ -20,7 +20,7 @@ import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
+//
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
