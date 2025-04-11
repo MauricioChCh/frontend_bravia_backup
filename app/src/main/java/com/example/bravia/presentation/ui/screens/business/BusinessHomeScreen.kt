@@ -85,7 +85,7 @@ fun BusinessHomeScreen (
         Column (
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary),
+                .background(MaterialTheme.colorScheme.secondaryContainer),
 
             ) {
 

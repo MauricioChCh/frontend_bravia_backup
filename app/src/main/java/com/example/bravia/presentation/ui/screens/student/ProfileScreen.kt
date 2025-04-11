@@ -1,5 +1,6 @@
 package com.example.bravia.presentation.ui.screens.student
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -333,7 +334,8 @@ fun NetworkIcon(iconId: Int, contentDescription: String) {
 fun EnhanceOption(text: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(vertical = 4.dp)
+        modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
     ) {
         Text(
             text = text,

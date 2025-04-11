@@ -69,7 +69,7 @@ fun InternshipCard(
         ) {
             // Imagen de la empresa (placeholder)
             Box(
-                //TODO: HAcer que sea una foto y si no tiene un color aleatoreo
+                //TODO: Hacer que sea una foto y si no tiene un color aleatoreo
                 modifier = Modifier
                     .size(68.dp)
                     .clip(CircleShape)

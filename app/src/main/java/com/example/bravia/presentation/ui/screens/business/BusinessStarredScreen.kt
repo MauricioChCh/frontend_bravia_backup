@@ -73,7 +73,7 @@ fun BusinessStarredScreen(
         Column (
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary),
+                .background(MaterialTheme.colorScheme.primaryContainer),
 
             ) {
 
@@ -211,8 +211,7 @@ fun InternshipList(
                 onRefresh = {
                     scope.launch {
                         isRefreshing = true
-                        internships
-                        delay(2000) // Simulación de carga
+                        viewModel.findAllBusinessOwnerInternship()
                         isRefreshing = false
                     }
                 }
