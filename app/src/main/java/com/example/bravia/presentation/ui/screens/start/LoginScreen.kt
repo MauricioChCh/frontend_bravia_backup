@@ -27,7 +27,7 @@ import androidx.navigation.NavController
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
-import com.example.bravia.presentation.ui.theme.Typography
+import com.example.bravia.presentation.ui.theme.ThemeHelper as Theme
 
 @Composable
 fun LoginScreen(
@@ -57,7 +57,7 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     text = "BravIA",
                     textAlign = TextAlign.Center,
-                    style = Typography.displayLarge
+                    style = Theme.typography.displayLarge
                 )
 
                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
@@ -77,7 +77,7 @@ fun LoginScreen(
                 ) {
                     Text(
                         text = "Sign in",
-                        style = Typography.headlineSmall,
+                        style = Theme.typography.headlineSmall,
                     )
                 }
 
@@ -97,7 +97,7 @@ fun LoginScreen(
                 ) {
                     Text(
                         text = "Create account",
-                        style = Typography.headlineSmall
+                        style = Theme.typography.headlineSmall
                     )
                 }
 
@@ -106,7 +106,7 @@ fun LoginScreen(
 
                 Text(
                     text = "Or continue with:",
-                    style = Typography.displaySmall
+                    style = Theme.typography.displaySmall
                 )
 
                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
@@ -138,7 +138,7 @@ fun LoginScreen(
 
                             Text(
                                 text = "Continue with facebook",
-                                style = Typography.headlineSmall,
+                                style = Theme.typography.headlineSmall,
                                 color = Color.White
                             )
 
@@ -158,7 +158,7 @@ fun LoginScreen(
 
                             Icon(
                                 imageVector = Icons.Default.Image, // Icono predefinido
-                                contentDescription = "Icono Favorito",
+                                contentDescription = "Icono de gppg;e",
                                 modifier = Modifier.size(24.dp) // Tamaño del icono
                             )
 
@@ -166,8 +166,8 @@ fun LoginScreen(
 
                             Text(
                                 text = "Continue with google",
-                                style = Typography.headlineSmall,
-                                color = Color.White
+                                style = Theme.typography.headlineSmall,
+                                color = Theme.colors.onSurface
                             )
 
                         }

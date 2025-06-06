@@ -80,4 +80,9 @@ dependencies {
     //Iconos
     implementation(libs.androidx.material.icons.extended)
 
+    // DataStore Preferences
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.androidx.material.icons.extended)
+
 }
