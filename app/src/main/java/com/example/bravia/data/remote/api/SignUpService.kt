@@ -15,7 +15,7 @@ interface SignUpService {
      *
      * @return [Response] containing a list of [DegreeDTO] objects if successful
      */
-    @GET("signup/1/colleges")
+    @GET("users/signup/colleges")
     suspend fun getAllColleges(): Response<List<CollegeDTO>>
 
     /**
@@ -23,7 +23,7 @@ interface SignUpService {
      *
      * @return [Response] containing a list of [BusinessAreaDTO] objects if successful
      */
-    @GET("signup/1/businessAreas")
+    @GET("users/signup/business_areas")
     suspend fun getAllBusinessAreas(): Response<List<BusinessAreaDTO>>
 
     /**
@@ -48,7 +48,7 @@ interface SignUpService {
      *
      * @return [Response] containing a list of [DegreeDTO] objects if successful
      */
-    @GET("signup/1/degrees")
+    @GET("users/signup/degrees")
     suspend fun getAllDegrees(): Response<List<DegreeDTO>>
 
 }
