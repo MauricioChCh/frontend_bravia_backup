@@ -25,6 +25,8 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Verified
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -248,6 +250,9 @@ fun BusinessProfileScreen(
             }
 
             item {
+
+                DivisionSection()
+
                 ProfileSection(title = "About the company") {
                     Text(
                         text = description,
@@ -256,7 +261,7 @@ fun BusinessProfileScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(15.dp))
+                DivisionSection()
 
                 ProfileSection(title = "Contact") {
                     Text(
@@ -266,7 +271,7 @@ fun BusinessProfileScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(15.dp))
+                DivisionSection()
 
                 ProfileSection(title = "Business Areas") {
                     LazyRow(
@@ -283,7 +288,7 @@ fun BusinessProfileScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(15.dp))
+                DivisionSection()
 
                 ProfileSection(title = "Tags") {
                     LazyRow(
@@ -300,7 +305,7 @@ fun BusinessProfileScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(15.dp))
+                DivisionSection()
 
                 ProfileSection(title = "Recruiter Information") {
                     Column(
@@ -328,4 +333,15 @@ fun BusinessProfileScreen(
             }
         }
     }
+}
+
+
+@Composable
+fun DivisionSection() {
+    Spacer(modifier = Modifier.height(15.dp))
+    HorizontalDivider(
+        modifier = Modifier.fillMaxWidth(),
+        thickness = 1.dp,
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+    )
 }
