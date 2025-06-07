@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.rounded.Verified
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -34,6 +35,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -42,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bravia.R
 import com.example.bravia.domain.model.Internship
@@ -62,20 +65,30 @@ fun BusinessProfileScreen(
     paddingValues: PaddingValues
 ) {
 
-    val tags = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4")
-    val selectedTag by remember { mutableStateOf(tags[0]) }
-    val selectedTagIndex = remember { mutableStateOf(0) }
-
-    val description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    val company by businessViewModel.company.collectAsState()
 
     LaunchedEffect(Unit) {
-        businessViewModel.findAllBusinessOwnerInternship()
-        businessViewModel.findAllBusinessInternshipsStarred()
+        businessViewModel.fetchCompanyById(companyId = 2) // TODO: this has to be a variable
     }
 
-    val internships by businessViewModel.internshipList.collectAsState()
+    var businessName by remember { mutableStateOf("") }
+    var city by remember { mutableStateOf("") }
+    var country by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var tags by remember { mutableStateOf(listOf<String>()) }
+    var businessAreas by remember { mutableStateOf(listOf<String>()) }
+    var contacts by remember { mutableStateOf(listOf<String>()) }
 
 
+    company?.let{
+        businessName = it.name
+        city = it.location.city.name
+        country = it.location.country.name
+        description = it.description
+        tags = it.tags.map { tag -> tag.name }
+        businessAreas = it.businessAreas.map { area -> area.name }
+        contacts = it.contacts.map { contact -> contact.url }
+    }
 
 
     MainLayout(paddingValues = paddingValues) {
@@ -163,26 +176,31 @@ fun BusinessProfileScreen(
             item {
                 Spacer(modifier = Modifier.height(40.dp))
 
+                Row( modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(
+                        text = businessName,
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.fillMaxWidth().padding(start = 5.dp)
+                    )
+                    if (company?.verified == true) { // TODO: Check if is working
+                        Icon(
+                            imageVector = Icons.Rounded.Verified, // Replace with your desired icon
+                            contentDescription = "Verified",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
 
-                // Name of the business
-                Text(
-                    text = "Business Name",
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.fillMaxWidth().padding(start = 5.dp)
-                )
 
                 Text(
-                    text = "Business Area",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.fillMaxWidth().padding(start = 5.dp)
-                )
-
-                Text(
-                    text = "Heredia, Heredia, Costa Rica",
+                    text =  "$country, $city" ,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
                     color = Color.Gray,
@@ -205,16 +223,15 @@ fun BusinessProfileScreen(
                             containerColor = MaterialTheme.colorScheme.primary
                         ),
                         shape = MaterialTheme.shapes.medium,
-
-
-
                         ) {
                         Text(
                             text = "New internship",
                             color = Color.Black
                         )
                     }
+
                     Spacer(modifier = Modifier.width(16.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(5.dp),
                         horizontalArrangement = Arrangement.End,
@@ -227,15 +244,9 @@ fun BusinessProfileScreen(
 
                 }
 
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Opciones de mejora del perfil
-                EnhanceOption(text = "Enchance profile")
-                EnhanceOption(text = "Enchance CV")
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
+
             item {
                 ProfileSection(title = "About the company") {
                     Text(
@@ -245,7 +256,34 @@ fun BusinessProfileScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(5.dp))
+                Spacer(modifier = Modifier.height(15.dp))
+
+                ProfileSection(title = "Contact") {
+                    Text(
+                        text = contacts.joinToString(separator = "\n") { contact -> contact },
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Start,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                ProfileSection(title = "Business Areas") {
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 5.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        items(businessAreas) { tag ->
+                            InterestChip(
+                                text = tag
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(15.dp))
 
                 ProfileSection(title = "Tags") {
                     LazyRow(
@@ -261,19 +299,33 @@ fun BusinessProfileScreen(
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
 
+                Spacer(modifier = Modifier.height(15.dp))
+
+                ProfileSection(title = "Recruiter Information") {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 5.dp)
+                    ) {
+                        Text(
+                            text = "${company?.firstName} ${company?.lastName}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                        )
+                        Text(
+                            text = company?.email ?: "No email provided",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(15.dp))
 
             }
         }
-//        ProfileSection(title = "Our actual internships") {
-//            InternshipList(
-//                internships = internships,
-//                navController = navController,
-//                viewModel = businessViewModel,
-//                page = 0,
-//                textList = listOf("internships")
-//            )
-//        }
     }
 }

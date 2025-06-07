@@ -1,5 +1,6 @@
 package com.example.bravia.data.remote.api
 
+import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
 import retrofit2.Response
 import retrofit2.http.GET
@@ -24,4 +25,8 @@ interface BusinessService {
      */
     @GET("business/{businessId}/internships/{internshipId}")
     suspend fun getBusinessInternshipById(@Path("businessId") businessId: Long, @Path("internshipId") internshipId: Long): Response<InternshipDTO?>
+
+
+    @GET("companies/{companyId}")
+    suspend fun getCompanyById(@Path("companyId") companyId: Long): Response<CompanyResponseDTO?>
 }

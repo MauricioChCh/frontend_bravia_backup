@@ -2,11 +2,13 @@ package com.example.bravia.data.di
 
 import com.example.bravia.data.repository.BusinessAreaRepositoryImpl
 import com.example.bravia.data.repository.CollegeRepositoryImpl
+import com.example.bravia.data.repository.CompanyRepositoryImpl
 import com.example.bravia.data.repository.DegreeRepositoryImpl
 import com.example.bravia.data.repository.InterestRepositoryImpl
 import com.example.bravia.data.repository.InternshipRepositoryImpl
 import com.example.bravia.domain.repository.BusinessAreaRepository
 import com.example.bravia.domain.repository.CollegeRepository
+import com.example.bravia.domain.repository.CompanyRepository
 import com.example.bravia.domain.repository.DegreeRepository
 import com.example.bravia.domain.repository.InterestRepository
 import com.example.bravia.domain.repository.InternshipRepository
@@ -78,9 +80,13 @@ abstract class RepositoryModule {
     abstract fun bindInterestRepository(
         interestRepositoryImpl: InterestRepositoryImpl
     ): InterestRepository
-    // Add other repository bindings here as needed
 
 
+    @Binds
+    @Singleton
+    abstract fun bindCompanyRepository(
+        companyRepositoryImpl: CompanyRepositoryImpl
+    ): CompanyRepository
 
 
 
