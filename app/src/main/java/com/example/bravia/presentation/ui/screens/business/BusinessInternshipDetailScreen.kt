@@ -1,6 +1,5 @@
 package com.example.bravia.presentation.ui.screens.business
 
-import android.R.attr.tint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
@@ -41,6 +39,7 @@ import com.example.bravia.presentation.ui.screens.shared.ErrorScreen
 import com.example.bravia.presentation.ui.screens.shared.LoadingScreen
 import com.example.bravia.presentation.viewmodel.BusinessState
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
+import kotlinx.coroutines.channels.ticker
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,27 +51,27 @@ fun BusinessInternshipDetailScreen(
     viewModel: BusinessViewModel
 ) {
     val state by viewModel.internshipState.collectAsState()
-    viewModel.internshipState.collectAsState()
 
-    when(state) {
+    when (state) {
         is BusinessState.Loading -> LoadingScreen()
         is BusinessState.Error -> ErrorScreen(
             message = "The internship could not be loaded",
-            onRetry = { viewModel.selectBusinessInternshipById(internshipId) }
+            onRetry = { viewModel.selectBusinessInternshipById(1, internshipId) } // TODO: Cambiar por una variable
         )
         is BusinessState.Success -> {
-
+            // Handle success state
         }
         else -> ErrorScreen(message = "No data found")
     }
 
     LaunchedEffect(internshipId) {
-        viewModel.selectBusinessInternshipById(internshipId)
+        viewModel.selectBusinessInternshipById(1, internshipId) // TODO: Cambiar por una variable
     }
 
     val internship by viewModel.selectedInternship.collectAsState()
 
     var isMarked by remember { mutableStateOf(false) }
+
     LaunchedEffect(internship) {
         internship?.let {
             isMarked = it.isMarked
@@ -80,14 +79,13 @@ fun BusinessInternshipDetailScreen(
     }
 
     if (internship == null) {
-        Box (
-           modifier = Modifier
-               .fillMaxSize()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues),
-           contentAlignment = Alignment.Center
-
+            contentAlignment = Alignment.Center
         ) {
-            Text (
+            Text(
                 text = "No internship found",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.error
@@ -99,13 +97,14 @@ fun BusinessInternshipDetailScreen(
     Scaffold (
         topBar = {
             TopAppBar(
-               title = { Text(text = "Internship Details") },
+                title = {Text("Internship Details")},
                 navigationIcon = {
-                     IconButton(onClick = { navController.popBackStack() }) {
-                          Icon(
-                              imageVector =  Icons.Default.ArrowBack,
-                              contentDescription = "Back")
-                     }
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
@@ -113,14 +112,14 @@ fun BusinessInternshipDetailScreen(
             )
         }
     ) { innerPadding ->
-        Box (
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(MaterialTheme.colorScheme.background)
         ) {
             internship?.let { internship ->
-                Column (
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp)
@@ -135,7 +134,7 @@ fun BusinessInternshipDetailScreen(
                     IconButton(
                         onClick = {
                             isMarked = !isMarked
-                            viewModel.markInternship(internship.id, isMarked)
+                            viewModel.markInternship(1 , internship.id, isMarked) // TODO: Cambiar por una variable
                         },
                     ) {
                         Icon(
@@ -145,7 +144,7 @@ fun BusinessInternshipDetailScreen(
                         )
                     }
 
-                    Box (
+                    Box(
                         modifier = Modifier
                             .size(20.dp)
                             .clip(CircleShape)
@@ -161,7 +160,121 @@ fun BusinessInternshipDetailScreen(
 
                 }
             }
-
         }
     }
+
 }
+//    val state by viewModel.internshipState.collectAsState()
+//    viewModel.internshipState.collectAsState()
+//
+//    when(state) {
+//        is BusinessState.Loading -> LoadingScreen()
+//        is BusinessState.Error -> ErrorScreen(
+//            message = "The internship could not be loaded",
+//            onRetry = { viewModel.selectBusinessInternshipById(internshipId) }
+//        )
+//        is BusinessState.Success -> {
+//
+//        }
+//        else -> ErrorScreen(message = "No data found")
+//    }
+//
+//    LaunchedEffect(internshipId) {
+//        viewModel.selectBusinessInternshipById(internshipId)
+//    }
+//
+//    val internship by viewModel.selectedInternship.collectAsState()
+//
+//    var isMarked by remember { mutableStateOf(false) }
+//    LaunchedEffect(internship) {
+//        internship?.let {
+//            isMarked = it.isMarked
+//        }
+//    }
+//
+//    if (internship == null) {
+//        Box (
+//           modifier = Modifier
+//               .fillMaxSize()
+//                .padding(paddingValues),
+//           contentAlignment = Alignment.Center
+//
+//        ) {
+//            Text (
+//                text = "No internship found",
+//                style = MaterialTheme.typography.bodyLarge,
+//                color = MaterialTheme.colorScheme.error
+//            )
+//        }
+//        return
+//    }
+//
+//    Scaffold (
+//        topBar = {
+//            TopAppBar(
+//               title = { Text(text = "Internship Details") },
+//                navigationIcon = {
+//                     IconButton(onClick = { navController.popBackStack() }) {
+//                          Icon(
+//                              imageVector =  Icons.Default.ArrowBack,
+//                              contentDescription = "Back")
+//                     }
+//                },
+//                colors = TopAppBarDefaults.topAppBarColors(
+//                    containerColor = MaterialTheme.colorScheme.background
+//                )
+//            )
+//        }
+//    ) { innerPadding ->
+//        Box (
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(innerPadding)
+//                .background(MaterialTheme.colorScheme.background)
+//        ) {
+//            internship?.let { internship ->
+//                Column (
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .padding(16.dp)
+//                        .verticalScroll(rememberScrollState())
+//                ) {
+//                    Text(
+//                        text = "About the internship",
+//                        style = MaterialTheme.typography.headlineMedium,
+//                        fontWeight = FontWeight.Bold
+//                    )
+//
+//                    IconButton(
+//                        onClick = {
+//                            isMarked = !isMarked
+//                            viewModel.markInternship(internship.id, isMarked)
+//                        },
+//                    ) {
+//                        Icon(
+//                            imageVector = if (isMarked) Icons.Default.Star else Icons.Default.StarBorder,
+//                            contentDescription = if (isMarked) "Remove starred" else "Add starred",
+//                            tint = if (isMarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+//                        )
+//                    }
+//
+//                    Box (
+//                        modifier = Modifier
+//                            .size(20.dp)
+//                            .clip(CircleShape)
+//                            .background(MaterialTheme.colorScheme.primary),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text(
+//                            text = internship.company.first().toString(),
+//                            style = MaterialTheme.typography.bodyLarge,
+//                            color = MaterialTheme.colorScheme.onSurface
+//                        )
+//                    }
+//
+//                }
+//            }
+//
+//        }
+//    }
+//}

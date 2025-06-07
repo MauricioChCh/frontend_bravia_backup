@@ -9,7 +9,7 @@ class GetBusinessInternshipByIdUseCase @Inject constructor(
 ) {
 
 
-    operator suspend fun invoke(id: Long): Result<Internship?> {
-        return repository.getBusinessInternshipById(id)
+    operator suspend fun invoke(businessId: Long, internshipId: Long): Result<Internship?> {
+        return repository.getBusinessInternshipById(businessId, internshipId)
     }
 }

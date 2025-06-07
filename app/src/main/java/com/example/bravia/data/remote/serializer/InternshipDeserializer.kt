@@ -8,6 +8,7 @@ import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.Long
 
 class InternshipDeserializer : JsonDeserializer<InternshipDTO> {
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // adaptá esto al formato real
@@ -25,24 +26,21 @@ class InternshipDeserializer : JsonDeserializer<InternshipDTO> {
         fun getDate(name: String): Date = try { dateFormat.parse(obj.get(name)?.asString ?: "") ?: Date() } catch (_: Exception) { Date() }
 
         return InternshipDTO(
-            id = getLong("id"),
-            companyId = getLong("companyId"),
+            id = getLong("id") ,
             title = getString("title"),
-            company = getString("company"),
-            description = getString("description"),
-            imageUrl = getString("imageUrl"),
-            location = getString("location"),
-            publicationDate = getDate("publicationDate"),
-            duration = getString("duration"),
-            salary = getDouble("salary"),
+            companyName = getString("companyName"),
+            cityName = getString("cityName"),
+            countryName = getString("countryName"),
             modality = getString("modality"),
             schedule = getString("schedule"),
             requirements = getString("requirements"),
-            percentage = getString("percentage"),
             activities = getString("activities"),
-            contact = getString("contact"),
             link = getString("link"),
-            isMarked = try { obj.get("isMarked")?.asBoolean ?: false } catch (_: Exception) { false }
+            publicationDate = getDate("publicationDate"),
+            imageUrl = getString("imageUrl") ,
+            duration = getString("duration"),
+            salary = getDouble("salary"),
+            locationFullName = getString("locationFullName"),
         )
     }
 }

@@ -16,13 +16,20 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,9 +54,11 @@ import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCard
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
+import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+//@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusinessHomeScreen (
     navController: NavController,
@@ -160,5 +169,77 @@ fun BusinessHomeScreen (
 }
 
 
+@Composable
+fun InternshipList(
+    internships: List<Internship>,
+    navController: NavController,
+    viewModel: BusinessViewModel,
+    page: Int = 0,
+    textList: List<String>
+) {
+    var isRefreshing by remember {
+        mutableStateOf(false)
+    }
+    val scope = rememberCoroutineScope()
+
+    if (internships.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 32.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = if (page == 0) "No ${textList[page]} available" else "No ${textList[page]} available",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(ThemeDefaults.screenPadding)
+                .padding(bottom = 40.dp),
 
 
+            ) {
+            PullToRefreshLazyColumn(
+                items = internships,
+                content = { internship ->  // Aquí pasamos la función de renderizado
+                    InternshipCard(
+                        internship = internship,
+                        initialBookmarked = internship.isMarked,
+                        iconA = Icons.Default.StarRate,
+                        iconB = Icons.Default.StarBorder,
+                        onBookmarkChange = { isBookmarked ->
+                            viewModel.markInternship(1, internship.id, isBookmarked) // TODO: Cambiar por una variable
+                        },
+                        onClick = {
+                            if (viewModel is InternshipViewModel){
+                                navController.navigate(
+                                    NavRoutes.InternshipDetail.createRoute(internship.id)
+                                )
+                            }
+                            else if (viewModel is BusinessViewModel) {
+                                navController.navigate(
+                                    NavRoutes.BusinessInternshipDetail.createRoute(internship.id)
+                                )
+                            }
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
+                },
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    scope.launch {
+                        isRefreshing = true
+                        viewModel.findAllBusinessOwnerInternship()
+                        isRefreshing = false
+                    }
+                }
+            )
+        }
+    }
+}

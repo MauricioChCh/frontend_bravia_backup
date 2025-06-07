@@ -207,8 +207,8 @@ class InternshipViewModel @Inject constructor(
             getAllInternshipsUseCase().onSuccess { allInternships ->
                 val filtered = allInternships.filter {
                     it.title.contains(query, true) ||
-                            it.company.contains(query, true) ||
-                            it.location.contains(query, true)
+                            it.company.contains(query, true)
+//                            it.location.contains(query, true)
                 }
                 _internshipList.value = filtered
             }.onFailure {

@@ -7,6 +7,6 @@ interface InternshipRepository {
     suspend fun getInternshipById(id: Long): Result<Internship?>
     suspend fun bookmarkInternship(id: Long, isBookmarked: Boolean)
     suspend fun getBookmarkedInternships(): Result<List<Internship>>
-    suspend fun getAllBusinessInternships(id: Long): Result<List<Internship>>
-    suspend fun getBusinessInternshipById(id: Long): Result<Internship?>
+    suspend fun getAllBusinessInternships(businessId: Long): Result<List<Internship>>
+    suspend fun getBusinessInternshipById(businessId: Long, internshipId: Long): Result<Internship?>
 }

@@ -77,9 +77,9 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllBusinessInternships(id: Long): Result<List<Internship>> {
+    override suspend fun getAllBusinessInternships(businessId: Long): Result<List<Internship>> {
         return safeRepositoryCall {
-            val dtoResult = remoteDataSource.getAllBusinessInternships(id)
+            val dtoResult = remoteDataSource.getAllBusinessInternships(businessId)
 
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
@@ -92,9 +92,9 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getBusinessInternshipById(id: Long): Result<Internship?> {
+    override suspend fun getBusinessInternshipById(businessId: Long, internshipId: Long): Result<Internship?> {
         return safeRepositoryCall {
-            val dtoResult = remoteDataSource.getBusinessInternshipById(id)
+            val dtoResult = remoteDataSource.getBusinessInternshipById(businessId, internshipId)
 
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {

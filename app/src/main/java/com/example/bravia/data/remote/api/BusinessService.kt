@@ -7,13 +7,14 @@ import retrofit2.http.Path
 
 interface BusinessService {
     /**
-     * Retrieves a list of all business internships from the remote API.
+     * Retrieves a list of internships for a specific business and company from the remote API.
      *
-     * @param id The ID of the business area for which to retrieve internships.
+     * @param bId The ID of the business.
      * @return [Response] containing a list of [InternshipDTO] objects if successful
      */
-    @GET("business/1/internships/{companyId}")
-    suspend fun getAllBusinessInternships(@Path("companyId") id: Long): Response<List<InternshipDTO>>
+//    @GET("business/{businessId}/internships") // TODO: we have to use this endpoint
+    @GET("internships")
+    suspend fun getAllBusinessInternships(@Path("businessId") businessId: Long): Response<List<InternshipDTO>>
 
     /**
      * Retrieves a specific business internship by its ID from the remote API.
@@ -21,6 +22,6 @@ interface BusinessService {
      * @param id The ID of the internship to retrieve.
      * @return [Response] containing the [InternshipDTO] object if successful
      */
-    @GET("business/1/internship/{id}")
-    suspend fun getBusinessInternshipById(@Path("id") id: Long): Response<InternshipDTO?>
+    @GET("business/{businessId}/internships/{internshipId}")
+    suspend fun getBusinessInternshipById(@Path("businessId") businessId: Long, @Path("internshipId") internshipId: Long): Response<InternshipDTO?>
 }

@@ -9,8 +9,8 @@ class GetAllBusinessInternshipUseCase @Inject constructor(
 ) {
 
 
-    operator suspend fun invoke(id: Long): Result<List<Internship>> {
-        return repository.getAllBusinessInternships(id)
+    operator suspend fun invoke(businessId: Long): Result<List<Internship>> {
+        return repository.getAllBusinessInternships(businessId)
     }
 
 }

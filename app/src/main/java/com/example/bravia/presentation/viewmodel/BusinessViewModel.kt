@@ -66,10 +66,10 @@ class BusinessViewModel @Inject constructor(
         }
     }
 
-    fun selectBusinessInternshipById(internshipId: Long){
+    fun selectBusinessInternshipById(businessId: Long, internshipId: Long){
         viewModelScope.launch {
             _internshipState.value = InternshipState.Loading
-            getBusinessInternshipByIdUseCase(internshipId).onSuccess { internship ->
+            getBusinessInternshipByIdUseCase(businessId, internshipId).onSuccess { internship ->
                 if (internship != null) {
                     _selectedInternship.value = internship
                     _internshipState.value = InternshipState.Success(internship)
@@ -88,15 +88,15 @@ class BusinessViewModel @Inject constructor(
      * @param id The ID of the internship to bookmark/unbookmark
      * @param isBookmarked The new bookmark status
      */
-    fun markInternship(id: Long, isBookmarked: Boolean) {
+    fun markInternship(businessId: Long, internshipId: Long, isBookmarked: Boolean) {
         viewModelScope.launch {
             try {
-                bookmarkInternshipUseCase(id, isBookmarked)
+                bookmarkInternshipUseCase(internshipId, isBookmarked)
                 findAllBusinessOwnerInternship()
                 loadBookmarkedInternships()
 
                 _selectedInternship.value?.let {
-                    if (it.id == id) selectBusinessInternshipById(id)
+                    if (it.id == internshipId) selectBusinessInternshipById(businessId, internshipId)
                 }
             } catch (e: Exception) {
                 _internshipState.value = InternshipState.Error("Bookmark failed: ${e.message}")
