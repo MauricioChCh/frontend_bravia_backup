@@ -3,6 +3,7 @@ package com.example.bravia.data.repository
 import com.example.bravia.data.mapper.InternshipMapper
 import com.example.bravia.data.remote.InternshipRemoteDataSource
 import com.example.bravia.domain.model.Internship
+import com.example.bravia.domain.model.NewInternship
 import com.example.bravia.domain.repository.InternshipRepository
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -123,5 +124,18 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun newInternship(internship: NewInternship): Result<Internship?> {
+        return safeRepositoryCall {
+            val dto = mapper.mapToNewDTO(internship)
+            val dtoResult = remoteDataSource.newInternship(dto)
+
+            // Desenvuelve el Result del DataSource
+            if (dtoResult.isSuccess) {
+                dtoResult.getOrNull()?.let { mapper.mapToDomain(it, false) }
+            } else {
+                throw dtoResult.exceptionOrNull() ?: Exception("Unknown error creating internship")
+            }
+        }
+    }
 
 }

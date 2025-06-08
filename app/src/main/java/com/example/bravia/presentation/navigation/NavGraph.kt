@@ -14,6 +14,7 @@ import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.screens.business.BusinessHomeScreen
 import com.example.bravia.presentation.ui.screens.business.BusinessInternshipDetailScreen
+import com.example.bravia.presentation.ui.screens.business.BusinessNewInternshipScreen
 import com.example.bravia.presentation.ui.screens.business.BusinessProfileScreen
 import com.example.bravia.presentation.ui.screens.business.BusinessStarredScreen
 import com.example.bravia.presentation.ui.screens.student.HomeScreen
@@ -97,6 +98,15 @@ fun NavGraph(
                 navController = navController,
                 businessViewModel = businessViewModel,
                 paddingValues = PaddingValues(0.dp)
+            )
+        }
+
+        composable(
+            route = NavRoutes.BusinessNewInternship.ROUTE
+        ) {
+            BusinessNewInternshipScreen(
+                navController = navController,
+                businessViewModel = businessViewModel,
             )
         }
 

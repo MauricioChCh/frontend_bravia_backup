@@ -18,3 +18,4 @@ data class CountryDTO(
     val id: Long,
     val name: String,
 )
+

@@ -5,4 +5,8 @@ data class Location(
     val address: String,
     val city: City,
     val country: Country,
-)
+) {
+    fun toShortString(): String {
+        return "$address, ${city.name}, ${country.name}"
+    }
+}

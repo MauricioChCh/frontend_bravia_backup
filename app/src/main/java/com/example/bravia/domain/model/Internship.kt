@@ -19,3 +19,18 @@ data class Internship(
     val link: String,
     val isMarked: Boolean = false,
 )
+
+data class NewInternship(
+    val company: Long,
+    val location: Long,
+    val title: String,
+    val imageUrl: String,
+    val publicationDate: Date,
+    val duration: String,
+    val salary: Double,
+    val modality: String,
+    val schedule: String,
+    val requirements: String,
+    val activities: String,
+    val link: String,
+)

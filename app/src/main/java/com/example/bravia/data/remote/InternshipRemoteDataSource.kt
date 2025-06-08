@@ -4,6 +4,7 @@ package com.example.bravia.data.remote
 import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.remote.api.StudentAreaService
 import com.example.bravia.data.remote.dto.InternshipDTO
+import com.example.bravia.data.remote.dto.NewInternshipDTO
 import com.example.bravia.data.remote.utils.ApiCallHandler
 import retrofit2.Response
 import javax.inject.Inject
@@ -35,4 +36,8 @@ class InternshipRemoteDataSource @Inject constructor(
             businessService.getBusinessInternshipById(businessId, internshipId)
         }
 
+    suspend fun newInternship(internship: NewInternshipDTO): Result<InternshipDTO?> =
+        ApiCallHandler.safeApiCall<InternshipDTO?> {
+            businessService.newInternship(internship)
+        }
 }

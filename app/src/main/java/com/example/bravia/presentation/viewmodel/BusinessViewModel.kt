@@ -4,8 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Internship
+import com.example.bravia.domain.model.Location
+import com.example.bravia.domain.model.NewInternship
 import com.example.bravia.domain.usecase.BookmarkInternshipUseCase
+import com.example.bravia.domain.usecase.BusinessNewInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessInternshipUseCase
+import com.example.bravia.domain.usecase.GetAllBusinessLocationsUseCase
 import com.example.bravia.domain.usecase.GetBookmarkedInternshipsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,17 +31,26 @@ sealed class BusinessState {
 @HiltViewModel
 class BusinessViewModel @Inject constructor(
     private val getAllBusinessInternshipUseCase: GetAllBusinessInternshipUseCase,
-    private val getBusinessInternshipByIdUseCase: GetBusinessInternshipByIdUseCase,
-    private val bookmarkInternshipUseCase: BookmarkInternshipUseCase,
-    private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase,
+    private val getAllBusinessLocationsUseCase: GetAllBusinessLocationsUseCase,
+    private val BusinessNewInternshipUseCase: BusinessNewInternshipUseCase,
     private val getCompanyByIdUseCase: GetCompanyByIdUseCase,
 ) : ViewModel() {
 
     private val _company = MutableStateFlow<Company?>(null)
     val company: StateFlow<Company?> = _company.asStateFlow()
 
+    private val _locations = MutableStateFlow<List<Location>>(emptyList())
+    val locations: StateFlow<List<Location>> = _locations.asStateFlow()
+
     private val _businessState = MutableStateFlow<BusinessState>(BusinessState.Empty)
     val businessState: StateFlow<BusinessState> = _businessState.asStateFlow()
+
+    private val _modalities = MutableStateFlow<List<String>>(
+        listOf("Remote", "On-site", "Hybrid", "Flexible", "Part-time", "Full-time", "Internship", "Contract", "Temporary", "Volunteer")
+    )
+    val modalities: StateFlow<List<String>> = _modalities
+
+
 
     fun fetchCompanyById(companyId: Long) {
         viewModelScope.launch {
@@ -56,4 +69,40 @@ class BusinessViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchLocations(companyId: Long) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllBusinessLocationsUseCase(companyId)
+            }.onSuccess { result ->
+                _locations.value = result.getOrNull() ?: emptyList()
+                _businessState.value = if (_locations.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch locations")
+            }
+        }
+    }
+
+    fun addInternship(internship: NewInternship) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                BusinessNewInternshipUseCase(internship)
+            }.onSuccess { result ->
+                if (result.isSuccess) {
+                    _businessState.value = BusinessState.Success
+                } else {
+                    _businessState.value = BusinessState.Error("Failed to add internship")
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to add internship")
+            }
+        }
+    }
+
 }
