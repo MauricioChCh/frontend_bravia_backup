@@ -216,7 +216,7 @@ fun BusinessProfileScreen(
                 Row (modifier = Modifier.fillMaxWidth()) {
 
                     Button(
-                        onClick = { /* Acción */ },
+                        onClick = { navController.navigate(NavRoutes.BusinessNewInternship.ROUTE) },
                         modifier = Modifier
                             .width(200.dp)
                             .height(40.dp)
