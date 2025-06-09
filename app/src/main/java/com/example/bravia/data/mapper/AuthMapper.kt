@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.bravia.data.remote.dto.AuthRequestDto
 import com.example.bravia.data.remote.dto.AuthResponseDto
 import com.example.bravia.domain.model.AuthResult
+import com.example.bravia.domain.model.Authority
 import com.example.bravia.domain.model.Credentials
 
 object AuthMapper {
@@ -27,8 +28,7 @@ object AuthMapper {
         return AuthResult(
             token = dto.token,
             userId = dto.userId,
-            username = dto.username,
-            roles = dto.authorities.map { it.authority }
+            username = dto.username, authorities = dto.authorities.map { authorityDto -> Authority(authorityDto.authority) } // Convert AuthorityDto to String
         )
     }
 }

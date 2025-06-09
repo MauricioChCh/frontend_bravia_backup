@@ -64,15 +64,18 @@ class LoginViewModel @Inject constructor(
 //            }
             result.onSuccess { authResult ->
                 println("Resultado: $authResult")
-                val roles = authResult.roles
+                val roles = authResult.authorities
 
                 Log.d("LoginViewModel", "------------------------------- User roles: ${roles.joinToString(", ")}")
+                Log.d("LoginViewModel", " User id: ${authResult.userId}")
+                Log.d("LoginViewModel", " User token: ${authResult.token}")
+                Log.d("LoginViewModel", " User username: ${authResult.username}")
 
 
                 val destination = when {
-                    roles.contains("ROLE_ADMIN") -> "admin_home"
-                    roles.contains("ROLE_COMPANY") -> "company_home"
-                    roles.contains("ROLE_STUDENT") -> "student_home"
+                    authResult.authorities.any { it.authority == "ROLE_ADMIN" } -> "admin_home"
+                    authResult.authorities.any { it.authority == "ROLE_COMPANY" } -> "company_home"
+                    authResult.authorities.any { it.authority == "ROLE_STUDENT" } -> "home"
                     else -> "home"
                 }
 
