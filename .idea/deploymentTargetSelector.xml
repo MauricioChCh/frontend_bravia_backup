@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="BravIA.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-06-08T17:53:18.439747205Z">
+        <DropdownSelection timestamp="2025-06-09T19:29:52.377860737Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="PhysicalDevice" identifier="serial=30b5b167" />

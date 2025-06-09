@@ -2,10 +2,13 @@ package com.example.bravia.data.local
 
 import android.content.Context
 import android.util.Log
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -36,6 +39,7 @@ class AuthPreferences @Inject constructor(
     private object PreferencesKeys {
         val AUTH_TOKEN = stringPreferencesKey("auth_token")
         val USERNAME = stringPreferencesKey("username")
+        val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
     }
 
     /**
@@ -86,6 +90,22 @@ class AuthPreferences @Inject constructor(
             Log.d(TAG, "Username saved: $username")
         } catch (e: Exception) {
             Log.e(TAG, "Error saving username: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Saves the login state to persistent storage.
+     *
+     * @param isLoggedIn The login state to save
+     */
+    suspend fun saveLoginState(isLoggedIn: Boolean) {
+        try {
+            dataStore.edit { preferences ->
+                preferences[PreferencesKeys.IS_LOGGED_IN] = isLoggedIn
+            }
+            Log.d(TAG, "Login state saved: $isLoggedIn")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving login state: ${e.message}", e)
         }
     }
 
@@ -144,6 +164,23 @@ class AuthPreferences @Inject constructor(
     }
 
     /**
+     * Retrieves the stored login state.
+     *
+     * @return The stored login state, defaults to false if not found
+     */
+    suspend fun getLoginState(): Boolean {
+        return try {
+            dataStore.data.map { preferences ->
+                preferences[PreferencesKeys.IS_LOGGED_IN] ?: false
+            }.first()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error retrieving login state: ${e.message}", e)
+            false
+        }
+    }
+
+
+    /**
      * Clears all stored authentication data (token and username).
      *
      * This method is typically called during logout.
@@ -153,6 +190,7 @@ class AuthPreferences @Inject constructor(
             dataStore.edit { preferences ->
                 preferences.remove(PreferencesKeys.AUTH_TOKEN)
                 preferences.remove(PreferencesKeys.USERNAME)
+                preferences.remove(PreferencesKeys.IS_LOGGED_IN)
             }
             Log.d(TAG, "Auth data cleared")
         } catch (e: Exception) {
@@ -170,7 +208,28 @@ class AuthPreferences @Inject constructor(
     suspend fun isAuthenticated(): Boolean {
         val token = getAuthToken()
         val isAuth = !token.isNullOrBlank()
-        Log.d(TAG, "Checking authentication status: $isAuth")
+        val loginState = getLoginState()
+        Log.d(TAG, "Checking authentication status: $isAuth (token exists: ${!token.isNullOrBlank()}, login state: $loginState)")
         return isAuth
     }
+
+    /**
+     * Provides a Flow that emits the current authentication state.
+     * This allows for reactive programming patterns where UI can observe authentication changes.
+     *
+     * @return Flow<Boolean> that emits true when authenticated, false otherwise
+     */
+    fun isAuthenticatedFlow(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            val token = preferences[PreferencesKeys.AUTH_TOKEN]
+            val loginState = preferences[PreferencesKeys.IS_LOGGED_IN] ?: false
+            val isAuth = !token.isNullOrBlank() && loginState
+            Log.d(TAG, "Authentication state changed: $isAuth")
+            isAuth
+        }.catch { exception ->
+            Log.e(TAG, "Error in authentication flow: ${exception.message}", exception)
+            emit(false)
+        }
+    }
+
 }

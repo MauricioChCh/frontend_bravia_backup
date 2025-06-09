@@ -37,6 +37,7 @@ import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavGraph.Companion.findStartDestination
 
 /**
  * NavGraph is a composable function that defines the navigation graph for the application.
@@ -56,6 +57,7 @@ fun NavGraph(
     signUpViewModel: SignupViewModel,
     loginViewModel: LoginViewModel,
     businessViewModel: BusinessViewModel,
+    onLogout: () -> Unit
 ) {
     val navigationManager = NavigationManager()
 //    val userSession by loginViewModel.userSession.collectAsState()
@@ -311,7 +313,10 @@ fun NavGraph(
         composable(
             route = NavRoutes.Settings.ROUTE,
         ) {
-            SettingsScreen()
+            SettingsScreen(
+                onNavigateToLogin = onLogout, // ← Pasa el callback a SettingsScreen
+                loginViewModel = loginViewModel
+            )
         }
 
     }

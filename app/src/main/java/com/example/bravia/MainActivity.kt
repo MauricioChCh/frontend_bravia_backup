@@ -1,5 +1,6 @@
 package com.example.bravia
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,13 +33,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    // Inicialización de los ViewModel
-//    private val signUpViewModel: SignupViewModel by viewModels ()
-//    private val loginViewModel : LoginViewModel by viewModels()
-//    private val internshipViewModel: InternshipViewModel by viewModels()
-//    private val businessViewModel: BusinessViewModel by viewModels()
-//
-
+    // Reinicia la aplicación volviendo a la actividad principal
+    fun restartApp() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +90,8 @@ class MainActivity : ComponentActivity() {
                         internshipViewModel = internshipViewModel,
                         signUpViewModel = signUpViewModel,
                         loginViewModel = loginViewModel,
-                        businessViewModel = businessViewModel
+                        businessViewModel = businessViewModel,
+                        onLogout = { restartApp() } // ← Pasa el callback aquí
                     )
                 }
             }
@@ -130,43 +132,4 @@ fun BottomNavigationBar(
         }
     }
 }
-
-//@Composable
-//fun MainScreen(
-//    singUpViewModel: SignupViewModel,
-//    internshipViewModel: InternshipViewModel,
-//    loginViewModel: LoginViewModel,
-//    businessViewModel: BusinessViewModel
-//) {
-//    val navController = rememberNavController()
-//    val navBackStackEntry by navController.currentBackStackEntryAsState()
-//    val currentRoute = navBackStackEntry?.destination?.route
-//    Log.d("ThemeDebug", "Primary color: ${MaterialTheme.colorScheme.primary}")
-//
-//    Scaffold (
-//        bottomBar = {
-//            when (currentRoute) {
-//                NavRoutes.Login.ROUTE,
-//                NavRoutes.Start.ROUTE,
-//                NavRoutes.LoginSaved.ROUTE,
-//                NavRoutes.SignIn.ROUTE,
-//                NavRoutes.SignUp.ROUTE,
-//                NavRoutes.InterestsSignUp.ROUTE,
-//                NavRoutes.ProfileSignUp.ROUTE,
-//                NavRoutes.InternshipDetail.ROUTE -> {} // Do nothing (oculta el bottom bar)
-//                else -> BottomNavigationBar(navController = navController, currentRoute)
-//            }
-//        }
-//    ) { paddingValues ->
-//        NavGraph(
-//            navController = navController,
-//            paddingValues = paddingValues,
-//            internshipViewModel = internshipViewModel,
-//            signUpViewModel = singUpViewModel,
-//            loginViewModel = loginViewModel,
-//            businessViewModel = businessViewModel
-//        )
-//    }
-//}
-
 
