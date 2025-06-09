@@ -75,7 +75,7 @@ fun NavGraph(
             StartScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                loginViewModel = loginViewModel
+//                loginViewModel = loginViewModel
             )
         }
 

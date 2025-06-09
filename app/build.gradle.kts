@@ -76,6 +76,8 @@ dependencies {
     // Hilt dependencies
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+//    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
 
     //Iconos
     implementation(libs.androidx.material.icons.extended)

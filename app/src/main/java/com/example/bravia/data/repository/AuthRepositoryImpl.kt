@@ -3,6 +3,7 @@ package com.example.bravia.data.repository
 import android.util.Log
 import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.data.remote.AuthRemoteDataSource
+import com.example.bravia.domain.model.AuthResult
 import com.example.bravia.domain.model.Credentials
 import com.example.bravia.domain.repository.AuthRepository
 import javax.inject.Inject
@@ -39,7 +40,7 @@ class AuthRepositoryImpl @Inject constructor(
      * @param password The user's password
      * @return A [Result] containing [Unit] if successful, or an error if authentication failed
      */
-    override suspend fun login(username: String, password: String): Result<Unit> {
+    override suspend fun login(username: String, password: String): Result<AuthResult> {
         return try {
             Log.d("AuthRepositoryImpl", "Login attempt for user: $username")
             val credentials = Credentials(username, password)
@@ -62,7 +63,7 @@ class AuthRepositoryImpl @Inject constructor(
                 .onFailure { error ->
                     Log.e("AuthRepositoryImpl", "Login failed: ${error.message}")
                 }
-                .map { }
+                .map { it }
         } catch (e: Exception) {
             Log.e("AuthRepositoryImpl", "Login exception: ${e.message}", e)
             Result.failure(e)

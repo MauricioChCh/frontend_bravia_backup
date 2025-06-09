@@ -1,9 +1,15 @@
 package com.example.bravia.data.remote.dto
 
 /**
- * DTO representing authentication response
+ * DTOs representing authentication response
  */
+data class AuthorityDto(
+    val authority: String
+)
+
 data class AuthResponseDto(
     val token: String,
-    val userId: String
+    val username: String,
+    val userId: String,
+    val authorities: List<AuthorityDto>
 )

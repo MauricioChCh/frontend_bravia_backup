@@ -1,6 +1,9 @@
 package com.example.bravia.domain.model
 
+
 data class AuthResult(
     val token: String,
-    val userId: String
+    val userId: String = "",
+    val username: String = "",
+    val roles: List<String> = emptyList()
 )
