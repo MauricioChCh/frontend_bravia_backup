@@ -3,8 +3,10 @@ package com.example.bravia.presentation.navigation
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.bravia.R
@@ -22,6 +24,9 @@ sealed class BottomNavBar(
         const val SAVED = "saved"
         const val INTERVIEW = "interview"
         const val PROFILE = "profile"
+        const val BUSINESS_HOME = "businessHome"
+        const val STARRED = "businessStarred"
+        const val BUSINESS_PROFILE = "businessProfile"
     }
 
     /**
@@ -68,13 +73,37 @@ sealed class BottomNavBar(
         Icons.Filled.Person
     )
 
+    /**
+     * BusinessHome representa el elemento de navegación para la pantalla de BusinessHome.
+     * Esta pantalla permite al usuario ver y editar su información de perfil.
+     */
+    data object BusinessHome : BottomNavBar(
+        Routes.BUSINESS_HOME,
+        R.string.home,
+        Icons.Filled.Inventory
+    )
 
+    data object BusinessStarred : BottomNavBar(
+        Routes.STARRED,
+        R.string.starred,
+        Icons.Filled.Star
+    )
+
+    data object BusinessProfile : BottomNavBar(
+        Routes.BUSINESS_PROFILE,
+        R.string.profile,
+        Icons.Filled.Person
+    )
 
     companion object {
         /**
          * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
          */
         fun items() = listOf(Home, Saved, Interview, Profile)
+        /**
+         * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
+         */
+        fun businessItems() = listOf(BusinessHome, BusinessStarred, BusinessProfile)
 
         /**
          * Determina si la ruta proporcionada coincide con cualquier ruta de elemento de navegación inferior.
@@ -83,7 +112,8 @@ sealed class BottomNavBar(
          * @return True si la ruta coincide con un elemento de navegación inferior, false en caso contrario
          */
         fun isBottomNavRoute(route: String): Boolean {
-            return route == Routes.HOME || route == Routes.INTERVIEW || route == Routes.PROFILE || route == Routes.SAVED
+            return route == Routes.HOME || route == Routes.INTERVIEW || route == Routes.PROFILE || route == Routes.SAVED ||
+                    route == Routes.BUSINESS_HOME || route == Routes.STARRED || route == Routes.BUSINESS_PROFILE
         }
     }
 }

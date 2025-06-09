@@ -56,9 +56,15 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.android)
 
 
+    implementation(libs.cronet.embedded)
+
+
     implementation(libs.navigation.runtime.android)
     implementation(libs.transport.runtime)
 
+
+
+    // JUnit
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,6 +72,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
 
     // Retrofit and Gson dependencies
     implementation(libs.retrofit)
@@ -77,7 +85,11 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    //Iconos
-    implementation(libs.androidx.material.icons.extended)
 
+    // DataStore Preferences
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
+
+    //Icons
+    implementation(libs.androidx.material.icons.extended)
 }

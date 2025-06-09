@@ -87,7 +87,7 @@ fun InternshipDetailScreen(
     // Actualizar el estado de marcador cuando cambia la pasantía
     LaunchedEffect(internship) {
         internship?.let {
-            isBookmarked = it.isBookmarked
+            isBookmarked = it.isMarked
         }
     }
 
@@ -236,22 +236,22 @@ fun InternshipDetailScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = internship.location,
+                            text = internship.country + ", " + internship.city,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp)
-                    ) {
-                        Text(
-                            text = "${internship.percentage}",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(bottom = 16.dp)
+//                    ) {
+//                        Text(
+//                            text = "${internship.percentage}",
+//                            style = MaterialTheme.typography.bodyMedium,
+//                            fontWeight = FontWeight.Bold
+//                        )
+//                    }
 
                     // Description section
                     Text(
@@ -261,11 +261,11 @@ fun InternshipDetailScreen(
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
 
-                    Text(
-                        text = internship.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
+//                    Text(
+//                        text = internship.description,
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        modifier = Modifier.padding(bottom = 16.dp)
+//                    )
 
                     // Requirements section if available
                     if (internship.requirements.isNotEmpty()) {

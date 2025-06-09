@@ -5,18 +5,32 @@ import java.util.Date
 data class InternshipDTO(
     val id: Long,
     val title: String,
-    val company: String,
-    val description: String,
+    val companyName: String,
+    val cityName: String,
+    val countryName: String,
+    val modality: String,
+    val schedule: String,
+    val requirements: String,
+    val activities: String,
+    val link: String,
+    val publicationDate: Date,
     val imageUrl: String,
-    val location: String,
+    val duration: String,
+    val salary: Double,
+    val locationFullName: String?,
+)
+
+data class NewInternshipDTO(
+    val companyId: Long,
+    val locationId: Long,
+    val title: String,
+    val imageUrl: String,
     val publicationDate: Date,
     val duration: String,
     val salary: Double,
     val modality: String,
     val schedule: String,
     val requirements: String,
-    val percentage: String,
     val activities: String,
-    val contact: String,
-    val link: String
+    val link: String,
 )

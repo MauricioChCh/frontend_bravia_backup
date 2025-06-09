@@ -25,7 +25,7 @@ import com.example.bravia.presentation.navigation.BottomNavBar
  * @param navController Controlador de navegación para gestionar la navegación entre pantallas
  */
 @Composable
-fun BottomNavigationBar(navController: NavController) {
+fun BottomNavigationBar(navController: NavController, route: String? = null) {
     // Obtener la ruta actual para resaltar el elemento seleccionado
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -43,32 +43,56 @@ fun BottomNavigationBar(navController: NavController) {
                 contentColor = MaterialTheme.colorScheme.onSurface
             ) {
                 // Crear un elemento de navegación para cada item definido
-                BottomNavBar.items().forEach { item ->
-                    NavigationBarItem(
-                        icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },
-                        //label = { Text(text = stringResource(id = item.title)) },
-                        selected = currentRoute == item.route,
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.surface,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            indicatorColor = MaterialTheme.colorScheme.primary
-                        ),
-                        onClick = {
-                            // Navegar a la ruta seleccionada solo si no estamos ya en ella
-                            if (currentRoute != item.route) {
-                                navController.navigate(item.route) {
-                                    // Evitar múltiples copias de la misma ruta en la pila de navegación
-                                    popUpTo(navController.graph.startDestinationId)
-                                    launchSingleTop = true
+                if (route?.contains("business") == true) {
+//                if (route == "businessHome" || route == "businessStarred" || route == "businessProfile" || route == "businessInternshipDetail") {
+                    BottomNavBar.businessItems().forEach { item ->
+                        NavigationBarItem(
+                            icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },
+                            //label = { Text(text = stringResource(id = item.title)) },
+                            selected = currentRoute == item.route,
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.surface,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                indicatorColor = MaterialTheme.colorScheme.primary
+                            ),
+                            onClick = {
+                                // Navegar a la ruta seleccionada solo si no estamos ya en ella
+                                if (currentRoute != item.route) {
+                                    navController.navigate(item.route) {
+                                        // Evitar múltiples copias de la misma ruta en la pila de navegación
+                                        popUpTo(navController.graph.startDestinationId)
+                                        launchSingleTop = true
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
+                } else {
+                    BottomNavBar.items().forEach { item ->
+                        NavigationBarItem(
+                            icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },
+                            //label = { Text(text = stringResource(id = item.title)) },
+                            selected = currentRoute == item.route,
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.surface,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                indicatorColor = MaterialTheme.colorScheme.primary
+                            ),
+                            onClick = {
+                                // Navegar a la ruta seleccionada solo si no estamos ya en ella
+                                if (currentRoute != item.route) {
+                                    navController.navigate(item.route) {
+                                        // Evitar múltiples copias de la misma ruta en la pila de navegación
+                                        popUpTo(navController.graph.startDestinationId)
+                                        launchSingleTop = true
+                                    }
+                                }
+                            }
+                        )
+                    }
                 }
             }
-
         }
     }
-
 }
 
