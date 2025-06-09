@@ -73,8 +73,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
-
     // Retrofit and Gson dependencies
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -92,4 +90,10 @@ dependencies {
 
     //Icons
     implementation(libs.androidx.material.icons.extended)
+
+    // DataStore Preferences
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.androidx.material.icons.extended)
+
 }

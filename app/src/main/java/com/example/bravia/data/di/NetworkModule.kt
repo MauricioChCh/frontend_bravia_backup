@@ -1,10 +1,14 @@
 package com.example.bravia.data.di
 
 import com.example.bravia.data.remote.api.BusinessService
+import com.example.bravia.data.local.AuthPreferences
+import com.example.bravia.data.remote.api.AuthService
+import com.example.bravia.data.remote.api.InternshipService
 import com.example.bravia.data.remote.api.SignUpService
 import com.example.bravia.data.remote.api.StudentAreaService
 import com.example.bravia.data.remote.dto.InterestDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
+import com.example.bravia.data.remote.interceptor.AuthInterceptor
 import com.example.bravia.data.remote.serializer.InterestDeselializer
 import com.example.bravia.data.remote.serializer.InternshipDeserializer
 import com.google.gson.Gson
@@ -23,8 +27,10 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "http://192.168.100.96:8080/api/v1/" // Replace with your actual base URL
-    private const val DATE_FORMAT = "yyyy-MM-dd" // Replace with your desired date format
+    val BASE_URL = "http://192.168.100.96:8080/api/v1/"
+
+//    private const val BASE_URL = "https://bravia-app-v01-bbd26053b419.herokuapp.com/api/v1/"
+    private const val DATE_FORMAT = "yyyy-MM-dd"
 
     /**
      * Provides a singleton Gson instance configured with custom type adapters.
@@ -39,6 +45,20 @@ object NetworkModule {
         .registerTypeAdapter(InterestDTO::class.java, InterestDeselializer())
         .create()
     //TODO meter esto .registerTypeAdapter(InterestDTO::class.java, InterestDeserializer()) a ver si funciona
+
+
+    /**
+     * Provides the auth interceptor for adding authentication headers to requests.
+     *
+     * @param authPreferences The preferences storing authentication data
+     * @return Configured [AuthInterceptor]
+     */
+    @Provides
+    @Singleton
+    fun provideAuthInterceptor(authPreferences: AuthPreferences): AuthInterceptor =
+        AuthInterceptor(authPreferences)
+
+
     /**
      * Provides a logging interceptor for HTTP request/response logging.
      *
@@ -100,16 +120,21 @@ object NetworkModule {
     fun provideSignUpService(retrofit: Retrofit): SignUpService =
         retrofit.create(SignUpService::class.java)
 
-    /**
-     * Provides the StudentAreaService implementation.
-     *
-     * @param retrofit The Retrofit instance to create the service
-     * @return [StudentAreaService] implementation
-     */
     @Provides
     @Singleton
     fun provideStudentAreaService(retrofit: Retrofit): StudentAreaService =
         retrofit.create(StudentAreaService::class.java)
+
+    /**
+     * Provides the AuthService implementation for authentication operations.
+     *
+     * @param retrofit The Retrofit instance
+     * @return Implementation of [AuthService]
+     */
+    @Provides
+    @Singleton
+    fun provideAuthService(retrofit: Retrofit): AuthService =
+        retrofit.create(AuthService::class.java)
 
     /**
      * Provides the BusinessService implementation.
@@ -121,4 +146,15 @@ object NetworkModule {
     @Singleton
     fun provideBusinessService(retrofit: Retrofit): BusinessService =
         retrofit.create(BusinessService::class.java)
+
+    /**
+     * Provides the InternshipService implementation for internship-related operations.
+     *
+     * @param retrofit The Retrofit instance to create the service
+     * @return [InternshipService] implementation
+     */
+    @Provides
+    @Singleton
+    fun provideInternshipService(retrofit: Retrofit): InternshipService =
+        retrofit.create(InternshipService::class.java)
 }

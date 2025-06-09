@@ -63,8 +63,14 @@ class InternshipRepositoryImpl @Inject constructor(
      * @param id The ID of the internship to bookmark.
      * @param isBookmarked Whether the internship should be bookmarked.
      */
-    override suspend fun bookmarkInternship(id: Long, isBookmarked: Boolean) {
-        bookmarkedInternships[id] = isBookmarked
+    override suspend fun bookmarkInternship(internshipId: Long, userId: Long, isBookmarked: Boolean) : Result<Unit> {
+        return safeRepositoryCall {
+            // Actualiza el mapa de pasantías marcadas
+            bookmarkedInternships[internshipId] = isBookmarked
+
+            // Llama al DataSource para realizar la operación de marcador
+            remoteDataSource.bookmarkInternship(internshipId, userId, isBookmarked)
+        }
     }
 
     /**

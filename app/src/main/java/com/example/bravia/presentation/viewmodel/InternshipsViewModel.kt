@@ -151,15 +151,15 @@ class InternshipViewModel @Inject constructor(
      * @param id The ID of the internship to bookmark/unbookmark
      * @param isBookmarked The new bookmark status
      */
-    fun bookmarkInternship(id: Long, isBookmarked: Boolean) {
+    fun bookmarkInternship(internshipId: Long, isBookmarked: Boolean) {
         viewModelScope.launch {
             try {
-                bookmarkInternshipUseCase(id, isBookmarked)
+                bookmarkInternshipUseCase(internshipId, 1, isBookmarked) // TODO: Cambiar el userId por el del usuario logueado
                 findAllInternships()
                 loadBookmarkedInternships()
 
                 _selectedInternship.value?.let {
-                    if (it.id == id) selectInternshipById(id)
+                    if (it.id == internshipId) selectInternshipById(internshipId)
                 }
             } catch (e: Exception) {
                 _internshipState.value = InternshipState.Error("Bookmark failed: ${e.message}")
