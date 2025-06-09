@@ -153,7 +153,7 @@ fun InternshipList(
                         iconA = Icons.Default.StarRate,
                         iconB = Icons.Default.StarBorder,
                         onBookmarkChange = { isBookmarked ->
-                            viewModel.bookmarkInternship(internship.id, isBookmarked) // TODO: Cambiar por una variable
+                            viewModel.bookmarkInternship(internship.id, isBookmarked)
                         },
                         onClick = {
                             navController.navigate(

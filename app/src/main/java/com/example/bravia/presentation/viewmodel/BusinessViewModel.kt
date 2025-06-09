@@ -31,6 +31,7 @@ sealed class BusinessState {
 @HiltViewModel
 class BusinessViewModel @Inject constructor(
     private val getAllBusinessInternshipUseCase: GetAllBusinessInternshipUseCase,
+    private val bookmarkInternshipUseCase: BookmarkInternshipUseCase,
     private val getAllBusinessLocationsUseCase: GetAllBusinessLocationsUseCase,
     private val businessNewInternshipUseCase: BusinessNewInternshipUseCase,
     private val getCompanyByIdUseCase: GetCompanyByIdUseCase,
@@ -45,7 +46,7 @@ class BusinessViewModel @Inject constructor(
     private val _businessState = MutableStateFlow<BusinessState>(BusinessState.Empty)
     val businessState: StateFlow<BusinessState> = _businessState.asStateFlow()
 
-    private val _modalities = MutableStateFlow<List<String>>(
+    private val _modalities = MutableStateFlow<List<String>>(// TODO: have to come from the backend
         listOf("Remote", "On-site", "Hybrid", "Flexible", "Part-time", "Full-time", "Internship", "Contract", "Temporary", "Volunteer")
     )
     val modalities: StateFlow<List<String>> = _modalities
@@ -72,16 +73,17 @@ class BusinessViewModel @Inject constructor(
     }
 
     fun bookmarkInternship(internshipId: Long, isBookmarked: Boolean) {
-//        viewModelScope.launch {
-//            _businessState.value = BusinessState.Loading
-//            runCatching {
-//                BookmarkInternshipUseCase(internshipId, isBookmarked)
-//            }.onSuccess {
-//                _businessState.value = BusinessState.Success
-//            }.onFailure { exception ->
-//                _businessState.value = BusinessState.Error(exception.message ?: "Failed to bookmark internship")
-//            }
-//        }
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                bookmarkInternshipUseCase(internshipId, 2, isBookmarked) // TODO : Cambiar por una variable
+                fetchAllBusinessInternships(2) // TODO: Cambiar por una variable
+            }.onSuccess {
+                _businessState.value = BusinessState.Success
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to bookmark internship")
+            }
+        }
     }
 
 
@@ -103,6 +105,7 @@ class BusinessViewModel @Inject constructor(
             }
         }
     }
+
 
     fun fetchLocations(companyId: Long) {
         viewModelScope.launch {

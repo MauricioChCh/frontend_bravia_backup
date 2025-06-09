@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -37,8 +36,8 @@ import com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCar
 import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.example.bravia.presentation.ui.theme.ThemeHelper as Theme
 
 @Composable
 fun HomeScreen(
@@ -73,7 +72,7 @@ fun HomeScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary)
+                .background(Theme.colors.primary)
                 .padding(
                     top = 36.dp,
                     bottom = 12.dp,
@@ -90,8 +89,8 @@ fun HomeScreen(
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(ThemeDefaults.searchFieldShape),
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surface,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
+                    focusedContainerColor = Theme.colors.primary,
+                    unfocusedContainerColor = Theme.colors.primary
                 )
             )
 
@@ -107,8 +106,8 @@ fun HomeScreen(
             ) {
                 Text(
                     text = "No internships available",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = Theme.typography.bodyLarge,
+                    color = Theme.colors.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
             }
