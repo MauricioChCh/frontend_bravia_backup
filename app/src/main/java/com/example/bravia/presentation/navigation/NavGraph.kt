@@ -4,14 +4,17 @@ package com.example.bravia.navigation
 import SettingsScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.bravia.domain.model.UserRole
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
+import com.example.bravia.presentation.navigation.NavigationManager
 import com.example.bravia.presentation.ui.screens.business.BusinessHomeScreen
 import com.example.bravia.presentation.ui.screens.business.BusinessInternshipDetailScreen
 import com.example.bravia.presentation.ui.screens.business.BusinessNewInternshipScreen
@@ -33,6 +36,7 @@ import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
+import androidx.compose.runtime.getValue
 
 /**
  * NavGraph is a composable function that defines the navigation graph for the application.
@@ -53,64 +57,29 @@ fun NavGraph(
     loginViewModel: LoginViewModel,
     businessViewModel: BusinessViewModel,
 ) {
-    NavHost(navController = navController, startDestination = NavRoutes.Start.ROUTE) {
+    val navigationManager = NavigationManager()
+//    val userSession by loginViewModel.userSession.collectAsState()
+    val userSession by loginViewModel.userSession.collectAsState()
+    // Determinar la ruta de inicio basada en la sesión
+    val startDestination = navigationManager.getStartDestination(userSession)
+
+    NavHost(
+        navController = navController,
+        startDestination = NavRoutes.Start.ROUTE
+    ){
 //    NavHost(navController = navController, startDestination = NavRoutes.BusinessHome.ROUTE) {
-        // Business screens=====================================
-        composable(
-            route = NavRoutes.BusinessHome.ROUTE
-        ) {
-            BusinessHomeScreen(
-                navController = navController,
-                businessViewModel = businessViewModel
-            )
-        }
 
-        composable (
-            route = NavRoutes.BusinessInternshipDetail.ROUTE,
-            arguments = listOf(
-                navArgument(NavRoutes.BusinessInternshipDetail.ARG_INTERNSHIP_ID) {
-                    type = NavType.LongType
-                }
-            )
-        ) { backSTackEntry ->
-            val internshipId = backSTackEntry.arguments?.getLong(NavRoutes.BusinessInternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
-            BusinessInternshipDetailScreen(
-                navController = navController,
-                internshipId = internshipId,
-                paddingValues = PaddingValues(0.dp),
-                viewModel = businessViewModel
-            )
-        }
+        //Pantallas de inicio (Siempre accesibles)=========================================
 
         composable(
-            route = NavRoutes.BusinessStarred.ROUTE
+            route = NavRoutes.Start.ROUTE
         ) {
-            BusinessStarredScreen(
+            StartScreen(
                 navController = navController,
-                businessViewModel = businessViewModel
+                paddingValues = paddingValues,
             )
         }
 
-        composable(
-            route = NavRoutes.BusinessProfile.ROUTE
-        ) {
-            BusinessProfileScreen(
-                navController = navController,
-                businessViewModel = businessViewModel,
-                paddingValues = PaddingValues(0.dp)
-            )
-        }
-
-        composable(
-            route = NavRoutes.BusinessNewInternship.ROUTE
-        ) {
-            BusinessNewInternshipScreen(
-                navController = navController,
-                businessViewModel = businessViewModel,
-            )
-        }
-
-        //start screens=========================================
         composable(
             route = NavRoutes.Login.ROUTE
         ) {
@@ -131,15 +100,6 @@ fun NavGraph(
             )
         }
 
-        composable(
-            route = NavRoutes.Start.ROUTE
-        ) {
-            StartScreen(
-                navController = navController,
-                paddingValues = paddingValues,
-//                loginViewModel = loginViewModel
-            )
-        }
 
         composable(
             route = NavRoutes.SignIn.ROUTE
@@ -151,7 +111,7 @@ fun NavGraph(
             )
         }
 
-        //SING-UP screens========================================
+        //Pantallas de registro========================================
         composable(
             route = NavRoutes.SignUp.ROUTE,
         ) {
@@ -183,19 +143,73 @@ fun NavGraph(
             )
         }
 
+        //Pantallas de estudiante (Student)========================================
+        composable(route = BottomNavBar.Routes.HOME) {
+            if (userSession?.hasRole(UserRole.STUDENT) == true) {
+                HomeScreen(
+                    navController = navController,
+                    paddingValues = paddingValues,
+                    viewModel = internshipViewModel
+                )
+            } else {
+                // Redirigir o mostrar error de acceso
+                UnauthorizedScreen(navController)
 
-
-        //Main SCREENS===========================================
-        composable(
-            route = BottomNavBar.Routes.HOME,
-            arguments = emptyList()
-        ) {
-            HomeScreen(
-                navController = navController,
-                paddingValues = paddingValues,
-                viewModel = internshipViewModel
-            )
+            }
         }
+
+        // Pantalla de guardados
+        composable(route = BottomNavBar.Routes.SAVED) {
+            if (userSession?.hasRole(UserRole.STUDENT) == true) {
+                SavedInternshipsScreen(
+                    navController = navController,
+                    paddingValues = paddingValues,
+                    viewModel = internshipViewModel
+                )
+            } else {
+                // Redirigir o mostrar error de acceso
+                UnauthorizedScreen(navController)
+
+            }
+        }
+        // Pantalla de perfil
+        composable(route = BottomNavBar.Routes.PROFILE) {
+            if (userSession?.hasRole(UserRole.STUDENT) == true) {
+                ProfileScreen(
+                    navController = navController,
+                    paddingValues = paddingValues
+                )
+            } else {
+                // Redirigir o mostrar error de acceso
+                UnauthorizedScreen(navController)
+
+            }
+        }
+
+        // Pantalla detalle de internship
+        composable(
+            route = NavRoutes.InternshipDetail.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            if (userSession?.hasRole(UserRole.STUDENT) == true) {
+                val internshipId = backStackEntry.arguments?.getLong(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
+                InternshipDetailScreen(
+                    navController = navController,
+                    internshipId = internshipId,
+                    paddingValues = PaddingValues(0.dp),
+                    viewModel = internshipViewModel
+                )
+            } else {
+                // Redirigir o mostrar error de acceso
+                UnauthorizedScreen(navController)
+
+            }
+        }
+
 
         // Pantalla de interviews
         composable(
@@ -209,46 +223,88 @@ fun NavGraph(
 //            )
         }
 
-        // Pantalla detalle de internship
+
+
+
+
+
+
+
+        // Business screens=====================================
+        composable(route = NavRoutes.BusinessHome.ROUTE) {
+            if (userSession?.hasRole(UserRole.BUSINESS) == true) {
+                BusinessHomeScreen(
+                    navController = navController,
+                    businessViewModel = businessViewModel
+                )
+            } else {
+                UnauthorizedScreen(navController)
+
+            }
+        }
+
         composable(
-            route = NavRoutes.InternshipDetail.ROUTE,
+            route = NavRoutes.BusinessInternshipDetail.ROUTE,
             arguments = listOf(
-                navArgument(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) {
+                navArgument(NavRoutes.BusinessInternshipDetail.ARG_INTERNSHIP_ID) {
                     type = NavType.LongType
                 }
             )
         ) { backStackEntry ->
-            val internshipId = backStackEntry.arguments?.getLong(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
-            InternshipDetailScreen(
-                navController = navController,
-                internshipId = internshipId,
-                paddingValues = PaddingValues(0.dp),
-                viewModel = internshipViewModel
-            )
+            if (userSession?.hasRole(UserRole.BUSINESS) == true) {
+                val internshipId = backStackEntry.arguments?.getLong(NavRoutes.BusinessInternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
+                BusinessInternshipDetailScreen(
+                    navController = navController,
+                    internshipId = internshipId,
+                    paddingValues = PaddingValues(0.dp),
+                    viewModel = businessViewModel
+                )
+            } else {
+                // Redirigir o mostrar error de acceso
+                UnauthorizedScreen(navController)
+
+            }
         }
 
-        // Pantalla de guardados
-        composable(
-            route = BottomNavBar.Routes.SAVED,
-            arguments = emptyList()
-        ) {
-            SavedInternshipsScreen(
-                navController = navController,
-                paddingValues = paddingValues,
-                viewModel = internshipViewModel
-            )
+        composable(route = NavRoutes.BusinessStarred.ROUTE) {
+            if (userSession?.hasRole(UserRole.BUSINESS) == true) {
+                BusinessStarredScreen(
+                    navController = navController,
+                    businessViewModel = businessViewModel
+                )
+            } else {
+                UnauthorizedScreen(navController)
+            }
         }
 
-        // Pantalla de perfil
-        composable(
-            route = BottomNavBar.Routes.PROFILE,
-            arguments = emptyList()
-        ) {
-            ProfileScreen(
-                navController = navController,
-                paddingValues = paddingValues
-            )
+        composable(route = NavRoutes.BusinessProfile.ROUTE) {
+            if (userSession?.hasRole(UserRole.BUSINESS) == true) {
+                BusinessProfileScreen(
+                    navController = navController,
+                    businessViewModel = businessViewModel,
+                    paddingValues = PaddingValues(0.dp)
+                )
+            } else {
+                UnauthorizedScreen(navController)
+            }
         }
+
+        composable(route = NavRoutes.BusinessNewInternship.ROUTE) {
+            if (userSession?.hasRole(UserRole.BUSINESS) == true) {
+                BusinessNewInternshipScreen(
+                    navController = navController,
+                    businessViewModel = businessViewModel
+                )
+            } else {
+                UnauthorizedScreen(navController)
+            }
+        }
+
+
+
+
+        //Main SCREENS===========================================
+
 
         //Shared
         //Student settings
@@ -258,5 +314,14 @@ fun NavGraph(
             SettingsScreen()
         }
 
+    }
+}
+
+@Composable
+fun UnauthorizedScreen(navController: NavHostController) {
+    // Implementar pantalla de acceso no autorizado
+    // Por ahora, redirigir al login
+    navController.navigate(NavRoutes.Login.ROUTE) {
+        popUpTo(0) { inclusive = true }
     }
 }

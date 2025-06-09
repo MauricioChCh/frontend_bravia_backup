@@ -3,7 +3,10 @@ package com.example.bravia.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bravia.domain.model.UserRole
+import com.example.bravia.domain.model.UserSession
 import com.example.bravia.domain.usecase.LoginUseCase
+import com.example.bravia.presentation.navigation.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +35,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
+    private val navigationManager = NavigationManager()
     // Estado de la pantalla
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
@@ -39,6 +43,11 @@ class LoginViewModel @Inject constructor(
     // Estado de eventos (éxito, error, etc.)
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Initial)
     val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
+
+    // Estado de la sesión del usuario
+    private val _userSession = MutableStateFlow<UserSession?>(null)
+    val userSession: StateFlow<UserSession?> = _userSession.asStateFlow()
+
 
     fun onEmailChange(newEmail: String) {
         _uiState.value = _uiState.value.copy(email = newEmail)
@@ -58,29 +67,32 @@ class LoginViewModel @Inject constructor(
 
             val result = loginUseCase(email, password)
 
-//            result.onSuccess {
-//                _uiState.value = _uiState.value.copy(isLoading = false, isLoggedIn = true)
-//                _loginState.value = LoginState.Success("Login successful")
-//            }
             result.onSuccess { authResult ->
                 println("Resultado: $authResult")
-                val roles = authResult.authorities
+                val authorities = authResult.authorities.map { it.authority }
+                val userRole = UserRole.fromAuthorities(authorities)
 
-                Log.d("LoginViewModel", "------------------------------- User roles: ${roles.joinToString(", ")}")
-                Log.d("LoginViewModel", " User id: ${authResult.userId}")
-                Log.d("LoginViewModel", " User token: ${authResult.token}")
-                Log.d("LoginViewModel", " User username: ${authResult.username}")
+                // Crear sesión de usuario
+                val session = UserSession(
+                    userId = authResult.userId,
+                    username = authResult.username,
+                    token = authResult.token,
+                    role = userRole,
+                    authorities = authorities
+                )
 
+                _userSession.value = session
 
-                val destination = when {
-                    authResult.authorities.any { it.authority == "ROLE_ADMIN" } -> "admin_home"
-                    authResult.authorities.any { it.authority == "ROLE_COMPANY" } -> "company_home"
-                    authResult.authorities.any { it.authority == "ROLE_STUDENT" } -> "home"
-                    else -> "home"
-                }
+                // Obtener destino basado en el rol
+                val destination = navigationManager.getPostLoginDestination(authorities)
+
+                Log.d("LoginViewModel", "User roles: ${authorities.joinToString(", ")}")
+                Log.d("LoginViewModel", "User role: ${userRole}")
+                Log.d("LoginViewModel", "Destination: $destination")
 
                 _uiState.value = _uiState.value.copy(isLoading = false, isLoggedIn = true)
                 _loginState.value = LoginState.Success(destination)
+
             }.onFailure { exception ->
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -94,4 +106,11 @@ class LoginViewModel @Inject constructor(
     fun resetLoginState() {
         _loginState.value = LoginState.Initial
     }
+
+//    fun logout() {
+//        _userSession.value = null
+//        _uiState.value = LoginUiState()
+//        _loginState.value = LoginState.Idle
+//    }
+
 }

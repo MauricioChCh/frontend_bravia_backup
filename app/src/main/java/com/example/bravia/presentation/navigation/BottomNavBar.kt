@@ -2,6 +2,7 @@ package com.example.bravia.presentation.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.Inventory2
@@ -20,13 +21,22 @@ sealed class BottomNavBar(
      * Contiene todas las posibles rutas de navegación  del navbar como constantes.
      */
     object Routes {
+        // Student routes
         const val HOME = "home"
         const val SAVED = "saved"
         const val INTERVIEW = "interview"
         const val PROFILE = "profile"
+
+        // Business routes
         const val BUSINESS_HOME = "businessHome"
         const val STARRED = "businessStarred"
         const val BUSINESS_PROFILE = "businessProfile"
+
+        // Admin routes
+        const val ADMIN_HOME = "adminHome"
+//        const val ADMIN_USERS = "adminUsers"
+//        const val ADMIN_REPORTS = "adminReports"
+//        const val ADMIN_PROFILE = "adminProfile"
     }
 
     /**
@@ -61,8 +71,6 @@ sealed class BottomNavBar(
     )
 
 
-
-
     /**
      * Profile representa el elemento de navegación para la pantalla de perfil.
      * Esta pantalla permite al usuario ver y editar su información de perfil.
@@ -73,6 +81,7 @@ sealed class BottomNavBar(
         Icons.Filled.Person
     )
 
+    //BUSSINESS NAVIGATION ITEMS ============================
     /**
      * BusinessHome representa el elemento de navegación para la pantalla de BusinessHome.
      * Esta pantalla permite al usuario ver y editar su información de perfil.
@@ -95,6 +104,14 @@ sealed class BottomNavBar(
         Icons.Filled.Person
     )
 
+    //ADMIN NAVIGATION ITEMS ============================
+    data object AdminHome : BottomNavBar(
+        Routes.ADMIN_HOME,
+        R.string.home,
+        Icons.Filled.Dashboard
+    )
+
+
     companion object {
         /**
          * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
@@ -105,6 +122,8 @@ sealed class BottomNavBar(
          */
         fun businessItems() = listOf(BusinessHome, BusinessStarred, BusinessProfile)
 
+        fun adminItems() = listOf(AdminHome)
+
         /**
          * Determina si la ruta proporcionada coincide con cualquier ruta de elemento de navegación inferior.
          *
@@ -112,8 +131,22 @@ sealed class BottomNavBar(
          * @return True si la ruta coincide con un elemento de navegación inferior, false en caso contrario
          */
         fun isBottomNavRoute(route: String): Boolean {
-            return route == Routes.HOME || route == Routes.INTERVIEW || route == Routes.PROFILE || route == Routes.SAVED ||
-                    route == Routes.BUSINESS_HOME || route == Routes.STARRED || route == Routes.BUSINESS_PROFILE
+            return route in listOf(
+                // Student routes
+                Routes.HOME, Routes.INTERVIEW, Routes.PROFILE, Routes.SAVED,
+                // Business routes
+                Routes.BUSINESS_HOME, Routes.STARRED, Routes.BUSINESS_PROFILE,
+                // Admin routes
+//                Routes.ADMIN_HOME, Routes.ADMIN_USERS, Routes.ADMIN_REPORTS, Routes.ADMIN_PROFILE
+            )
         }
+        fun getItemsForRole(role: com.example.bravia.domain.model.UserRole): List<BottomNavBar> {
+            return when (role) {
+                com.example.bravia.domain.model.UserRole.STUDENT -> items()
+                com.example.bravia.domain.model.UserRole.BUSINESS -> businessItems()
+                com.example.bravia.domain.model.UserRole.ADMIN -> adminItems()
+            }
+        }
+
     }
 }
