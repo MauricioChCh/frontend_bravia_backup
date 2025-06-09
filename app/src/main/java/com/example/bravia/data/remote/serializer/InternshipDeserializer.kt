@@ -20,10 +20,34 @@ class InternshipDeserializer : JsonDeserializer<InternshipDTO> {
     ): InternshipDTO {
         val obj = json.asJsonObject
 
-        fun getString(name: String): String = obj.get(name)?.asString ?: ""
-        fun getLong(name: String): Long = try { obj.get(name)?.asLong ?: 0L } catch (_: Exception) { 0L }
-        fun getDouble(name: String): Double = try { obj.get(name)?.asDouble ?: 0.0 } catch (_: Exception) { 0.0 }
-        fun getDate(name: String): Date = try { dateFormat.parse(obj.get(name)?.asString ?: "") ?: Date() } catch (_: Exception) { Date() }
+        fun getString(name: String): String {
+            val element = obj.get(name)
+            return if (element != null && !element.isJsonNull) element.asString else ""
+        }
+
+        fun getLong(name: String): Long {
+            val element = obj.get(name)
+            return if (element != null && !element.isJsonNull) element.asLong else 0L
+        }
+
+        fun getDouble(name: String): Double {
+            val element = obj.get(name)
+            return if (element != null && !element.isJsonNull) element.asDouble else 0.0
+        }
+
+        fun getDate(name: String): Date {
+            val element = obj.get(name)
+            return if (element != null && !element.isJsonNull) {
+                try {
+                    dateFormat.parse(element.asString) ?: Date()
+                } catch (_: Exception) {
+                    Date()
+                }
+            } else {
+                Date()
+            }
+        }
+
 
         return InternshipDTO(
             id = getLong("id") ,

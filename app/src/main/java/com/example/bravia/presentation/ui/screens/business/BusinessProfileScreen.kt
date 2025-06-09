@@ -305,30 +305,30 @@ fun BusinessProfileScreen(
                     }
                 }
 
-                DivisionSection()
-
-                ProfileSection(title = "Recruiter Information") {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 5.dp)
-                    ) {
-                        Text(
-                            text = "${company?.firstName} ${company?.lastName}",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                        )
-                        Text(
-                            text = company?.email ?: "No email provided",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.Gray,
-                            fontSize = 14.sp,
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(15.dp))
+//                DivisionSection()
+//
+//                ProfileSection(title = "Recruiter Information") {
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(start = 5.dp)
+//                    ) {
+//                        Text(
+//                            text = "${company?.firstName} ${company?.lastName}",
+//                            style = MaterialTheme.typography.bodyMedium,
+//                            fontWeight = FontWeight.Bold,
+//                            fontSize = 16.sp,
+//                        )
+//                        Text(
+//                            text = company?.email ?: "No email provided",
+//                            style = MaterialTheme.typography.bodySmall,
+//                            color = Color.Gray,
+//                            fontSize = 14.sp,
+//                        )
+//                    }
+//                }
+//
+//                Spacer(modifier = Modifier.height(15.dp))
 
             }
         }

@@ -1,5 +1,6 @@
 package com.example.bravia.domain.repository
 
+import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.NewInternship
 

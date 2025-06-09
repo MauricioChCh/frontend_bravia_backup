@@ -2,6 +2,7 @@ package com.example.bravia.data.repository
 
 import com.example.bravia.data.mapper.InternshipMapper
 import com.example.bravia.data.remote.InternshipRemoteDataSource
+import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.NewInternship
 import com.example.bravia.domain.repository.InternshipRepository
@@ -82,16 +83,17 @@ class InternshipRepositoryImpl @Inject constructor(
         return safeRepositoryCall {
             val dtoResult = remoteDataSource.getAllBusinessInternships(businessId)
 
-            // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
+                // ✅ Aquí SÍ se devuelve la lista
                 dtoResult.getOrNull()?.map { dto ->
-                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                    mapper.mapToDomain(dto)
                 } ?: emptyList()
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internships")
             }
         }
     }
+
 
     override suspend fun getBusinessInternshipById(businessId: Long, internshipId: Long): Result<Internship?> {
         return safeRepositoryCall {

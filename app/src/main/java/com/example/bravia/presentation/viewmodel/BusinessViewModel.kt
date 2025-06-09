@@ -32,7 +32,7 @@ sealed class BusinessState {
 class BusinessViewModel @Inject constructor(
     private val getAllBusinessInternshipUseCase: GetAllBusinessInternshipUseCase,
     private val getAllBusinessLocationsUseCase: GetAllBusinessLocationsUseCase,
-    private val BusinessNewInternshipUseCase: BusinessNewInternshipUseCase,
+    private val businessNewInternshipUseCase: BusinessNewInternshipUseCase,
     private val getCompanyByIdUseCase: GetCompanyByIdUseCase,
 ) : ViewModel() {
 
@@ -50,8 +50,42 @@ class BusinessViewModel @Inject constructor(
     )
     val modalities: StateFlow<List<String>> = _modalities
 
+    private val _internships = MutableStateFlow<List<Internship>>(emptyList())
+    val internships: StateFlow<List<Internship>> = _internships.asStateFlow()
+
+    fun fetchAllBusinessInternships(businessId: Long) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllBusinessInternshipUseCase(businessId)
+            }.onSuccess { result ->
+                _internships.value = result.getOrNull() ?: emptyList()
+                _businessState.value = if (result.isSuccess) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch internships")
+            }
+        }
+    }
+
+    fun bookmarkInternship(internshipId: Long, isBookmarked: Boolean) {
+//        viewModelScope.launch {
+//            _businessState.value = BusinessState.Loading
+//            runCatching {
+//                BookmarkInternshipUseCase(internshipId, isBookmarked)
+//            }.onSuccess {
+//                _businessState.value = BusinessState.Success
+//            }.onFailure { exception ->
+//                _businessState.value = BusinessState.Error(exception.message ?: "Failed to bookmark internship")
+//            }
+//        }
+    }
 
 
+    // This is for profile
     fun fetchCompanyById(companyId: Long) {
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
@@ -92,7 +126,7 @@ class BusinessViewModel @Inject constructor(
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
             runCatching {
-                BusinessNewInternshipUseCase(internship)
+                businessNewInternshipUseCase(internship)
             }.onSuccess { result ->
                 if (result.isSuccess) {
                     _businessState.value = BusinessState.Success
