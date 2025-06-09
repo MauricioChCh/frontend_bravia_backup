@@ -17,6 +17,7 @@ data class InternshipDTO(
     val imageUrl: String,
     val duration: String,
     val salary: Double,
+    val isBookmarked: Boolean,
     val locationFullName: String?,
 )
 

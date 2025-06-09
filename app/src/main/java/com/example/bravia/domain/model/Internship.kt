@@ -17,7 +17,7 @@ data class Internship(
     val requirements: String,
     val activities: String,
     val link: String,
-    val isMarked: Boolean = false,
+    val isMarked: Boolean,
 )
 
 data class NewInternship(

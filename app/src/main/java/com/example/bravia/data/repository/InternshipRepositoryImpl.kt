@@ -29,7 +29,7 @@ class InternshipRepositoryImpl @Inject constructor(
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
                 dtoResult.getOrNull()?.map { dto ->
-                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                    mapper.mapToDomain(dto)
                 } ?: emptyList()
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internships")
@@ -49,7 +49,7 @@ class InternshipRepositoryImpl @Inject constructor(
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
                 dtoResult.getOrNull()?.let { dto ->
-                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                    mapper.mapToDomain(dto)
                 }
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internship")
@@ -108,7 +108,7 @@ class InternshipRepositoryImpl @Inject constructor(
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
                 dtoResult.getOrNull()?.let { dto ->
-                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                    mapper.mapToDomain(dto)
                 }
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internship")
@@ -139,7 +139,7 @@ class InternshipRepositoryImpl @Inject constructor(
 
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
-                dtoResult.getOrNull()?.let { mapper.mapToDomain(it, false) }
+                dtoResult.getOrNull()?.let { mapper.mapToDomain(it) }
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error creating internship")
             }
