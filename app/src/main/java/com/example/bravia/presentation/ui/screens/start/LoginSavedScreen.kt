@@ -38,17 +38,17 @@ import com.example.bravia.presentation.viewmodel.LoginViewModel
 
 
 
-@Preview(showBackground = true)
+
 @Composable
 fun PreviewLoginScreen() {
     val fakeNavController = rememberNavController() // Crea un NavController de prueba
 
     BravIATheme {
-        LoginSavedScreen(
-            navController = fakeNavController, // Usa el NavController de prueba
-            paddingValues = PaddingValues(0.dp),
-            loginViewModel = remember { LoginViewModel() } // Simulación del ViewModel
-        )
+//        LoginSavedScreen(
+//            navController = fakeNavController, // Usa el NavController de prueba
+//            paddingValues = PaddingValues(0.dp),
+//            loginViewModel = remember { LoginViewModel } // Simulación del ViewModel
+//        )
     }
 }
 

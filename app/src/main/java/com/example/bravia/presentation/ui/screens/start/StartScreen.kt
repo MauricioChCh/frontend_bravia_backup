@@ -20,17 +20,20 @@ import com.example.bravia.presentation.ui.theme.BravIATheme
 import com.example.bravia.presentation.ui.theme.Typography
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import kotlinx.coroutines.delay
+//import androidx.hilt.navigation.compose.hiltViewModel
 
-@Preview(showBackground = true)
+
 @Composable
 fun PreviewStartScreen() {
     val fakeNavController = rememberNavController() // Crea un NavController de prueba
+//    val loginViewModel: LoginViewModel = hiltViewModel()
+
 
     BravIATheme {
         StartScreen(
-            navController = fakeNavController, // Usa el NavController de prueba
+            navController = fakeNavController,
             paddingValues = PaddingValues(0.dp),
-            loginViewModel = remember { LoginViewModel() } // Simulación del ViewModel
+//            loginViewModel = LoginViewModel
         )
     }
 }
@@ -39,7 +42,7 @@ fun PreviewStartScreen() {
 fun StartScreen(
     navController: NavController,
     paddingValues: PaddingValues,
-    loginViewModel: LoginViewModel
+//    loginViewModel: LoginViewModel
 ) {
     Box(
         modifier = Modifier
