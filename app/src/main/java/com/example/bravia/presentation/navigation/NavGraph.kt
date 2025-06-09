@@ -53,8 +53,8 @@ fun NavGraph(
     loginViewModel: LoginViewModel,
     businessViewModel: BusinessViewModel,
 ) {
-//    NavHost(navController = navController, startDestination = NavRoutes.Start.ROUTE) {
-    NavHost(navController = navController, startDestination = NavRoutes.BusinessHome.ROUTE) {
+    NavHost(navController = navController, startDestination = NavRoutes.Start.ROUTE) {
+//    NavHost(navController = navController, startDestination = NavRoutes.BusinessHome.ROUTE) {
         // Business screens=====================================
         composable(
             route = NavRoutes.BusinessHome.ROUTE

@@ -89,8 +89,10 @@ fun HomeScreen(
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(ThemeDefaults.searchFieldShape),
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Theme.colors.primary,
-                    unfocusedContainerColor = Theme.colors.primary
+                    focusedContainerColor = Theme.colors.onPrimary,
+                    unfocusedContainerColor = Theme.colors.background,
+                    focusedIndicatorColor = Theme.colors.primary, // Correct parameter for focused border
+                    unfocusedIndicatorColor = Theme.colors.onBackground // Correct parameter for unfocused border
                 )
             )
 

@@ -51,7 +51,7 @@ fun LoginScreen(
             ) {
 
 
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge*3))
+                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge*2))
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
