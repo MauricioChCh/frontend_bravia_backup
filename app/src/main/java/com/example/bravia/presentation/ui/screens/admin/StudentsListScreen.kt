@@ -1,6 +1,5 @@
 package com.example.bravia.presentation.ui.screens.admin
 
-package com.example.bravia.presentation.ui.screens.admin
 
 import android.util.Log
 import androidx.compose.foundation.background

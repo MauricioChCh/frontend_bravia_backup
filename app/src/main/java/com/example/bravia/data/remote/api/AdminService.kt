@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface AdminService {
 
-    @GET("companies")
+    @GET("admin/companies")
     suspend fun getAllCompanies(): Response<List<CompanyResponseDTO>>
 
 
