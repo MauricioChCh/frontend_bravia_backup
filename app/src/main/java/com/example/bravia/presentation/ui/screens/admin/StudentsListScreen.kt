@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.components.cardsAnditems.CompanyCard
+import com.example.bravia.presentation.ui.components.cardsAnditems.StudentCard
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.ThemeHelper
 import com.example.bravia.presentation.viewmodel.AdminState
@@ -45,24 +46,24 @@ fun StudentListScreen(
     navController: NavController,
     viewModel: AdminViewModel
 ) {
-    val TAG = "CompanyListScreen"
+    val TAG = "StudentListScreen"
 
     var searchText by remember { mutableStateOf("") }
-    val companies by viewModel.companies.collectAsState()
+    val students by viewModel.students.collectAsState()
     val adminState by viewModel.adminState.collectAsState()
 
     var isRefreshing by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        Log.d(TAG, "LaunchedEffect: fetchAllCompanies() called")
-        viewModel.fetchAllCompanies()
+        Log.d(TAG, "LaunchedEffect: fetchAllStudents() called")
+        viewModel.fetchAllStudents()
     }
 
-    LaunchedEffect(companies) {
-        Log.d(TAG, "Companies list updated: size = ${companies.size}")
-        companies.forEach { company ->
-            Log.d(TAG, "Company: id=${company.id}, name=${company.name}")
+    LaunchedEffect(students) {
+        Log.d(TAG, "Students list updated: size = ${students.size}")
+        students.forEach { students ->
+            Log.d(TAG, "Student: id=${students.id}, name=${students.userInput.firstName}")
         }
     }
 
@@ -79,7 +80,7 @@ fun StudentListScreen(
                 value = searchText,
                 onValueChange = { searchText = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Search companies...") },
+                placeholder = { Text("Search students...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(ThemeDefaults.searchFieldShape),
                 colors = TextFieldDefaults.colors(
@@ -94,12 +95,12 @@ fun StudentListScreen(
         when (adminState) {
             AdminState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Loading companies...")
+                    Text("Loading students...")
                 }
             }
 
             AdminState.Success -> {
-                if (companies.isEmpty()) {
+                if (students.isEmpty()) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -107,7 +108,7 @@ fun StudentListScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "No companies available",
+                            text = "No students available",
                             style = ThemeHelper.typography.bodyLarge,
                             color = ThemeHelper.colors.onSurfaceVariant,
                             textAlign = TextAlign.Center
@@ -121,10 +122,10 @@ fun StudentListScreen(
                             .padding(bottom = 40.dp)
                     ) {
                         PullToRefreshLazyColumn(
-                            items = companies,
-                            content = { company ->
-                                CompanyCard(
-                                    company = company,
+                            items = students,
+                            content = { student ->
+                                StudentCard(
+                                    student = student,
                                     onClick = {
                                         navController.navigate(NavRoutes.BusinessProfile)
                                     }
@@ -135,7 +136,7 @@ fun StudentListScreen(
                             onRefresh = {
                                 scope.launch {
                                     isRefreshing = true
-                                    viewModel.fetchAllCompanies()
+                                    viewModel.fetchAllStudents()
                                     isRefreshing = false
                                 }
                             }
@@ -146,7 +147,7 @@ fun StudentListScreen(
 
             AdminState.Empty -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No companies available")
+                    Text("No students available")
                 }
             }
 

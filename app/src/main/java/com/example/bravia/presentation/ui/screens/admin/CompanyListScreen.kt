@@ -1,6 +1,5 @@
 package com.example.bravia.presentation.ui.screens.admin
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,16 +53,9 @@ fun CompanyListScreen(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        Log.d(TAG, "LaunchedEffect: fetchAllCompanies() called")
         viewModel.fetchAllCompanies()
     }
 
-    LaunchedEffect(companies) {
-        Log.d(TAG, "Companies list updated: size = ${companies.size}")
-        companies.forEach { company ->
-            Log.d(TAG, "Company: id=${company.id}, name=${company.name}")
-        }
-    }
 
     Column(
         modifier = Modifier.fillMaxSize()
