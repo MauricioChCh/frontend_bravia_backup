@@ -5,7 +5,7 @@ import com.example.bravia.data.remote.dto.InterestDTO
 import java.lang.reflect.Type
 
 
-class InterestDeselializer : JsonDeserializer<InterestDTO> {
+class InterestDeserializer : JsonDeserializer<InterestDTO> {
     override fun deserialize(
         json: JsonElement,
         typeOfT: Type,
@@ -20,8 +20,7 @@ class InterestDeselializer : JsonDeserializer<InterestDTO> {
         }
 
         val name = jsonObject.get("name").asString
-        val category = jsonObject.get("category").asString
 
-        return InterestDTO(id, name, category)
+        return InterestDTO(id, name)
     }
 }

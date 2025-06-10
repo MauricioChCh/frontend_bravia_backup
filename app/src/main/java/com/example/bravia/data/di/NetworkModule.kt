@@ -9,7 +9,7 @@ import com.example.bravia.data.remote.api.StudentAreaService
 import com.example.bravia.data.remote.dto.InterestDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.interceptor.AuthInterceptor
-import com.example.bravia.data.remote.serializer.InterestDeselializer
+import com.example.bravia.data.remote.serializer.InterestDeserializer
 import com.example.bravia.data.remote.serializer.InternshipDeserializer
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-//    val BASE_URL = "http://192.168.100.96:8080/api/v1/"
+    val BASE_URL = "http://192.168.100.96:8080/api/v1/"
 
-    private const val BASE_URL = "https://bravia-app-v01-bbd26053b419.herokuapp.com/api/v1/"
+//    private const val BASE_URL = "https://bravia-app-v01-bbd26053b419.herokuapp.com/api/v1/"
     private const val DATE_FORMAT = "yyyy-MM-dd"
 
     /**
@@ -42,7 +42,7 @@ object NetworkModule {
     fun provideGson(): Gson = GsonBuilder()
         .setDateFormat(DATE_FORMAT)
         .registerTypeAdapter(InternshipDTO::class.java, InternshipDeserializer())
-        .registerTypeAdapter(InterestDTO::class.java, InterestDeselializer())
+        .registerTypeAdapter(InterestDTO::class.java, InterestDeserializer())
         .create()
     //TODO meter esto .registerTypeAdapter(InterestDTO::class.java, InterestDeserializer()) a ver si funciona
 

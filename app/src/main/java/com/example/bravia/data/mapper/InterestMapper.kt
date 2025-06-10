@@ -24,8 +24,7 @@ class InterestMapper @Inject constructor() {
     fun mapToDomain(interestDTO: InterestDTO): Interest {
         return Interest(
             id = interestDTO.id,
-            name = interestDTO.name,
-            category = interestDTO.category
+            name = interestDTO.name
         )
     }
 
@@ -38,8 +37,7 @@ class InterestMapper @Inject constructor() {
     fun mapToDto(interest: Interest): InterestDTO {
         return InterestDTO(
             id = interest.id,
-            name = interest.name,
-            category = interest.category
+            name = interest.name
         )
     }
 }

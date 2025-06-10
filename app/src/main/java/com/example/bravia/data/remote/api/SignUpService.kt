@@ -31,7 +31,7 @@ interface SignUpService {
      *
      * @return [Response] containing a list of [InterestDTO] objects if successful
      */
-    @GET("signup/1/interests")
+    @GET("users/signup/interests")
     suspend fun getAllInterests(): Response<List<InterestDTO>>
 
     /**

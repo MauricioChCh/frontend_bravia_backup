@@ -50,15 +50,17 @@ fun InterestsScreen(
     paddingValues: PaddingValues,
     signupViewModel: SignupViewModel
 ) {
+
     var interests by remember { mutableStateOf<List<Interest>>(emptyList() ) }
 
-    signupViewModel.findAllInterests()
 
     val listOfInterests = signupViewModel.listOfInterest.collectAsState()
 
     LaunchedEffect(listOfInterests.value) {
+        signupViewModel.findAllInterests()
         interests = listOfInterests.value
     }
+
 
     /*
      * State to hold the selected interests.

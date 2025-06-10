@@ -165,7 +165,7 @@ fun RedirectToLogin(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 50.dp),
-        onClick = { navController.navigate("login") },
+        onClick = { navController.navigate("signIn") },
         enabled = true,
         colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary)
 
