@@ -10,9 +10,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +27,13 @@ fun <T> PullToRefreshLazyColumn(
     lazyListState: LazyListState = rememberLazyListState()
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
-
+//    if (pullToRefreshState.isAnimating) {
+//        LaunchedEffect(true) {
+//            delay(1000)
+//            onRefresh()
+//            pullToRefreshState.animateToHidden()
+//        }
+//    }
     PullToRefreshBox(
         state = pullToRefreshState,
         modifier = modifier.fillMaxSize(),

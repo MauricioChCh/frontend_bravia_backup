@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Facebook
-import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Web
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +27,7 @@ import androidx.navigation.NavController
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
-import com.example.bravia.presentation.ui.theme.Typography
+import com.example.bravia.presentation.ui.theme.ThemeHelper as Theme
 
 @Composable
 fun LoginScreen(
@@ -50,19 +50,18 @@ fun LoginScreen(
                     .padding(ThemeDefaults.screenPadding),
             ) {
 
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
+
+                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge*3))
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = "BravIA",
                     textAlign = TextAlign.Center,
-                    style = Typography.displayLarge
+                    style = Theme.typography.displayLarge
                 )
 
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
+
+                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge*2))
 
                 Button(
                     onClick = {
@@ -73,11 +72,11 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 80.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    colors = ButtonDefaults.buttonColors(containerColor = Theme.colors.primary),
                 ) {
                     Text(
                         text = "Sign in",
-                        style = Typography.headlineSmall,
+                        style = Theme.typography.headlineSmall,
                     )
                 }
 
@@ -97,16 +96,15 @@ fun LoginScreen(
                 ) {
                     Text(
                         text = "Create account",
-                        style = Typography.headlineSmall
+                        style = Theme.typography.headlineSmall
                     )
                 }
 
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
-                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
+                Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge*3))
 
                 Text(
                     text = "Or continue with:",
-                    style = Typography.displaySmall
+                    style = Theme.typography.displaySmall
                 )
 
                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
@@ -124,21 +122,23 @@ fun LoginScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = Color(67, 119, 238)),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 30.dp)
+                            .padding(horizontal = 4.dp)
                     ) {
                         Row {
 
                             Icon(
                                 imageVector = Icons.Default.Facebook, // Icono predefinido
                                 contentDescription = "Icono Facebook",
-                                modifier = Modifier.size(24.dp) // Tamaño del icono
+                                modifier = Modifier
+                                    .size(25.dp) // Tamaño del icono
+                                    .align(Alignment.CenterVertically),
                             )
 
                             Spacer(modifier = Modifier.size(24.dp))
 
                             Text(
                                 text = "Continue with facebook",
-                                style = Typography.headlineSmall,
+                                style = Theme.typography.headlineSmall,
                                 color = Color.White
                             )
 
@@ -152,22 +152,29 @@ fun LoginScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = Color(104, 104, 104)),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 30.dp)
+                            .padding(horizontal = 4.dp)
                     ) {
-                        Row {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+
+                        )  {
 
                             Icon(
-                                imageVector = Icons.Default.Image, // Icono predefinido
-                                contentDescription = "Icono Favorito",
-                                modifier = Modifier.size(24.dp) // Tamaño del icono
+                                imageVector = Icons.Default.Web, // Icono predefinido
+                                contentDescription = "Icono de google",
+                                modifier = Modifier
+                                    .size(25.dp) // Tamaño del icono
+                                    .align(Alignment.CenterVertically),
                             )
 
                             Spacer(modifier = Modifier.size(24.dp))
 
                             Text(
                                 text = "Continue with google",
-                                style = Typography.headlineSmall,
-                                color = Color.White
+                                style = Theme.typography.headlineSmall,
+                                color = Color.White,
+
                             )
 
                         }

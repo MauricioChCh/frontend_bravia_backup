@@ -13,6 +13,9 @@ import androidx.navigation.navArgument
 import com.example.bravia.presentation.navigation.BottomNavBar
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.screens.business.BusinessHomeScreen
+import com.example.bravia.presentation.ui.screens.business.BusinessInternshipDetailScreen
+import com.example.bravia.presentation.ui.screens.business.BusinessNewInternshipScreen
+import com.example.bravia.presentation.ui.screens.business.BusinessProfileScreen
 import com.example.bravia.presentation.ui.screens.business.BusinessStarredScreen
 import com.example.bravia.presentation.ui.screens.student.HomeScreen
 import com.example.bravia.presentation.ui.screens.start.InterestsScreen
@@ -62,12 +65,48 @@ fun NavGraph(
             )
         }
 
+        composable (
+            route = NavRoutes.BusinessInternshipDetail.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.BusinessInternshipDetail.ARG_INTERNSHIP_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backSTackEntry ->
+            val internshipId = backSTackEntry.arguments?.getLong(NavRoutes.BusinessInternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
+            BusinessInternshipDetailScreen(
+                navController = navController,
+                internshipId = internshipId,
+                paddingValues = PaddingValues(0.dp),
+                viewModel = businessViewModel
+            )
+        }
+
         composable(
             route = NavRoutes.BusinessStarred.ROUTE
         ) {
             BusinessStarredScreen(
                 navController = navController,
                 businessViewModel = businessViewModel
+            )
+        }
+
+        composable(
+            route = NavRoutes.BusinessProfile.ROUTE
+        ) {
+            BusinessProfileScreen(
+                navController = navController,
+                businessViewModel = businessViewModel,
+                paddingValues = PaddingValues(0.dp)
+            )
+        }
+
+        composable(
+            route = NavRoutes.BusinessNewInternship.ROUTE
+        ) {
+            BusinessNewInternshipScreen(
+                navController = navController,
+                businessViewModel = businessViewModel,
             )
         }
 
@@ -98,7 +137,7 @@ fun NavGraph(
             StartScreen(
                 navController = navController,
                 paddingValues = paddingValues,
-                loginViewModel = loginViewModel
+//                loginViewModel = loginViewModel
             )
         }
 

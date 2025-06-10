@@ -26,6 +26,7 @@ sealed class BottomNavBar(
         const val PROFILE = "profile"
         const val BUSINESS_HOME = "businessHome"
         const val STARRED = "businessStarred"
+        const val BUSINESS_PROFILE = "businessProfile"
     }
 
     /**
@@ -88,6 +89,12 @@ sealed class BottomNavBar(
         Icons.Filled.Star
     )
 
+    data object BusinessProfile : BottomNavBar(
+        Routes.BUSINESS_PROFILE,
+        R.string.profile,
+        Icons.Filled.Person
+    )
+
     companion object {
         /**
          * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
@@ -96,7 +103,7 @@ sealed class BottomNavBar(
         /**
          * Devuelve una lista de todos los elementos de navegación inferior para mostrar en la barra de navegación.
          */
-        fun businessItems() = listOf(BusinessHome, BusinessStarred)
+        fun businessItems() = listOf(BusinessHome, BusinessStarred, BusinessProfile)
 
         /**
          * Determina si la ruta proporcionada coincide con cualquier ruta de elemento de navegación inferior.
@@ -106,7 +113,7 @@ sealed class BottomNavBar(
          */
         fun isBottomNavRoute(route: String): Boolean {
             return route == Routes.HOME || route == Routes.INTERVIEW || route == Routes.PROFILE || route == Routes.SAVED ||
-                    route == Routes.BUSINESS_HOME || route == Routes.STARRED
+                    route == Routes.BUSINESS_HOME || route == Routes.STARRED || route == Routes.BUSINESS_PROFILE
         }
     }
 }

@@ -2,7 +2,9 @@ package com.example.bravia.data.repository
 
 import com.example.bravia.data.mapper.InternshipMapper
 import com.example.bravia.data.remote.InternshipRemoteDataSource
+import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.domain.model.Internship
+import com.example.bravia.domain.model.NewInternship
 import com.example.bravia.domain.repository.InternshipRepository
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -27,7 +29,7 @@ class InternshipRepositoryImpl @Inject constructor(
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
                 dtoResult.getOrNull()?.map { dto ->
-                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                    mapper.mapToDomain(dto)
                 } ?: emptyList()
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internships")
@@ -47,7 +49,7 @@ class InternshipRepositoryImpl @Inject constructor(
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
                 dtoResult.getOrNull()?.let { dto ->
-                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                    mapper.mapToDomain(dto)
                 }
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internship")
@@ -61,8 +63,11 @@ class InternshipRepositoryImpl @Inject constructor(
      * @param id The ID of the internship to bookmark.
      * @param isBookmarked Whether the internship should be bookmarked.
      */
-    override suspend fun bookmarkInternship(id: Long, isBookmarked: Boolean) {
-        bookmarkedInternships[id] = isBookmarked
+    override suspend fun bookmarkInternship(internshipId: Long, userId: Long, isBookmarked: Boolean) : Result<Unit> {
+        return safeRepositoryCall {
+            // Llama al DataSource para realizar la operación de marcador
+            remoteDataSource.bookmarkInternship(internshipId, userId, isBookmarked)
+        }
     }
 
     /**
@@ -77,14 +82,14 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllBusinessInternships(id: Long): Result<List<Internship>> {
+    override suspend fun getAllBusinessInternships(businessId: Long): Result<List<Internship>> {
         return safeRepositoryCall {
-            val dtoResult = remoteDataSource.getAllBusinessInternships(id)
+            val dtoResult = remoteDataSource.getAllBusinessInternships(businessId)
 
-            // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
+                // ✅ Aquí SÍ se devuelve la lista
                 dtoResult.getOrNull()?.map { dto ->
-                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                    mapper.mapToDomain(dto)
                 } ?: emptyList()
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internships")
@@ -92,20 +97,36 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getBusinessInternshipById(id: Long): Result<Internship?> {
+
+    override suspend fun getBusinessInternshipById(businessId: Long, internshipId: Long): Result<Internship?> {
         return safeRepositoryCall {
-            val dtoResult = remoteDataSource.getBusinessInternshipById(id)
+            val dtoResult = remoteDataSource.getBusinessInternshipById(businessId, internshipId)
 
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {
                 dtoResult.getOrNull()?.let { dto ->
-                    mapper.mapToDomain(dto, bookmarkedInternships[dto.id] ?: false)
+                    mapper.mapToDomain(dto)
                 }
             } else {
                 throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching internship")
             }
         }
     }
+
+    override suspend fun newInternship(internship: NewInternship): Result<Internship?> {
+        return safeRepositoryCall {
+            val dto = mapper.mapToNewDTO(internship)
+            val dtoResult = remoteDataSource.newInternship(dto)
+
+            // Desenvuelve el Result del DataSource
+            if (dtoResult.isSuccess) {
+                dtoResult.getOrNull()?.let { mapper.mapToDomain(it) }
+            } else {
+                throw dtoResult.exceptionOrNull() ?: Exception("Unknown error creating internship")
+            }
+        }
+    }
+
 
     /**
      * Helper function to standardize error handling in repository methods.
@@ -122,6 +143,7 @@ class InternshipRepositoryImpl @Inject constructor(
             Result.failure(Exception("Error in repository operation: ${e.message}"))
         }
     }
+
 
 
 }

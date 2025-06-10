@@ -10,8 +10,22 @@ sealed class NavRoutes {
         const val ROUTE = "businessHome"
     }
 
+    data object BusinessInternshipDetail : NavRoutes() {
+        const val ROUTE = "businessInternshipDetail/{internshipId}"
+        const val ARG_INTERNSHIP_ID = "internshipId"
+        fun createRoute(internshipId: Long) = "businessInternshipDetail/$internshipId"
+    }
+
     data object BusinessStarred : NavRoutes() {
         const val ROUTE = "businessStarred"
+    }
+
+    data object BusinessProfile : NavRoutes() {
+        const val ROUTE = "businessProfile"
+    }
+
+    data object BusinessNewInternship : NavRoutes() {
+        const val ROUTE = "businessNewInternship"
     }
 
     //START=====================================
@@ -47,7 +61,6 @@ sealed class NavRoutes {
     data object InternshipDetail : NavRoutes() {
         const val ROUTE = "internshipDetail/{internshipId}"
         const val ARG_INTERNSHIP_ID = "internshipId"
-
         fun createRoute(internshipId: Long) = "internshipDetail/$internshipId"
     }
 

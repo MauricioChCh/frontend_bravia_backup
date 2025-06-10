@@ -69,7 +69,7 @@ fun InternshipCard(
         ) {
             // Imagen de la empresa (placeholder)
             Box(
-                //TODO: HAcer que sea una foto y si no tiene un color aleatoreo
+                //TODO: Hacer que sea una foto y si no tiene un color aleatoreo
                 modifier = Modifier
                     .size(68.dp)
                     .clip(CircleShape)
@@ -107,12 +107,7 @@ fun InternshipCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = internship.location,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                    text = internship.percentage,
+                    text = internship.country + ", " + internship.city,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

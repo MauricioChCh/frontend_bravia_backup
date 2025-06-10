@@ -43,7 +43,8 @@ fun BottomNavigationBar(navController: NavController, route: String? = null) {
                 contentColor = MaterialTheme.colorScheme.onSurface
             ) {
                 // Crear un elemento de navegación para cada item definido
-                if (route == "businessHome" || route == "businessStarred") {
+                if (route?.contains("business") == true) {
+//                if (route == "businessHome" || route == "businessStarred" || route == "businessProfile" || route == "businessInternshipDetail") {
                     BottomNavBar.businessItems().forEach { item ->
                         NavigationBarItem(
                             icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },

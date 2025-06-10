@@ -40,6 +40,7 @@ import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCard
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
+import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -48,176 +49,107 @@ fun BusinessStarredScreen(
     navController: NavController,
     businessViewModel: BusinessViewModel
 ) {
-    Log.d("BusinessHomeScreen", "Recomposición de BusinessHomeScreen")
-
-    LaunchedEffect(Unit) {
-        businessViewModel.findAllBusinessOwnerInternship()
-        businessViewModel.findAllBusinessInternshipsStarred() // Cambia el ID según sea necesario
-        businessViewModel.loadBookmarkedInternships()
-    }
-
-    val bookmarkedInternships by businessViewModel.bookmarkedInternships.collectAsState()
-    val studentInternships by businessViewModel.studentInternships.collectAsState()
-    val internships by businessViewModel.internshipList.collectAsState()
-
-    val tabs = listOf("Per Internship", "Students")
-    val pagerState = rememberPagerState(pageCount = { tabs.size })
-    val coroutineScope = rememberCoroutineScope()
-
-
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Column (
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary),
-
-            ) {
-
-            Text(
-                text = "Starred",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 35.sp,
-                modifier = Modifier
-                    .padding(ThemeDefaults.screenPadding)
-                    .padding(top = 40.dp)
-            )
-
-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
-
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                tabs.forEachIndexed { index, title ->
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .padding(end = 26.dp)
-                            .clickable {
-                                coroutineScope.launch {
-                                    pagerState.animateScrollToPage(index)
-                                }
-                            }
-                    ) {
-                        Text(
-                            text = title,
-                            color = if (pagerState.currentPage == index)
-                                MaterialTheme.colorScheme.onPrimary
-                            else
-                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
-                            fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal
-                        )
-
-                        // Only show underline for selected tab
-                        if (pagerState.currentPage == index) {
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Box(
-                                modifier = Modifier
-                                    .width(50.dp)
-                                    .height(1.5.dp)
-                                    .background(MaterialTheme.colorScheme.onPrimary)
-                            )
-                            // Añadir espacio de 6dp después del subrayado
-                            Spacer(modifier = Modifier.height(6.dp))
-                        } else {
-                            // Mantener la alineación con el tab seleccionado
-                            Spacer(modifier = Modifier.height(8.dp)) // 4dp + 2dp + 6dp
-                        }
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
-
-        HorizontalPager(state = pagerState) { page ->
-            businessViewModel.findAllBusinessInternshipsStarred()
-            val internships = if (page == 0) bookmarkedInternships else studentInternships
-                InternshipList(
-                    navController = navController,
-                    internships = internships,
-                    viewModel = businessViewModel,
-                    page = page,
-                    textList = listOf("internships", "students")
-                )
-        }
-
-    }
+//    Log.d("BusinessHomeScreen", "Recomposición de BusinessHomeScreen")
+//
+//    LaunchedEffect(Unit) {
+//        businessViewModel.findAllBusinessOwnerInternship()
+//        businessViewModel.findAllBusinessInternshipsStarred() // Cambia el ID según sea necesario
+//        businessViewModel.loadBookmarkedInternships()
+//    }
+//
+//    val bookmarkedInternships by businessViewModel.bookmarkedInternships.collectAsState()
+//    val studentInternships by businessViewModel.studentInternships.collectAsState()
+//    val internships by businessViewModel.internshipList.collectAsState()
+//
+//    val tabs = listOf("Per Internship", "Students")
+//    val pagerState = rememberPagerState(pageCount = { tabs.size })
+//    val coroutineScope = rememberCoroutineScope()
+//
+//
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//    ) {
+//        Column (
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .background(MaterialTheme.colorScheme.primaryContainer),
+//
+//            ) {
+//
+//            Text(
+//                text = "Starred",
+//                style = MaterialTheme.typography.titleLarge,
+//                color = MaterialTheme.colorScheme.onSurface,
+//                fontSize = 35.sp,
+//                modifier = Modifier
+//                    .padding(ThemeDefaults.screenPadding)
+//                    .padding(top = 40.dp)
+//            )
+//
+//            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
+//
+//            Row(
+//                modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                tabs.forEachIndexed { index, title ->
+//                    Column(
+//                        horizontalAlignment = Alignment.CenterHorizontally,
+//                        modifier = Modifier
+//                            .padding(end = 26.dp)
+//                            .clickable {
+//                                coroutineScope.launch {
+//                                    pagerState.animateScrollToPage(index)
+//                                }
+//                            }
+//                    ) {
+//                        Text(
+//                            text = title,
+//                            color = if (pagerState.currentPage == index)
+//                                MaterialTheme.colorScheme.onPrimary
+//                            else
+//                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+//                            fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal
+//                        )
+//
+//                        // Only show underline for selected tab
+//                        if (pagerState.currentPage == index) {
+//                            Spacer(modifier = Modifier.height(4.dp))
+//                            Box(
+//                                modifier = Modifier
+//                                    .width(50.dp)
+//                                    .height(1.5.dp)
+//                                    .background(MaterialTheme.colorScheme.onPrimary)
+//                            )
+//                            // Añadir espacio de 6dp después del subrayado
+//                            Spacer(modifier = Modifier.height(6.dp))
+//                        } else {
+//                            // Mantener la alineación con el tab seleccionado
+//                            Spacer(modifier = Modifier.height(8.dp)) // 4dp + 2dp + 6dp
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
+//
+//        HorizontalPager(state = pagerState) { page ->
+//            businessViewModel.findAllBusinessInternshipsStarred()
+//            val internships = if (page == 0) bookmarkedInternships else studentInternships
+//                InternshipList(
+//                    navController = navController,
+//                    internships = internships,
+//                    viewModel = businessViewModel,
+//                    page = page,
+//                    textList = listOf("internships", "students")
+//                )
+//        }
+//
+//    }
 }
 
 
 
-@Composable
-fun InternshipList(
-    internships: List<Internship>,
-    navController: NavController,
-    viewModel: BusinessViewModel,
-    page: Int = 0,
-    textList: List<String>
-) {
-    var isRefreshing by remember {
-        mutableStateOf(false)
-    }
-    val scope = rememberCoroutineScope()
-
-    if (internships.isEmpty()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 32.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = if (page == 0) "No ${textList[page]} available" else "No ${textList[page]} available",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    } else {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(ThemeDefaults.screenPadding)
-                .padding(bottom = 40.dp),
-
-
-            ) {
-            PullToRefreshLazyColumn(
-                items = internships,
-                content = { internship ->  // Aquí pasamos la función de renderizado
-                    InternshipCard(
-                        internship = internship,
-                        initialBookmarked = internship.isMarked,
-                        iconA = Icons.Default.StarRate,
-                        iconB = Icons.Default.StarBorder,
-                        onBookmarkChange = { isBookmarked ->
-                            viewModel.markInternship(internship.id, isBookmarked)
-                        },
-                        onClick = {
-                            navController.navigate(
-                                NavRoutes.InternshipDetail.createRoute(internship.id)
-                            )
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
-                },
-                isRefreshing = isRefreshing,
-                onRefresh = {
-                    scope.launch {
-                        isRefreshing = true
-                        internships
-                        delay(2000) // Simulación de carga
-                        isRefreshing = false
-                    }
-                }
-            )
-        }
-
-    }
-}

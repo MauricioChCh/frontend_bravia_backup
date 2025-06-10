@@ -8,6 +8,7 @@ import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.Long
 
 class InternshipDeserializer : JsonDeserializer<InternshipDTO> {
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // adaptá esto al formato real
@@ -19,30 +20,52 @@ class InternshipDeserializer : JsonDeserializer<InternshipDTO> {
     ): InternshipDTO {
         val obj = json.asJsonObject
 
-        fun getString(name: String): String = obj.get(name)?.asString ?: ""
-        fun getLong(name: String): Long = try { obj.get(name)?.asLong ?: 0L } catch (_: Exception) { 0L }
-        fun getDouble(name: String): Double = try { obj.get(name)?.asDouble ?: 0.0 } catch (_: Exception) { 0.0 }
-        fun getDate(name: String): Date = try { dateFormat.parse(obj.get(name)?.asString ?: "") ?: Date() } catch (_: Exception) { Date() }
+        fun getString(name: String): String {
+            val element = obj.get(name)
+            return if (element != null && !element.isJsonNull) element.asString else ""
+        }
+
+        fun getLong(name: String): Long {
+            val element = obj.get(name)
+            return if (element != null && !element.isJsonNull) element.asLong else 0L
+        }
+
+        fun getDouble(name: String): Double {
+            val element = obj.get(name)
+            return if (element != null && !element.isJsonNull) element.asDouble else 0.0
+        }
+
+        fun getDate(name: String): Date {
+            val element = obj.get(name)
+            return if (element != null && !element.isJsonNull) {
+                try {
+                    dateFormat.parse(element.asString) ?: Date()
+                } catch (_: Exception) {
+                    Date()
+                }
+            } else {
+                Date()
+            }
+        }
+
 
         return InternshipDTO(
-            id = getLong("id"),
-            companyId = getLong("companyId"),
+            id = getLong("id") ,
             title = getString("title"),
-            company = getString("company"),
-            description = getString("description"),
-            imageUrl = getString("imageUrl"),
-            location = getString("location"),
-            publicationDate = getDate("publicationDate"),
-            duration = getString("duration"),
-            salary = getDouble("salary"),
+            companyName = getString("companyName"),
+            cityName = getString("cityName"),
+            countryName = getString("countryName"),
             modality = getString("modality"),
             schedule = getString("schedule"),
             requirements = getString("requirements"),
-            percentage = getString("percentage"),
             activities = getString("activities"),
-            contact = getString("contact"),
             link = getString("link"),
-            isMarked = try { obj.get("isMarked")?.asBoolean ?: false } catch (_: Exception) { false }
+            publicationDate = getDate("publicationDate"),
+            imageUrl = getString("imageUrl") ,
+            duration = getString("duration"),
+            salary = getDouble("salary"),
+            isBookmarked = obj.get("isBookmarked")?.asBoolean == true,
+            locationFullName = getString("locationFullName"),
         )
     }
 }

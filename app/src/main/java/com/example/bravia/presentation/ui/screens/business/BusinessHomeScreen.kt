@@ -16,13 +16,20 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,46 +53,34 @@ import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCard
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
+import com.example.bravia.presentation.viewmodel.BusinessState
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
+import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+//@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusinessHomeScreen (
     navController: NavController,
     businessViewModel: BusinessViewModel
 ) {
-    Log.d("BusinessHomeScreen", "Recomposición de BusinessHomeScreen")
 
-    val internship by businessViewModel.selectedInternship.collectAsState()
-    val internships by businessViewModel.internshipList.collectAsState()
-    val draftInternships by businessViewModel.draftInternships.collectAsState()
-
-    var isMarked by remember { mutableStateOf(false) }
+    val internships by businessViewModel.internships.collectAsState()
 
     LaunchedEffect(Unit) {
-        businessViewModel.findAllBusinessOwnerInternship() // Cambia el ID según sea necesario
-        businessViewModel.loadBookmarkedInternships()
-        internship?.let {
-            isMarked = it.isMarked
-        }
+        businessViewModel.fetchAllBusinessInternships(2) // TODO: Cambiar por una variable
+        Log.d("BusinessHomeScreen", "Internships fetched: ${internships.size}")
     }
-
-
-    val tabs = listOf("Published", "Draft")
-    val pagerState = rememberPagerState(pageCount = { tabs.size })
-    val coroutineScope = rememberCoroutineScope()
-
-
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column (
+        Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary),
+                .background(MaterialTheme.colorScheme.secondaryContainer),
 
             ) {
 
@@ -100,65 +95,85 @@ fun BusinessHomeScreen (
             )
 
             Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
-
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                tabs.forEachIndexed { index, title ->
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .padding(end = 26.dp)
-                            .clickable {
-                                coroutineScope.launch {
-                                    pagerState.animateScrollToPage(index)
-                                }
-                            }
-                    ) {
-                        Text(
-                            text = title,
-                            color = if (pagerState.currentPage == index)
-                                MaterialTheme.colorScheme.onPrimary
-                            else
-                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
-                            fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal
-                        )
-
-                        // Only show underline for selected tab
-                        if (pagerState.currentPage == index) {
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Box(
-                                modifier = Modifier
-                                    .width(50.dp)
-                                    .height(1.5.dp)
-                                    .background(MaterialTheme.colorScheme.onPrimary)
-                            )
-                            // Añadir espacio de 6dp después del subrayado
-                            Spacer(modifier = Modifier.height(6.dp))
-                        } else {
-                            // Mantener la alineación con el tab seleccionado
-                            Spacer(modifier = Modifier.height(8.dp)) // 4dp + 2dp + 6dp
-                        }
-                    }
-                }
-            }
         }
 
-        HorizontalPager(state = pagerState) { page ->
-            businessViewModel.findAllBusinessInternshipsStarred()
-            val internships = if (page == 0) internships else draftInternships
-            InternshipList(
-                navController = navController,
-                internships = internships,
-                viewModel = businessViewModel,
-                page = page,
-                textList = listOf("internships", "draft")
-            )
-        }
+        InternshipList(
+            internships = internships,
+            navController = navController,
+            viewModel = businessViewModel,
+            page = 0,
+            textList = emptyList()
+        )
+
     }
 }
 
 
+@Composable
+fun InternshipList(
+    internships: List<Internship>,
+    navController: NavController,
+    viewModel: BusinessViewModel,
+    page: Int = 0,
+    textList: List<String>
+) {
+    var isRefreshing by remember {
+        mutableStateOf(false)
+    }
+    val scope = rememberCoroutineScope()
+
+    if (internships.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 32.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "No internships available",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(ThemeDefaults.screenPadding)
+                .padding(bottom = 40.dp),
 
 
+            ) {
+            PullToRefreshLazyColumn(
+                items = internships,
+                content = { internship ->  // Aquí pasamos la función de renderizado
+                    InternshipCard(
+                        internship = internship,
+                        initialBookmarked = internship.isMarked,
+                        iconA = Icons.Default.StarRate,
+                        iconB = Icons.Default.StarBorder,
+                        onBookmarkChange = { isBookmarked ->
+                            viewModel.bookmarkInternship(internship.id, isBookmarked)
+                        },
+                        onClick = {
+                            viewModel.businessState.value == BusinessState.Loading
+                            navController.navigate(
+                                NavRoutes.BusinessInternshipDetail.createRoute(internship.id)
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
+                },
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    scope.launch {
+                        isRefreshing = true
+                        viewModel.fetchAllBusinessInternships(2) // TODO: change to a variable
+                        isRefreshing = false
+                    }
+                }
+            )
+        }
+    }
+}
