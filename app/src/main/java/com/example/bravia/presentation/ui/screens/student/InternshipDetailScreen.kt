@@ -1,6 +1,7 @@
 // presentation/ui/screens/InternshipDetailScreen.kt
 package com.example.bravia.presentation.ui.screens.student
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,10 +47,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bravia.FlutterDemoActivity
 import com.example.bravia.presentation.ui.screens.shared.ErrorScreen
 import com.example.bravia.presentation.ui.screens.shared.LoadingScreen
 import com.example.bravia.presentation.viewmodel.InternshipState
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
+import androidx.compose.ui.platform.LocalContext
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,6 +64,7 @@ fun InternshipDetailScreen(
     viewModel: InternshipViewModel
 ) {
     val state by viewModel.internshipState.collectAsState()
+    val context = LocalContext.current
 
     when (state) {
         is InternshipState.Loading -> LoadingScreen()
@@ -337,6 +342,24 @@ fun InternshipDetailScreen(
                     ) {
                         Text(
                             text = "Apply",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    Button(
+                        onClick = {
+                            // Aquí lanzaremos la actividad de Flutter
+                            val intent = Intent(context, FlutterDemoActivity::class.java)
+                            context.startActivity(intent)
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSecondary
+                        )
+                    ) {
+                        Text(
+                            text = "Ver demo Flutter",
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(vertical = 4.dp)
                         )

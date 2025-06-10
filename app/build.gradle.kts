@@ -21,12 +21,16 @@ android {
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        //Necesario para Flutter
+        create("profile") {
+            initWith(getByName("debug"))
         }
     }
     compileOptions {
@@ -97,4 +101,13 @@ dependencies {
     implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.androidx.material.icons.extended)
 
+    //Flutter module integrations para ARR
+//    debugImplementation("com.example.descriptions_flutter_module:flutter_debug:1.0")
+//    add("profileImplementation", "com.example.descriptions_flutter_module:flutter_profile:1.0")
+//    releaseImplementation("com.example.descriptions_flutter_module:flutter_release:1.0")
+
+
+    //Flutter
+    implementation(project(":flutter"))
 }
+
