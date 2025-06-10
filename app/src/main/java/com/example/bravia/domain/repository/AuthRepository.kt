@@ -1,6 +1,8 @@
 package com.example.bravia.domain.repository
 
 import com.example.bravia.domain.model.AuthResult
+import com.example.bravia.domain.model.Company
+import com.example.bravia.domain.model.CompanyNew
 
 /**
  * Repository interface for authentication-related operations.
@@ -36,4 +38,7 @@ interface AuthRepository {
      * @return [Result] wrapping the authenticated email or null
      */
     suspend fun getCurrentUser(): Result<String?>
+
+
+    suspend fun registerBusiness(input: CompanyNew): Result<Company>
 }

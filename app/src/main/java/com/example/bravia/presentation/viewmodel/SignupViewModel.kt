@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bravia.domain.model.BusinessArea
 import com.example.bravia.domain.model.College
+import com.example.bravia.domain.model.CompanyNew
 import com.example.bravia.domain.model.Degree
 import com.example.bravia.domain.model.Interest
 import com.example.bravia.domain.usecase.GetAllBusinessAreaUseCase
@@ -15,6 +16,7 @@ import com.example.bravia.domain.usecase.GetAllCollegesUseCase
 import com.example.bravia.domain.usecase.GetAllDegreesUseCase
 import com.example.bravia.domain.usecase.GetAllInterestUseCase
 import com.example.bravia.domain.usecase.GetInterestByIdUseCase
+import com.example.bravia.domain.usecase.RegisterBusinessUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +37,8 @@ class SignupViewModel @Inject constructor(
     private val getInterestByIdUseCase: GetInterestByIdUseCase,
     private val getAllCollegesUseCase: GetAllCollegesUseCase,
     private val getAllDegreesUseCase: GetAllDegreesUseCase,
-    private val getAllBusinessAreasUseCase: GetAllBusinessAreaUseCase
+    private val getAllBusinessAreasUseCase: GetAllBusinessAreaUseCase,
+    private val registerBusinessUseCase: RegisterBusinessUseCase,
 ) : ViewModel() {
 
     private val _listOfCollege = MutableStateFlow<List<College>>(emptyList())
@@ -188,7 +191,33 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    fun signUp() {
-        // TODO: Implement sign up logic here
+    fun registerBusiness () {
+        if (email.isBlank() || password.isBlank() || confirmPassword.isBlank() ||
+            firstName.isBlank() || lastName.isBlank() || companyName.isBlank() ||
+            businessArea.isBlank() ) {
+            _signUpState.value = SignUpState.Empty
+            return
+        }
+
+        _signUpState.value = SignUpState.Loading
+
+        viewModelScope.launch {
+            runCatching {
+                registerBusinessUseCase(
+                    CompanyNew(
+                        email = email,
+                        password = password,
+                        firstName = firstName,
+                        lastName = lastName,
+                        name = companyName,
+                        businessArea = listOfBusinessArea.value.find { it.name == businessArea }!!
+                    )
+                )
+            }.onSuccess {
+                // TODO: Handle success, e.g., navigate to a different screen or show a success message
+            }.onFailure {
+                // TODO: Handle failure, e.g., show an error message
+            }
+        }
     }
 }

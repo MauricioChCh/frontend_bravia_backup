@@ -296,7 +296,8 @@ fun ContinueButton(
                 signupViewModel.onLastNameChange(recruiterLastname)
                 signupViewModel.onCompanyNameChange(companyName)
                 signupViewModel.onBusinessAreaChange(businessAreaOption)
-                navController.navigate("home")
+                signupViewModel.registerBusiness()
+                navController.navigate("login")
             }
         },
         enabled = when (typeAccount) {

@@ -15,8 +15,20 @@ data class CompanyResponseDTO(
     var verified: Boolean,
 )
 
-
 data class TagDTO(
     val id: Long,
     val name: String
+)
+
+data class CompanyNewDTO(
+    var user: UserDTO,
+    var name: String,
+    var businessArea: BusinessAreaDTO,
+)
+
+data class UserDTO(
+    var email: String,
+    var password: String,
+    var firstName: String,
+    var lastName: String,
 )

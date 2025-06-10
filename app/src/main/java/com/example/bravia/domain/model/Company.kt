@@ -17,3 +17,12 @@ data class Company(
     val email: String,
     val verified: Boolean,
 )
+
+data class CompanyNew(
+    val email: String,
+    val password: String,
+    val firstName: String,
+    val lastName: String,
+    val name: String,
+    val businessArea: BusinessArea,
+)

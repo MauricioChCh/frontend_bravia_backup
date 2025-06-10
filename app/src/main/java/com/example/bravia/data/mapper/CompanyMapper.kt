@@ -1,7 +1,10 @@
 package com.example.bravia.data.mapper
 
+import com.example.bravia.data.remote.dto.CompanyNewDTO
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
+import com.example.bravia.data.remote.dto.UserDTO
 import com.example.bravia.domain.model.Company
+import com.example.bravia.domain.model.CompanyNew
 import javax.inject.Inject
 
 class CompanyMapper @Inject constructor(){
@@ -27,6 +30,14 @@ class CompanyMapper @Inject constructor(){
             lastName = dto.lastName,
             email = dto.email,
             verified = dto.verified,
+        )
+    }
+
+    fun mapToNewDTO(company: CompanyNew): CompanyNewDTO {
+        return CompanyNewDTO(
+            user = UserDTO(company.email, company.password, company.firstName, company.lastName),
+            name = company.name,
+            businessArea = businessAreaMapper.mapToDto(company.businessArea),
         )
     }
 

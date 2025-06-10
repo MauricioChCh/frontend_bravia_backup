@@ -2,8 +2,11 @@ package com.example.bravia.data.repository
 
 import android.util.Log
 import com.example.bravia.data.local.AuthPreferences
+import com.example.bravia.data.mapper.CompanyMapper
 import com.example.bravia.data.remote.AuthRemoteDataSource
 import com.example.bravia.domain.model.AuthResult
+import com.example.bravia.domain.model.Company
+import com.example.bravia.domain.model.CompanyNew
 import com.example.bravia.domain.model.Credentials
 import com.example.bravia.domain.repository.AuthRepository
 import javax.inject.Inject
@@ -24,7 +27,8 @@ import javax.inject.Singleton
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource,
-    private val authPreferences: AuthPreferences
+    private val authPreferences: AuthPreferences,
+    private val companyMapper: CompanyMapper,
 ) : AuthRepository {
 
     /**
@@ -146,6 +150,24 @@ class AuthRepositoryImpl @Inject constructor(
             Result.success(username)
         } catch (e: Exception) {
             Log.e("AuthRepositoryImpl", "Get current user exception: ${e.message}", e)
+            Result.failure(e)
+        }
+    }
+
+
+    override suspend fun registerBusiness(input: CompanyNew): Result<Company> {
+        return try {
+            authRemoteDataSource.registerBusiness(companyMapper.mapToNewDTO(input))
+                .onSuccess { companyDTO ->
+                    Log.d("AuthRepositoryImpl", "Business registration successful: ${companyDTO.name}")
+                }
+                .onFailure { error ->
+                    Log.e("AuthRepositoryImpl", "Business registration failed: ${error.message}")
+                }
+                .map { companyMapper.mapToDomain(it) }
+
+        } catch (e: Exception) {
+            Log.e("AuthRepositoryImpl", "Business registration exception: ${e.message}", e)
             Result.failure(e)
         }
     }

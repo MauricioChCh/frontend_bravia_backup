@@ -3,6 +3,8 @@ package com.example.bravia.data.remote
 import android.util.Log
 import com.example.bravia.data.mapper.AuthMapper
 import com.example.bravia.data.remote.api.AuthService
+import com.example.bravia.data.remote.dto.CompanyNewDTO
+import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import com.example.bravia.domain.model.AuthResult
 import com.example.bravia.domain.model.Credentials
 import kotlinx.coroutines.Dispatchers
@@ -136,6 +138,12 @@ class AuthRemoteDataSource @Inject constructor(
     suspend fun logout(): Result<Unit> = safeApiCall {
         authService.logout()
     }
+
+
+    suspend fun registerBusiness(company: CompanyNewDTO): Result<CompanyResponseDTO> = safeApiCall {
+        authService.registerBusiness(company)
+    }
+
 
     /**
      * Helper function to handle API calls safely.
