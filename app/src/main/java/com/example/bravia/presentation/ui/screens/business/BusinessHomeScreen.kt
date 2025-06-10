@@ -53,6 +53,7 @@ import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCard
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
+import com.example.bravia.presentation.viewmodel.BusinessState
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import kotlinx.coroutines.delay
@@ -156,6 +157,7 @@ fun InternshipList(
                             viewModel.bookmarkInternship(internship.id, isBookmarked)
                         },
                         onClick = {
+                            viewModel.businessState.value == BusinessState.Loading
                             navController.navigate(
                                 NavRoutes.BusinessInternshipDetail.createRoute(internship.id)
                             )

@@ -65,9 +65,6 @@ class InternshipRepositoryImpl @Inject constructor(
      */
     override suspend fun bookmarkInternship(internshipId: Long, userId: Long, isBookmarked: Boolean) : Result<Unit> {
         return safeRepositoryCall {
-            // Actualiza el mapa de pasantías marcadas
-            bookmarkedInternships[internshipId] = isBookmarked
-
             // Llama al DataSource para realizar la operación de marcador
             remoteDataSource.bookmarkInternship(internshipId, userId, isBookmarked)
         }
@@ -116,6 +113,21 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun newInternship(internship: NewInternship): Result<Internship?> {
+        return safeRepositoryCall {
+            val dto = mapper.mapToNewDTO(internship)
+            val dtoResult = remoteDataSource.newInternship(dto)
+
+            // Desenvuelve el Result del DataSource
+            if (dtoResult.isSuccess) {
+                dtoResult.getOrNull()?.let { mapper.mapToDomain(it) }
+            } else {
+                throw dtoResult.exceptionOrNull() ?: Exception("Unknown error creating internship")
+            }
+        }
+    }
+
+
     /**
      * Helper function to standardize error handling in repository methods.
      *
@@ -132,18 +144,6 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun newInternship(internship: NewInternship): Result<Internship?> {
-        return safeRepositoryCall {
-            val dto = mapper.mapToNewDTO(internship)
-            val dtoResult = remoteDataSource.newInternship(dto)
 
-            // Desenvuelve el Result del DataSource
-            if (dtoResult.isSuccess) {
-                dtoResult.getOrNull()?.let { mapper.mapToDomain(it) }
-            } else {
-                throw dtoResult.exceptionOrNull() ?: Exception("Unknown error creating internship")
-            }
-        }
-    }
 
 }
