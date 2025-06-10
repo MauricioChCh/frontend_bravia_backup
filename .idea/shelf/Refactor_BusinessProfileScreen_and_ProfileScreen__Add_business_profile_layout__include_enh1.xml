@@ -1,4 +1,4 @@
-<changelist name="Refactor_BusinessProfileScreen_and_ProfileScreen__Add_business_profile_layout,_include_enh1" date="1745388752943" recycled="false">
+<changelist name="Refactor_BusinessProfileScreen_and_ProfileScreen__Add_business_profile_layout,_include_enh1" date="1749584711186" recycled="false" deleted="true">
   <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Refactor_BusinessProfileScreen_and_ProfileScreen__Add_business_profile_layout,_include_enh1/shelved.patch" />
   <option name="DESCRIPTION" value="Refactor BusinessProfileScreen and ProfileScreen: Add business profile layout, include enhance options, company details, tags, social network icons, and actions; refactor student ProfileScreen to center enhance options horizontally." />
 </changelist>
