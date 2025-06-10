@@ -314,49 +314,49 @@ val unspecified_scheme = ColorFamily(
 
 @Composable
 fun BravIATheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeState: AppThemeState = AppThemeState(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) darkScheme else lightScheme // Corrección: darkTheme usa darkScheme
-
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-        }
+    val isDarkTheme = when (themeState.themeMode) {
+        ThemeMode.DARK -> true
+        ThemeMode.LIGHT -> false
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
     }
+
+    val colorScheme = when (themeState.contrastMode) {
+        ContrastMode.NORMAL -> if (isDarkTheme) darkScheme else lightScheme
+        ContrastMode.MEDIUM -> if (isDarkTheme) mediumContrastDarkColorScheme else mediumContrastLightColorScheme
+        ContrastMode.HIGH -> if (isDarkTheme) highContrastDarkColorScheme else highContrastLightColorScheme
+    }
+
+//    val view = LocalView.current
+//    if (!view.isInEditMode) {
+//        SideEffect {
+//            val window = (view.context as Activity).window
+//            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDarkTheme
+//        }
+//    }
 
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content,
-        shapes = shapes
+        shapes = shapes,
+        content = content
     )
 }
 
-//fun BravIATheme(
-//    darkTheme: Boolean = isSystemInDarkTheme(),
-//    // Dynamic color is available on Android 12+
-//    dynamicColor: Boolean = false,
-//    content: @Composable() () -> Unit
-//) {
-//    val colorScheme = when {
-//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-//            val context = LocalContext.current
-//            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-//        }
-//
-//        darkTheme -> darkScheme
-//        else -> lightScheme
-//    }
-//
-//
-//    MaterialTheme(
-//        colorScheme = colorScheme,
-//        typography = Typography,
-//        content = content,
-//        shapes = shapes
-//    )
-//}
+
+//Estados
+enum class ThemeMode {
+    LIGHT, DARK, SYSTEM
+}
+
+enum class ContrastMode {
+    NORMAL, MEDIUM, HIGH
+}
+
+data class AppThemeState(
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val contrastMode: ContrastMode = ContrastMode.NORMAL
+)
 

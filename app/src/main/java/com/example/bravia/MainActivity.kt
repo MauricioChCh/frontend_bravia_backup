@@ -30,6 +30,8 @@ import com.example.bravia.presentation.navigation.BottomNavBar
 import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.bravia.presentation.viewmodel.ThemeViewModel
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -45,7 +47,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BravIATheme {
+            val themeViewModel: ThemeViewModel = hiltViewModel()
+            val themeState by themeViewModel.themeState.collectAsState()
+            BravIATheme(themeState = themeState){
                 val navController = rememberNavController()
                 val navigationManager = NavigationManager()
 

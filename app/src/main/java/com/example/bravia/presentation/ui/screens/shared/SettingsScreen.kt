@@ -13,19 +13,26 @@ import com.example.bravia.presentation.ui.components.LanguageDropdown
 import com.example.bravia.presentation.ui.components.cardsAnditems.SettingsItem
 import com.example.bravia.presentation.viewmodel.LoginViewModel
 import android.util.Log
-import com.example.bravia.data.local.AuthPreferences
+import androidx.navigation.NavController
+import com.example.bravia.presentation.ui.theme.ContrastMode
+import com.example.bravia.presentation.ui.theme.ThemeMode
+import com.example.bravia.presentation.viewmodel.ThemeViewModel
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onNavigateToLogin: () -> Unit, // Callback para navegar al login
     loginViewModel: LoginViewModel = hiltViewModel(),
+    navController: NavController,
+    themeViewModel: ThemeViewModel = hiltViewModel()
 ) {
     var searchText by remember { mutableStateOf("") }
     var selectedLanguage by remember { mutableStateOf("English") }
     var selectedContrast by remember { mutableStateOf("Medium") }
     var showLogoutDialog by remember { mutableStateOf(false) }
 
+    val themeState by themeViewModel.themeState.collectAsState()
 
     // Observar si el logout se completó
     val logoutCompleted by loginViewModel.logoutCompleted.collectAsState()
@@ -80,7 +87,9 @@ fun SettingsScreen(
             TopAppBar(
                 title = { Text("Settings") },
                 navigationIcon = {
-                    IconButton(onClick = { /* Navegar hacia atrás */ }) {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back"
@@ -124,11 +133,25 @@ fun SettingsScreen(
                 item {
                     SettingsItem(
                         title = "Color Scheme",
-                        onClick = { /* Acción para esquema de color */ },
+                        onClick = {
+                            // Alternar entre los modos de color
+                            val newMode = when (themeState.themeMode) {
+                                ThemeMode.LIGHT -> ThemeMode.DARK
+                                ThemeMode.DARK -> ThemeMode.SYSTEM
+                                ThemeMode.SYSTEM -> ThemeMode.LIGHT
+
+                            }
+                            themeViewModel.setThemeMode(newMode )
+                        },
                         trailingContent = {
                             Icon(
-                                imageVector = Icons.Default.LightMode,
-                                contentDescription = "Light Mode",
+                                imageVector = when (themeState.themeMode) {
+                                    ThemeMode.LIGHT -> Icons.Default.LightMode
+                                    ThemeMode.DARK -> Icons.Default.DarkMode
+                                    ThemeMode.SYSTEM -> Icons.Default.Settings
+
+                                },
+                                contentDescription = "Theme Mode",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -141,8 +164,8 @@ fun SettingsScreen(
                         onClick = { /* No es necesario, el dropdown maneja la interacción */ },
                         trailingContent = {
                             ContrastDropdown(
-                                selectedContrast = selectedContrast,
-                                onContrastSelected = { selectedContrast = it }
+                                selectedContrast = themeState.contrastMode,
+                                onContrastSelected = { themeViewModel.setContrastMode(it) }
                             )
                         }
                     )
@@ -222,6 +245,51 @@ fun SettingsScreen(
                 item {
                     Spacer(modifier = Modifier.height(24.dp))
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ContrastDropdown(
+    selectedContrast: ContrastMode,
+    onContrastSelected: (ContrastMode) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Box {
+        IconButton(onClick = { expanded = true }) {
+            Icon(
+                imageVector = when (selectedContrast) {
+                    ContrastMode.NORMAL -> Icons.Default.Contrast
+                    ContrastMode.MEDIUM -> Icons.Default.Contrast
+                    ContrastMode.HIGH -> Icons.Default.Contrast
+                },
+                contentDescription = "Contrast Mode",
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            ContrastMode.values().forEach { mode ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = when (mode) {
+                                ContrastMode.NORMAL -> "Normal"
+                                ContrastMode.MEDIUM -> "Medium"
+                                ContrastMode.HIGH -> "High"
+                            }
+                        )
+                    },
+                    onClick = {
+                        onContrastSelected(mode)
+                        expanded = false
+                    }
+                )
             }
         }
     }

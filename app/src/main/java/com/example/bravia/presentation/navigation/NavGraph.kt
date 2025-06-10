@@ -315,7 +315,8 @@ fun NavGraph(
         ) {
             SettingsScreen(
                 onNavigateToLogin = onLogout, // ← Pasa el callback a SettingsScreen
-                loginViewModel = loginViewModel
+                loginViewModel = loginViewModel,
+                navController = navController,
             )
         }
 
