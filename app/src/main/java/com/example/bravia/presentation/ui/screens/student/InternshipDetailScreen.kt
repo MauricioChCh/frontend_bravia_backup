@@ -53,6 +53,7 @@ import com.example.bravia.presentation.ui.screens.shared.LoadingScreen
 import com.example.bravia.presentation.viewmodel.InternshipState
 import com.example.bravia.presentation.viewmodel.InternshipViewModel
 import androidx.compose.ui.platform.LocalContext
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -348,22 +349,23 @@ fun InternshipDetailScreen(
                     }
                     Button(
                         onClick = {
-                            // Aquí lanzaremos la actividad de Flutter
-                            val intent = Intent(context, FlutterDemoActivity::class.java)
+                            val intent = Intent(context, FlutterDemoActivity::class.java).apply {
+                                // Si necesitas pasar datos a Flutter:
+                                putExtra("DEMO_MODE", "preview")
+                            }
                             context.startActivity(intent)
                         },
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.secondary,
                             contentColor = MaterialTheme.colorScheme.onSecondary
                         )
                     ) {
-                        Text(
-                            text = "Ver demo Flutter",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(vertical = 4.dp)
-                        )
+                        Text("Ver demo Flutter")
                     }
+                    Spacer(modifier = Modifier.height(64.dp ))
                 }
             }
         }

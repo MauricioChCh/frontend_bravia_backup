@@ -38,6 +38,7 @@ import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.bravia.presentation.ui.screens.student.InterviewScreen
 
 /**
  * NavGraph is a composable function that defines the navigation graph for the application.
@@ -60,8 +61,8 @@ fun NavGraph(
     onLogout: () -> Unit
 ) {
     val navigationManager = NavigationManager()
-//    val userSession by loginViewModel.userSession.collectAsState()
     val userSession by loginViewModel.userSession.collectAsState()
+
     // Determinar la ruta de inicio basada en la sesión
     val startDestination = navigationManager.getStartDestination(userSession)
 
@@ -218,11 +219,10 @@ fun NavGraph(
             route = BottomNavBar.Routes.INTERVIEW,
             arguments = emptyList()
         ) {
-//            InternshipScreen(
-//                navController = navController,
-//                paddingValues = paddingValues,
-//                viewModel = viewModel
-//            )
+            InterviewScreen(
+                navController = navController,
+                paddingValues = PaddingValues(0.dp),
+            )
         }
 
 
