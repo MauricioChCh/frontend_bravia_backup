@@ -37,6 +37,7 @@ import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 import androidx.compose.runtime.getValue
+import com.example.bravia.presentation.ui.screens.admin.CompanyListScreen
 
 /**
  * NavGraph is a composable function that defines the navigation graph for the application.
@@ -65,7 +66,8 @@ fun NavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.Start.ROUTE
+        //startDestination = NavRoutes.Start.ROUTE
+        startDestination = NavRoutes.CompanyList.ROUTE
     ){
 //    NavHost(navController = navController, startDestination = NavRoutes.BusinessHome.ROUTE) {
 
@@ -300,8 +302,14 @@ fun NavGraph(
             }
         }
 
+        //Admin Screens
 
-
+        composable(route = NavRoutes.CompanyList.ROUTE) {
+            CompanyListScreen(
+                navController = navController,
+                viewModel = businessViewModel // o el que estés usando para Company
+            )
+        }
 
         //Main SCREENS===========================================
 

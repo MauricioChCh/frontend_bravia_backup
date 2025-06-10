@@ -70,4 +70,9 @@ sealed class NavRoutes {
         const val ROUTE = "settings"
 
     }
+
+    //admin
+    data object CompanyList : NavRoutes() {
+        const val ROUTE = "companyList"
+    }
 }
