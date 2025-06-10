@@ -1,5 +1,7 @@
 package com.example.bravia.presentation.ui.screens.admin
 
+package com.example.bravia.presentation.ui.screens.admin
+
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -40,7 +42,7 @@ import com.example.bravia.presentation.viewmodel.AdminViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun CompanyListScreen(
+fun StudentListScreen(
     navController: NavController,
     viewModel: AdminViewModel
 ) {

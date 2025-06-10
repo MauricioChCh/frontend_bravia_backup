@@ -2,6 +2,7 @@ package com.example.bravia.data.di
 
 import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.local.AuthPreferences
+import com.example.bravia.data.remote.api.AdminService
 import com.example.bravia.data.remote.api.AuthService
 import com.example.bravia.data.remote.api.SignUpService
 import com.example.bravia.data.remote.api.StudentAreaService
@@ -145,4 +146,9 @@ object NetworkModule {
     @Singleton
     fun provideBusinessService(retrofit: Retrofit): BusinessService =
         retrofit.create(BusinessService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAdminService(retrofit: Retrofit): AdminService =
+        retrofit.create(AdminService::class.java)
 }
