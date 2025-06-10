@@ -75,10 +75,17 @@ class InternshipRepositoryImpl @Inject constructor(
      *
      * @return A [Result] containing a list of bookmarked [Internship] objects.
      */
-    override suspend fun getBookmarkedInternships(): Result<List<Internship>> {
+    override suspend fun getBookmarkedInternships(userId: Long): Result<List<Internship>> {
         return safeRepositoryCall {
-            //TODO Esto deberia mas bien llamar a la API para obtener los internships con bookmark del usuario
-            getRecommendedInternships().getOrThrow().filter { it.isMarked }
+            val dtoResult = remoteDataSource.getBookmarkedInternships(userId)
+
+            if( dtoResult.isSuccess) {
+                dtoResult.getOrNull()?.map { dto ->
+                    mapper.mapToDomain(dto)
+                } ?: emptyList()
+            } else {
+                throw dtoResult.exceptionOrNull() ?: Exception("Unknown error fetching bookmarked internships")
+            }
         }
     }
 
@@ -126,6 +133,8 @@ class InternshipRepositoryImpl @Inject constructor(
             }
         }
     }
+
+
 
 
     /**

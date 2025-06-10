@@ -47,4 +47,9 @@ class InternshipRemoteDataSource @Inject constructor(
         ApiCallHandler.safeApiCall<Unit> {
             internshipService.bookmarkInternship(internshipId, userId, isBookmarked)
         }
+
+    suspend fun getBookmarkedInternships(userId: Long): Result<List<InternshipDTO>> =
+        ApiCallHandler.safeApiCall {
+            internshipService.getBookmarkedInternships(userId)
+        }
 }

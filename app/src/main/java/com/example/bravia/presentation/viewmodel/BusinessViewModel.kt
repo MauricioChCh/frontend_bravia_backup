@@ -36,6 +36,7 @@ class BusinessViewModel @Inject constructor(
     private val businessNewInternshipUseCase: BusinessNewInternshipUseCase,
     private val getCompanyByIdUseCase: GetCompanyByIdUseCase,
     private val getBusinessInternshipByIdUseCase: GetBusinessInternshipByIdUseCase,
+    private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase
 ) : ViewModel() {
 
     private val _company = MutableStateFlow<Company?>(null)
@@ -57,6 +58,27 @@ class BusinessViewModel @Inject constructor(
 
     private val _internships = MutableStateFlow<List<Internship>>(emptyList())
     val internships: StateFlow<List<Internship>> = _internships.asStateFlow()
+
+    private val _bookmarkedInternships = MutableStateFlow<List<Internship>>(emptyList())
+    val bookmarkedInternships: StateFlow<List<Internship>> = _bookmarkedInternships.asStateFlow()
+
+    fun fetchAllBookmarkedInternships() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getBookmarkedInternshipsUseCase(company.value?.id!!)
+            }.onSuccess { result ->
+                _bookmarkedInternships.value = result.getOrNull() ?: emptyList()
+                _businessState.value = if (result.isSuccess) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch bookmarked internships")
+            }
+        }
+    }
 
     fun fetchAllBusinessInternships(businessId: Long) {
         viewModelScope.launch {

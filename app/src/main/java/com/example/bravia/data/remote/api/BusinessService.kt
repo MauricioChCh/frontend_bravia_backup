@@ -37,4 +37,6 @@ interface BusinessService {
 
     @POST("internships")
     suspend fun newInternship(@Body internship: NewInternshipDTO): Response<InternshipDTO?>
+
+
 }

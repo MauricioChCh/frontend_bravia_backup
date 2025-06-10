@@ -172,14 +172,13 @@ class InternshipViewModel @Inject constructor(
      * Loads all bookmarked internships.
      */
     fun loadBookmarkedInternships() {
-        viewModelScope.launch {
-            getBookmarkedInternshipsUseCase().onSuccess { list ->
-                _bookmarkedInternships.value = list
-            }.onFailure {
-                _internshipState.value = InternshipState.Error("Error loading bookmarks: ${it.message}")
-            }
-        }
-
+//        viewModelScope.launch {
+//            getBookmarkedInternshipsUseCase().onSuccess { list ->
+//                _bookmarkedInternships.value = list
+//            }.onFailure {
+//                _internshipState.value = InternshipState.Error("Error loading bookmarks: ${it.message}")
+//            }
+//        }
     }
 
     /**
