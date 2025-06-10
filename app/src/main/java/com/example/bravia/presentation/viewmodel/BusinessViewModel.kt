@@ -31,13 +31,19 @@ sealed class BusinessState {
 @HiltViewModel
 class BusinessViewModel @Inject constructor(
     private val getAllBusinessInternshipUseCase: GetAllBusinessInternshipUseCase,
+    private val bookmarkInternshipUseCase: BookmarkInternshipUseCase,
     private val getAllBusinessLocationsUseCase: GetAllBusinessLocationsUseCase,
     private val businessNewInternshipUseCase: BusinessNewInternshipUseCase,
     private val getCompanyByIdUseCase: GetCompanyByIdUseCase,
+    private val getBusinessInternshipByIdUseCase: GetBusinessInternshipByIdUseCase,
+    private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase
 ) : ViewModel() {
 
     private val _company = MutableStateFlow<Company?>(null)
     val company: StateFlow<Company?> = _company.asStateFlow()
+
+    private val _internship = MutableStateFlow<Internship?>(null)
+    val internship: StateFlow<Internship?> = _internship.asStateFlow()
 
     private val _locations = MutableStateFlow<List<Location>>(emptyList())
     val locations: StateFlow<List<Location>> = _locations.asStateFlow()
@@ -45,13 +51,34 @@ class BusinessViewModel @Inject constructor(
     private val _businessState = MutableStateFlow<BusinessState>(BusinessState.Empty)
     val businessState: StateFlow<BusinessState> = _businessState.asStateFlow()
 
-    private val _modalities = MutableStateFlow<List<String>>(
+    private val _modalities = MutableStateFlow<List<String>>(// TODO: have to come from the backend
         listOf("Remote", "On-site", "Hybrid", "Flexible", "Part-time", "Full-time", "Internship", "Contract", "Temporary", "Volunteer")
     )
     val modalities: StateFlow<List<String>> = _modalities
 
     private val _internships = MutableStateFlow<List<Internship>>(emptyList())
     val internships: StateFlow<List<Internship>> = _internships.asStateFlow()
+
+    private val _bookmarkedInternships = MutableStateFlow<List<Internship>>(emptyList())
+    val bookmarkedInternships: StateFlow<List<Internship>> = _bookmarkedInternships.asStateFlow()
+
+    fun fetchAllBookmarkedInternships() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getBookmarkedInternshipsUseCase(company.value?.id!!)
+            }.onSuccess { result ->
+                _bookmarkedInternships.value = result.getOrNull() ?: emptyList()
+                _businessState.value = if (result.isSuccess) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch bookmarked internships")
+            }
+        }
+    }
 
     fun fetchAllBusinessInternships(businessId: Long) {
         viewModelScope.launch {
@@ -72,16 +99,35 @@ class BusinessViewModel @Inject constructor(
     }
 
     fun bookmarkInternship(internshipId: Long, isBookmarked: Boolean) {
-//        viewModelScope.launch {
-//            _businessState.value = BusinessState.Loading
-//            runCatching {
-//                BookmarkInternshipUseCase(internshipId, isBookmarked)
-//            }.onSuccess {
-//                _businessState.value = BusinessState.Success
-//            }.onFailure { exception ->
-//                _businessState.value = BusinessState.Error(exception.message ?: "Failed to bookmark internship")
-//            }
-//        }
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                bookmarkInternshipUseCase(internshipId, 2, isBookmarked) // TODO : Cambiar por una variable
+                fetchAllBusinessInternships(2) // TODO: Cambiar por una variable
+            }.onSuccess {
+                _businessState.value = BusinessState.Success
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to bookmark internship")
+            }
+        }
+    }
+
+    fun selectedBusinessInternshipById(internshipId: Long) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getBusinessInternshipByIdUseCase( 2, internshipId ) // TODO: Cambiar por una variable
+            }.onSuccess { result ->
+                _internship.value = result.getOrNull()
+                _businessState.value = if (_internship.value != null) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch internship")
+            }
+        }
     }
 
 
@@ -103,6 +149,7 @@ class BusinessViewModel @Inject constructor(
             }
         }
     }
+
 
     fun fetchLocations(companyId: Long) {
         viewModelScope.launch {

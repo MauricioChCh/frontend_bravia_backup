@@ -2,6 +2,7 @@ package com.example.bravia.data.remote
 
 
 import com.example.bravia.data.remote.api.BusinessService
+import com.example.bravia.data.remote.api.InternshipService
 import com.example.bravia.data.remote.api.StudentAreaService
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.dto.NewInternshipDTO
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 class InternshipRemoteDataSource @Inject constructor(
     private val studentAreaService: StudentAreaService,
-    private val businessService: BusinessService
+    private val businessService: BusinessService,
+    private val internshipService: InternshipService,
 ) {
     suspend fun getRecommendedInternships(): Result<List<InternshipDTO>> =
         ApiCallHandler.safeApiCall {
@@ -39,5 +41,15 @@ class InternshipRemoteDataSource @Inject constructor(
     suspend fun newInternship(internship: NewInternshipDTO): Result<InternshipDTO?> =
         ApiCallHandler.safeApiCall<InternshipDTO?> {
             businessService.newInternship(internship)
+        }
+
+    suspend fun bookmarkInternship(internshipId: Long, userId: Long, isBookmarked: Boolean): Result<Unit> =
+        ApiCallHandler.safeApiCall<Unit> {
+            internshipService.bookmarkInternship(internshipId, userId, isBookmarked)
+        }
+
+    suspend fun getBookmarkedInternships(userId: Long): Result<List<InternshipDTO>> =
+        ApiCallHandler.safeApiCall {
+            internshipService.getBookmarkedInternships(userId)
         }
 }

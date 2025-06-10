@@ -64,6 +64,7 @@ class InternshipDeserializer : JsonDeserializer<InternshipDTO> {
             imageUrl = getString("imageUrl") ,
             duration = getString("duration"),
             salary = getDouble("salary"),
+            isBookmarked = obj.get("isBookmarked")?.asBoolean == true,
             locationFullName = getString("locationFullName"),
         )
     }

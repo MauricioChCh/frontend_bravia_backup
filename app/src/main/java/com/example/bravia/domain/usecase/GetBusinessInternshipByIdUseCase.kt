@@ -8,8 +8,14 @@ class GetBusinessInternshipByIdUseCase @Inject constructor(
     private val repository: InternshipRepository
 ) {
 
-
-    operator suspend fun invoke(businessId: Long, internshipId: Long): Result<Internship?> {
+    /**
+     * Fetches a specific internship by its ID for a given business.
+     *
+     * @param businessId The ID of the business.
+     * @param internshipId The ID of the internship to fetch.
+     * @return A Result containing the Internship if found, or null if not found.
+     */
+    suspend operator fun invoke(businessId: Long, internshipId: Long): Result<Internship?> {
         return repository.getBusinessInternshipById(businessId, internshipId)
     }
 }

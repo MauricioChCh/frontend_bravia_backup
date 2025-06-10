@@ -1,0 +1,574 @@
+Index: app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessHomeScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.bravia.presentation.ui.screens.business\r\n\r\nimport android.util.Log\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.clickable\r\nimport androidx.compose.foundation.layout.Box\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.Row\r\nimport androidx.compose.foundation.layout.Spacer\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.layout.width\r\nimport androidx.compose.foundation.pager.HorizontalPager\r\nimport androidx.compose.foundation.pager.rememberPagerState\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.filled.StarBorder\r\nimport androidx.compose.material.icons.filled.StarRate\r\nimport androidx.compose.material3.MaterialTheme\r\nimport androidx.compose.material3.SegmentedButton\r\nimport androidx.compose.material3.SegmentedButtonDefaults\r\nimport androidx.compose.material3.SingleChoiceSegmentedButtonRow\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.material3.darkColorScheme\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.LaunchedEffect\r\nimport androidx.compose.runtime.collectAsState\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.runtime.mutableIntStateOf\r\nimport androidx.compose.runtime.mutableStateOf\r\nimport androidx.compose.runtime.remember\r\nimport androidx.compose.runtime.rememberCoroutineScope\r\nimport androidx.compose.runtime.setValue\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.text.font.FontWeight\r\nimport androidx.compose.ui.text.style.TextAlign\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport androidx.lifecycle.viewmodel.compose.viewModel\r\nimport androidx.navigation.NavController\r\nimport com.example.bravia.domain.model.Internship\r\nimport com.example.bravia.presentation.navigation.NavRoutes\r\nimport com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn\r\nimport com.example.bravia.presentation.ui.components.cardsAnditems.InternshipCard\r\nimport com.example.bravia.presentation.ui.theme.ThemeDefaults\r\nimport com.example.bravia.presentation.viewmodel.BusinessViewModel\r\nimport kotlinx.coroutines.delay\r\nimport kotlinx.coroutines.launch\r\n\r\n@Composable\r\nfun BusinessHomeScreen (\r\n    navController: NavController,\r\n    businessViewModel: BusinessViewModel\r\n) {\r\n    Log.d(\"BusinessHomeScreen\", \"Recomposición de BusinessHomeScreen\")\r\n\r\n    val internship by businessViewModel.selectedInternship.collectAsState()\r\n    val internships by businessViewModel.internshipList.collectAsState()\r\n    val draftInternships by businessViewModel.draftInternships.collectAsState()\r\n\r\n    var isMarked by remember { mutableStateOf(false) }\r\n\r\n    LaunchedEffect(Unit) {\r\n        businessViewModel.findAllBusinessOwnerInternship() // Cambia el ID según sea necesario\r\n        businessViewModel.loadBookmarkedInternships()\r\n        internship?.let {\r\n            isMarked = it.isMarked\r\n        }\r\n    }\r\n\r\n\r\n    val tabs = listOf(\"Published\", \"Draft\")\r\n    val pagerState = rememberPagerState(pageCount = { tabs.size })\r\n    val coroutineScope = rememberCoroutineScope()\r\n\r\n\r\n\r\n    Column(\r\n        modifier = Modifier\r\n            .fillMaxSize()\r\n    ) {\r\n        Column (\r\n            modifier = Modifier\r\n                .fillMaxWidth()\r\n                .background(MaterialTheme.colorScheme.secondaryContainer),\r\n\r\n            ) {\r\n\r\n            Text(\r\n                text = \"My internships\",\r\n                style = MaterialTheme.typography.titleLarge,\r\n                color = MaterialTheme.colorScheme.onSurface,\r\n                fontSize = 35.sp,\r\n                modifier = Modifier\r\n                    .padding(ThemeDefaults.screenPadding)\r\n                    .padding(top = 40.dp)\r\n            )\r\n\r\n            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))\r\n\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth().padding(start = 5.dp),\r\n                verticalAlignment = Alignment.CenterVertically\r\n            ) {\r\n                tabs.forEachIndexed { index, title ->\r\n                    Column(\r\n                        horizontalAlignment = Alignment.CenterHorizontally,\r\n                        modifier = Modifier\r\n                            .padding(end = 26.dp)\r\n                            .clickable {\r\n                                coroutineScope.launch {\r\n                                    pagerState.animateScrollToPage(index)\r\n                                }\r\n                            }\r\n                    ) {\r\n                        Text(\r\n                            text = title,\r\n                            color = if (pagerState.currentPage == index)\r\n                                MaterialTheme.colorScheme.onPrimary\r\n                            else\r\n                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),\r\n                            fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal\r\n                        )\r\n\r\n                        // Only show underline for selected tab\r\n                        if (pagerState.currentPage == index) {\r\n                            Spacer(modifier = Modifier.height(4.dp))\r\n                            Box(\r\n                                modifier = Modifier\r\n                                    .width(50.dp)\r\n                                    .height(1.5.dp)\r\n                                    .background(MaterialTheme.colorScheme.onPrimary)\r\n                            )\r\n                            // Añadir espacio de 6dp después del subrayado\r\n                            Spacer(modifier = Modifier.height(6.dp))\r\n                        } else {\r\n                            // Mantener la alineación con el tab seleccionado\r\n                            Spacer(modifier = Modifier.height(8.dp)) // 4dp + 2dp + 6dp\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n\r\n        HorizontalPager(state = pagerState) { page ->\r\n            businessViewModel.findAllBusinessInternshipsStarred()\r\n            val internships = if (page == 0) internships else draftInternships\r\n            InternshipList(\r\n                navController = navController,\r\n                internships = internships,\r\n                viewModel = businessViewModel,\r\n                page = page,\r\n                textList = listOf(\"internships\", \"draft\")\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessHomeScreen.kt b/app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessHomeScreen.kt
+--- a/app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessHomeScreen.kt	(revision b3f66a6cab25c91529abe22d67f81095e48638c2)
++++ b/app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessHomeScreen.kt	(date 1745388450078)
+@@ -51,113 +51,198 @@
+ import kotlinx.coroutines.launch
+ 
+ @Composable
+-fun BusinessHomeScreen (
++fun BusinessHomeScreen(
+     navController: NavController,
+     businessViewModel: BusinessViewModel
+ ) {
+-    Log.d("BusinessHomeScreen", "Recomposición de BusinessHomeScreen")
+-
+-    val internship by businessViewModel.selectedInternship.collectAsState()
+     val internships by businessViewModel.internshipList.collectAsState()
+-    val draftInternships by businessViewModel.draftInternships.collectAsState()
+ 
+-    var isMarked by remember { mutableStateOf(false) }
++    var isRefreshing by remember {
++        mutableStateOf(false)
++    }
++
++    val scope = rememberCoroutineScope()
+ 
+     LaunchedEffect(Unit) {
+-        businessViewModel.findAllBusinessOwnerInternship() // Cambia el ID según sea necesario
+-        businessViewModel.loadBookmarkedInternships()
+-        internship?.let {
+-            isMarked = it.isMarked
+-        }
++        businessViewModel.findAllBusinessOwnerInternship()
++        isRefreshing = false
+     }
+ 
+-
+-    val tabs = listOf("Published", "Draft")
+-    val pagerState = rememberPagerState(pageCount = { tabs.size })
+-    val coroutineScope = rememberCoroutineScope()
+-
+-
+-
+     Column(
+-        modifier = Modifier
+-            .fillMaxSize()
+-    ) {
+-        Column (
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .background(MaterialTheme.colorScheme.secondaryContainer),
+-
+-            ) {
++        modifier = Modifier.fillMaxSize().padding(top = 55.dp)
++    ){
+ 
+-            Text(
+-                text = "My internships",
+-                style = MaterialTheme.typography.titleLarge,
+-                color = MaterialTheme.colorScheme.onSurface,
+-                fontSize = 35.sp,
+-                modifier = Modifier
+-                    .padding(ThemeDefaults.screenPadding)
+-                    .padding(top = 40.dp)
+-            )
++        Text(
++            text = "My internships",
++            style = MaterialTheme.typography.titleLarge,
++            color = MaterialTheme.colorScheme.onSurface,
++            fontSize = 35.sp,
++            modifier = Modifier
++                .padding(ThemeDefaults.screenPadding)
++        )
+ 
+-            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
+-
+-            Row(
+-                modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
+-                verticalAlignment = Alignment.CenterVertically
+-            ) {
+-                tabs.forEachIndexed { index, title ->
+-                    Column(
+-                        horizontalAlignment = Alignment.CenterHorizontally,
+-                        modifier = Modifier
+-                            .padding(end = 26.dp)
+-                            .clickable {
+-                                coroutineScope.launch {
+-                                    pagerState.animateScrollToPage(index)
+-                                }
+-                            }
+-                    ) {
+-                        Text(
+-                            text = title,
+-                            color = if (pagerState.currentPage == index)
+-                                MaterialTheme.colorScheme.onPrimary
+-                            else
+-                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+-                            fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal
+-                        )
+-
+-                        // Only show underline for selected tab
+-                        if (pagerState.currentPage == index) {
+-                            Spacer(modifier = Modifier.height(4.dp))
+-                            Box(
+-                                modifier = Modifier
+-                                    .width(50.dp)
+-                                    .height(1.5.dp)
+-                                    .background(MaterialTheme.colorScheme.onPrimary)
+-                            )
+-                            // Añadir espacio de 6dp después del subrayado
+-                            Spacer(modifier = Modifier.height(6.dp))
+-                        } else {
+-                            // Mantener la alineación con el tab seleccionado
+-                            Spacer(modifier = Modifier.height(8.dp)) // 4dp + 2dp + 6dp
++        if (internships.isEmpty()) {
++            Box(
++                modifier = Modifier
++                    .fillMaxSize()
++                    .padding(ThemeDefaults.screenPadding),
++                contentAlignment = Alignment.Center
++            ) {
++                Text(
++                    text = "No internships available",
++                    style = MaterialTheme.typography.titleLarge,
++                    color = MaterialTheme.colorScheme.onSurface,
++                    fontSize = 35.sp,
++                    textAlign = TextAlign.Center
++                )
++            }
++        } else {
++            Box (
++                modifier = Modifier
++                    .fillMaxSize()
++                    .padding(ThemeDefaults.screenPadding)
++                    .padding(bottom = 40.dp)
++            ) {
++                PullToRefreshLazyColumn(
++                    items = internships,
++                    content = { internship ->
++                        InternshipCard(
++                            internship = internship,
++                            initialBookmarked = internship.isMarked,
++                            iconA = Icons.Default.StarRate,
++                            iconB = Icons.Default.StarBorder,
++                            onBookmarkChange = {isMarked ->
++                                businessViewModel.markInternship(internship.id, isMarked)
++                            },
++                            onClick = {
++                                navController.navigate(
++                                    NavRoutes.BusinessInternshipDetail.createRoute(internship.id)
++                                )
++                            }
++                        )
++                    },
++                    isRefreshing = isRefreshing,
++                    onRefresh = {
++                        scope.launch {
++                            isRefreshing = true
++                            businessViewModel.findAllBusinessOwnerInternship()
++                            isRefreshing = false
+                         }
+                     }
+-                }
+-            }
+-        }
++                )
++            }
++        }
++    }
+ 
+-        HorizontalPager(state = pagerState) { page ->
+-            businessViewModel.findAllBusinessInternshipsStarred()
+-            val internships = if (page == 0) internships else draftInternships
+-            InternshipList(
+-                navController = navController,
+-                internships = internships,
+-                viewModel = businessViewModel,
+-                page = page,
+-                textList = listOf("internships", "draft")
+-            )
+-        }
+-    }
+ }
++
++//fun BusinessHomeScreen (
++//    navController: NavController,
++//    businessViewModel: BusinessViewModel
++//) {
++//    Log.d("BusinessHomeScreen", "Recomposición de BusinessHomeScreen")
++//
++//    val internship by businessViewModel.selectedInternship.collectAsState()
++//    val internships by businessViewModel.internshipList.collectAsState()
++//    val draftInternships by businessViewModel.draftInternships.collectAsState()
++//
++//    var isMarked by remember { mutableStateOf(false) }
++//
++//    LaunchedEffect(Unit) {
++//        businessViewModel.findAllBusinessOwnerInternship() // Cambia el ID según sea necesario
++//        businessViewModel.loadBookmarkedInternships()
++//        internship?.let {
++//            isMarked = it.isMarked
++//        }
++//    }
++//
++//
++//    val tabs = listOf("Published", "Draft")
++//    val pagerState = rememberPagerState(pageCount = { tabs.size })
++//    val coroutineScope = rememberCoroutineScope()
++//
++//
++//
++//    Column(
++//        modifier = Modifier
++//            .fillMaxSize()
++//    ) {
++//        Column (
++//            modifier = Modifier
++//                .fillMaxWidth()
++//                .background(MaterialTheme.colorScheme.secondaryContainer),
++//
++//            ) {
++//
++//            Text(
++//                text = "My internships",
++//                style = MaterialTheme.typography.titleLarge,
++//                color = MaterialTheme.colorScheme.onSurface,
++//                fontSize = 35.sp,
++//                modifier = Modifier
++//                    .padding(ThemeDefaults.screenPadding)
++//                    .padding(top = 40.dp)
++//            )
++//
++//            Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
++//
++//            Row(
++//                modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
++//                verticalAlignment = Alignment.CenterVertically
++//            ) {
++//                tabs.forEachIndexed { index, title ->
++//                    Column(
++//                        horizontalAlignment = Alignment.CenterHorizontally,
++//                        modifier = Modifier
++//                            .padding(end = 26.dp)
++//                            .clickable {
++//                                coroutineScope.launch {
++//                                    pagerState.animateScrollToPage(index)
++//                                }
++//                            }
++//                    ) {
++//                        Text(
++//                            text = title,
++//                            color = if (pagerState.currentPage == index)
++//                                MaterialTheme.colorScheme.onPrimary
++//                            else
++//                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
++//                            fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal
++//                        )
++//
++//                        // Only show underline for selected tab
++//                        if (pagerState.currentPage == index) {
++//                            Spacer(modifier = Modifier.height(4.dp))
++//                            Box(
++//                                modifier = Modifier
++//                                    .width(50.dp)
++//                                    .height(1.5.dp)
++//                                    .background(MaterialTheme.colorScheme.onPrimary)
++//                            )
++//                            // Añadir espacio de 6dp después del subrayado
++//                            Spacer(modifier = Modifier.height(6.dp))
++//                        } else {
++//                            // Mantener la alineación con el tab seleccionado
++//                            Spacer(modifier = Modifier.height(8.dp)) // 4dp + 2dp + 6dp
++//                        }
++//                    }
++//                }
++//            }
++//        }
++//
++//        HorizontalPager(state = pagerState) { page ->
++//            businessViewModel.findAllBusinessInternshipsStarred()
++//            val internships = if (page == 0) internships else draftInternships
++//            InternshipList(
++//                navController = navController,
++//                internships = internships,
++//                viewModel = businessViewModel,
++//                page = page,
++//                textList = listOf("internships", "draft")
++//            )
++//        }
++//    }
++//}
+ 
+ 
+ 
+Index: app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessInternshipDetilScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessInternshipDetilScreen.kt b/app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessInternshipDetailScreen.kt
+rename from app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessInternshipDetilScreen.kt
+rename to app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessInternshipDetailScreen.kt
+--- a/app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessInternshipDetilScreen.kt	(revision b3f66a6cab25c91529abe22d67f81095e48638c2)
++++ b/app/src/main/java/com/example/bravia/presentation/ui/screens/business/BusinessInternshipDetailScreen.kt	(date 1745388450085)
+@@ -1,6 +1,5 @@
+ package com.example.bravia.presentation.ui.screens.business
+ 
+-import android.R.attr.tint
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Column
+@@ -12,7 +11,6 @@
+ import androidx.compose.foundation.shape.CircleShape
+ import androidx.compose.foundation.verticalScroll
+ import androidx.compose.material.icons.Icons
+-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+ import androidx.compose.material.icons.filled.ArrowBack
+ import androidx.compose.material.icons.filled.Star
+ import androidx.compose.material.icons.filled.StarBorder
+@@ -41,6 +39,7 @@
+ import com.example.bravia.presentation.ui.screens.shared.LoadingScreen
+ import com.example.bravia.presentation.viewmodel.BusinessState
+ import com.example.bravia.presentation.viewmodel.BusinessViewModel
++import kotlinx.coroutines.channels.ticker
+ 
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+@@ -52,16 +51,15 @@
+     viewModel: BusinessViewModel
+ ) {
+     val state by viewModel.internshipState.collectAsState()
+-    viewModel.internshipState.collectAsState()
+ 
+-    when(state) {
++    when (state) {
+         is BusinessState.Loading -> LoadingScreen()
+         is BusinessState.Error -> ErrorScreen(
+             message = "The internship could not be loaded",
+             onRetry = { viewModel.selectBusinessInternshipById(internshipId) }
+         )
+         is BusinessState.Success -> {
+-
++            // Handle success state
+         }
+         else -> ErrorScreen(message = "No data found")
+     }
+@@ -73,6 +71,7 @@
+     val internship by viewModel.selectedInternship.collectAsState()
+ 
+     var isMarked by remember { mutableStateOf(false) }
++
+     LaunchedEffect(internship) {
+         internship?.let {
+             isMarked = it.isMarked
+@@ -80,14 +79,13 @@
+     }
+ 
+     if (internship == null) {
+-        Box (
+-           modifier = Modifier
+-               .fillMaxSize()
++        Box(
++            modifier = Modifier
++                .fillMaxSize()
+                 .padding(paddingValues),
+-           contentAlignment = Alignment.Center
+-
++            contentAlignment = Alignment.Center
+         ) {
+-            Text (
++            Text(
+                 text = "No internship found",
+                 style = MaterialTheme.typography.bodyLarge,
+                 color = MaterialTheme.colorScheme.error
+@@ -99,13 +97,14 @@
+     Scaffold (
+         topBar = {
+             TopAppBar(
+-               title = { Text(text = "Internship Details") },
++                title = {Text("Internship Details")},
+                 navigationIcon = {
+-                     IconButton(onClick = { navController.popBackStack() }) {
+-                          Icon(
+-                              imageVector =  Icons.Default.ArrowBack,
+-                              contentDescription = "Back")
+-                     }
++                    IconButton(onClick = { navController.popBackStack() }) {
++                        Icon(
++                            imageVector = Icons.Default.ArrowBack,
++                            contentDescription = "Back"
++                        )
++                    }
+                 },
+                 colors = TopAppBarDefaults.topAppBarColors(
+                     containerColor = MaterialTheme.colorScheme.background
+@@ -113,14 +112,14 @@
+             )
+         }
+     ) { innerPadding ->
+-        Box (
++        Box(
+             modifier = Modifier
+                 .fillMaxSize()
+                 .padding(innerPadding)
+                 .background(MaterialTheme.colorScheme.background)
+         ) {
+             internship?.let { internship ->
+-                Column (
++                Column(
+                     modifier = Modifier
+                         .fillMaxSize()
+                         .padding(16.dp)
+@@ -145,7 +144,7 @@
+                         )
+                     }
+ 
+-                    Box (
++                    Box(
+                         modifier = Modifier
+                             .size(20.dp)
+                             .clip(CircleShape)
+@@ -161,7 +160,121 @@
+ 
+                 }
+             }
++        }
++    }
+ 
+-        }
+-    }
+-}
+\ No newline at end of file
++}
++//    val state by viewModel.internshipState.collectAsState()
++//    viewModel.internshipState.collectAsState()
++//
++//    when(state) {
++//        is BusinessState.Loading -> LoadingScreen()
++//        is BusinessState.Error -> ErrorScreen(
++//            message = "The internship could not be loaded",
++//            onRetry = { viewModel.selectBusinessInternshipById(internshipId) }
++//        )
++//        is BusinessState.Success -> {
++//
++//        }
++//        else -> ErrorScreen(message = "No data found")
++//    }
++//
++//    LaunchedEffect(internshipId) {
++//        viewModel.selectBusinessInternshipById(internshipId)
++//    }
++//
++//    val internship by viewModel.selectedInternship.collectAsState()
++//
++//    var isMarked by remember { mutableStateOf(false) }
++//    LaunchedEffect(internship) {
++//        internship?.let {
++//            isMarked = it.isMarked
++//        }
++//    }
++//
++//    if (internship == null) {
++//        Box (
++//           modifier = Modifier
++//               .fillMaxSize()
++//                .padding(paddingValues),
++//           contentAlignment = Alignment.Center
++//
++//        ) {
++//            Text (
++//                text = "No internship found",
++//                style = MaterialTheme.typography.bodyLarge,
++//                color = MaterialTheme.colorScheme.error
++//            )
++//        }
++//        return
++//    }
++//
++//    Scaffold (
++//        topBar = {
++//            TopAppBar(
++//               title = { Text(text = "Internship Details") },
++//                navigationIcon = {
++//                     IconButton(onClick = { navController.popBackStack() }) {
++//                          Icon(
++//                              imageVector =  Icons.Default.ArrowBack,
++//                              contentDescription = "Back")
++//                     }
++//                },
++//                colors = TopAppBarDefaults.topAppBarColors(
++//                    containerColor = MaterialTheme.colorScheme.background
++//                )
++//            )
++//        }
++//    ) { innerPadding ->
++//        Box (
++//            modifier = Modifier
++//                .fillMaxSize()
++//                .padding(innerPadding)
++//                .background(MaterialTheme.colorScheme.background)
++//        ) {
++//            internship?.let { internship ->
++//                Column (
++//                    modifier = Modifier
++//                        .fillMaxSize()
++//                        .padding(16.dp)
++//                        .verticalScroll(rememberScrollState())
++//                ) {
++//                    Text(
++//                        text = "About the internship",
++//                        style = MaterialTheme.typography.headlineMedium,
++//                        fontWeight = FontWeight.Bold
++//                    )
++//
++//                    IconButton(
++//                        onClick = {
++//                            isMarked = !isMarked
++//                            viewModel.markInternship(internship.id, isMarked)
++//                        },
++//                    ) {
++//                        Icon(
++//                            imageVector = if (isMarked) Icons.Default.Star else Icons.Default.StarBorder,
++//                            contentDescription = if (isMarked) "Remove starred" else "Add starred",
++//                            tint = if (isMarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
++//                        )
++//                    }
++//
++//                    Box (
++//                        modifier = Modifier
++//                            .size(20.dp)
++//                            .clip(CircleShape)
++//                            .background(MaterialTheme.colorScheme.primary),
++//                        contentAlignment = Alignment.Center
++//                    ) {
++//                        Text(
++//                            text = internship.company.first().toString(),
++//                            style = MaterialTheme.typography.bodyLarge,
++//                            color = MaterialTheme.colorScheme.onSurface
++//                        )
++//                    }
++//
++//                }
++//            }
++//
++//        }
++//    }
++//}
+\ No newline at end of file
+Index: app/src/main/java/com/example/bravia/presentation/ui/components/BottomNavigationBar.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.bravia.presentation.ui.components\r\n\r\nimport androidx.compose.foundation.layout.Box\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.material3.HorizontalDivider\r\nimport androidx.compose.material3.Icon\r\nimport androidx.compose.material3.MaterialTheme\r\nimport androidx.compose.material3.NavigationBar\r\nimport androidx.compose.material3.NavigationBarItem\r\nimport androidx.compose.material3.NavigationBarItemDefaults\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.res.stringResource\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.navigation.NavController\r\nimport androidx.navigation.compose.currentBackStackEntryAsState\r\nimport com.example.bravia.presentation.navigation.BottomNavBar\r\n\r\n/**\r\n * Barra de navegación inferior que permite al usuario navegar entre las principales secciones de la aplicación.\r\n *\r\n * @param navController Controlador de navegación para gestionar la navegación entre pantallas\r\n */\r\n@Composable\r\nfun BottomNavigationBar(navController: NavController, route: String? = null) {\r\n    // Obtener la ruta actual para resaltar el elemento seleccionado\r\n    val navBackStackEntry by navController.currentBackStackEntryAsState()\r\n    val currentRoute = navBackStackEntry?.destination?.route\r\n\r\n    Box{\r\n        Column{\r\n            HorizontalDivider(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                thickness = 0.2.dp,\r\n                color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.2f)\r\n            )\r\n            NavigationBar(\r\n                modifier = Modifier.height(56.dp).fillMaxWidth(),\r\n                containerColor = MaterialTheme.colorScheme.background,\r\n                contentColor = MaterialTheme.colorScheme.onSurface\r\n            ) {\r\n                // Crear un elemento de navegación para cada item definido\r\n                if (route == \"businessHome\" || route == \"businessStarred\" || route == \"businessProfile\" || route == \"businessInternshipDetail\") {\r\n                    BottomNavBar.businessItems().forEach { item ->\r\n                        NavigationBarItem(\r\n                            icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },\r\n                            //label = { Text(text = stringResource(id = item.title)) },\r\n                            selected = currentRoute == item.route,\r\n                            colors = NavigationBarItemDefaults.colors(\r\n                                selectedIconColor = MaterialTheme.colorScheme.surface,\r\n                                selectedTextColor = MaterialTheme.colorScheme.primary,\r\n                                indicatorColor = MaterialTheme.colorScheme.primary\r\n                            ),\r\n                            onClick = {\r\n                                // Navegar a la ruta seleccionada solo si no estamos ya en ella\r\n                                if (currentRoute != item.route) {\r\n                                    navController.navigate(item.route) {\r\n                                        // Evitar múltiples copias de la misma ruta en la pila de navegación\r\n                                        popUpTo(navController.graph.startDestinationId)\r\n                                        launchSingleTop = true\r\n                                    }\r\n                                }\r\n                            }\r\n                        )\r\n                    }\r\n                } else {\r\n                    BottomNavBar.items().forEach { item ->\r\n                        NavigationBarItem(\r\n                            icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },\r\n                            //label = { Text(text = stringResource(id = item.title)) },\r\n                            selected = currentRoute == item.route,\r\n                            colors = NavigationBarItemDefaults.colors(\r\n                                selectedIconColor = MaterialTheme.colorScheme.surface,\r\n                                selectedTextColor = MaterialTheme.colorScheme.primary,\r\n                                indicatorColor = MaterialTheme.colorScheme.primary\r\n                            ),\r\n                            onClick = {\r\n                                // Navegar a la ruta seleccionada solo si no estamos ya en ella\r\n                                if (currentRoute != item.route) {\r\n                                    navController.navigate(item.route) {\r\n                                        // Evitar múltiples copias de la misma ruta en la pila de navegación\r\n                                        popUpTo(navController.graph.startDestinationId)\r\n                                        launchSingleTop = true\r\n                                    }\r\n                                }\r\n                            }\r\n                        )\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/bravia/presentation/ui/components/BottomNavigationBar.kt b/app/src/main/java/com/example/bravia/presentation/ui/components/BottomNavigationBar.kt
+--- a/app/src/main/java/com/example/bravia/presentation/ui/components/BottomNavigationBar.kt	(revision b3f66a6cab25c91529abe22d67f81095e48638c2)
++++ b/app/src/main/java/com/example/bravia/presentation/ui/components/BottomNavigationBar.kt	(date 1745388450052)
+@@ -43,7 +43,8 @@
+                 contentColor = MaterialTheme.colorScheme.onSurface
+             ) {
+                 // Crear un elemento de navegación para cada item definido
+-                if (route == "businessHome" || route == "businessStarred" || route == "businessProfile" || route == "businessInternshipDetail") {
++                if (route?.contains("business") == true) {
++//                if (route == "businessHome" || route == "businessStarred" || route == "businessProfile" || route == "businessInternshipDetail") {
+                     BottomNavBar.businessItems().forEach { item ->
+                         NavigationBarItem(
+                             icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },
