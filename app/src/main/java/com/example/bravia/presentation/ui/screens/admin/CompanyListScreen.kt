@@ -35,6 +35,8 @@ import com.example.bravia.presentation.ui.components.PullToRefreshLazyColumn
 import com.example.bravia.presentation.ui.components.cardsAnditems.CompanyCard
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.ui.theme.ThemeHelper
+import com.example.bravia.presentation.viewmodel.AdminState
+import com.example.bravia.presentation.viewmodel.AdminViewModel
 import com.example.bravia.presentation.viewmodel.BusinessState
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
 import kotlinx.coroutines.launch
@@ -42,13 +44,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun CompanyListScreen(
     navController: NavController,
-    viewModel: BusinessViewModel
+    viewModel: AdminViewModel
 ) {
     val TAG = "CompanyListScreen"
 
     var searchText by remember { mutableStateOf("") }
     val companies by viewModel.companies.collectAsState()
-    val businessState by viewModel.businessState.collectAsState()
+    val businessState by viewModel.adminState.collectAsState()
 
     var isRefreshing by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -151,6 +153,11 @@ fun CompanyListScreen(
                     Text("Error: ${(businessState as BusinessState.Error).message}")
                 }
             }
+
+            AdminState.Empty -> TODO()
+            is AdminState.Error -> TODO()
+            AdminState.Loading -> TODO()
+            AdminState.Success -> TODO()
         }
     }
 }
