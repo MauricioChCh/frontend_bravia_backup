@@ -1,8 +1,11 @@
 package com.example.bravia.presentation.ui.screens.business
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,18 +17,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material3.Divider
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -39,7 +50,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bravia.presentation.ui.screens.shared.ErrorScreen
@@ -47,7 +58,6 @@ import com.example.bravia.presentation.ui.screens.shared.LoadingScreen
 import com.example.bravia.presentation.ui.screens.student.ProfileSection
 import com.example.bravia.presentation.viewmodel.BusinessState
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
-import kotlinx.coroutines.channels.ticker
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -63,16 +73,38 @@ fun BusinessInternshipDetailScreen(
 ) {
 
     val internship by viewModel.internship.collectAsState()
+    val modalities by viewModel.modalities.collectAsState()
+    val locations by viewModel.locations.collectAsState()
+
+    when (val state = viewModel.businessState.collectAsState().value) {
+        is BusinessState.Success -> {
+            // The internship data is already handled by the collectAsState above
+        }
+        is BusinessState.Error -> {
+            ErrorScreen(
+                message = state.message,
+                onRetry = { viewModel.selectedBusinessInternshipById(internshipId) }
+            )
+        }
+        is BusinessState.Loading -> {
+            LoadingScreen()
+        }
+
+        BusinessState.Empty -> TODO()
+    }
 
     when (internship)  {
         else -> LoadingScreen()
     }
 
     LaunchedEffect(internshipId) {
-        viewModel.selectedBusinessInternshipById(internshipId) // TODO: Cambiar por una variable
+        viewModel.selectedBusinessInternshipById(internshipId)
+        viewModel.fetchModalities()
+        viewModel.fetchLocations()
     }
 
     var isMarked by remember { mutableStateOf(false) }
+    var edit by remember { mutableStateOf(false) }
 
     LaunchedEffect(internship) {
         isMarked = if (internship != null) {
@@ -120,7 +152,7 @@ fun BusinessInternshipDetailScreen(
         Column (
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = innerPadding.calculateBottomPadding() * 4)
+                .padding(bottom = innerPadding.calculateBottomPadding() * 5)
                 .background(MaterialTheme.colorScheme.background)
         ) {
             internship?.let { internship ->
@@ -160,7 +192,7 @@ fun BusinessInternshipDetailScreen(
                         ){
                             Text(
                                 text = internship.company,
-                                style = MaterialTheme.typography.titleLarge,
+                                style = MaterialTheme.typography.headlineMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
 
@@ -185,70 +217,111 @@ fun BusinessInternshipDetailScreen(
 
 
                     ProfileSection(title = "Internship Title") {
-                        Row(
-                            modifier = Modifier.padding(bottom = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ){
-                            Text(
-                                text = internship.title,
-                                style = MaterialTheme.typography.titleLarge,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
+
+                        BoxContainer( text = internship.title, edit = edit,
+                            onValueChange = {
+                                internship.title = it
+                            }
+                        )
+
                     }
 
-                    DivisionSection()
-
-//                    // TODO: eliminar este texto de prueba
-//                    val text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales.\n" +
-//                            "\n" +
-//                            "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit. Ut velit mauris, egestas sed, gravida nec, ornare ut, mi. Aenean ut orci vel massa suscipit pulvinar. Nulla sollicitudin. Fusce varius, ligula non tempus aliquam, nunc turpis ullamcorper nibh, in tempus sapien eros vitae ligula. Pellentesque rhoncus nunc et augue. Integer id felis. Curabitur aliquet pellentesque diam. Integer quis metus vitae elit lobortis egestas. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi vel erat non mauris convallis vehicula.\n" +
-//                            "\n" +
-//                            "Nullam at leo nec metus aliquam semper. Sed nec felis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam.\n"
-
                     ProfileSection(title = "Internship Details") {
-
-                        BoxContainer( text = "Description: ${internship.description}" )
-
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-
-                        BoxContainer("Modality: ${internship.modality}")
-
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-
-                        BoxContainer("Activities: ${internship.activities}")
-
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-
-                        BoxContainer("Requirements: ${internship.requirements}")
-
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-
-                        BoxContainer("Schedule: ${internship.schedule}")
-
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-
-                        BoxContainer("Duration: ${internship.duration}")
-
                         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                         val formattedDate = dateFormat.format(internship.publicationDate)
 
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                        BoxContainer(text = "Description: ${internship.description}", edit = edit, label = "Description",
+                            onValueChange = {
+                                internship.description = it
+                            }
+                        )
 
-                        BoxContainer("Publication Date: $formattedDate")
+                        ComboBoxContainer("Modality", items = modalities.map { it.name }, text = internship.modality, isEditing = edit,
+                            onValueChange = {
+                                internship.modality = it
+                            }
+                        )
 
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                        BoxContainer("Activities: ${internship.activities}", edit = edit, label = "Activities",
+                            onValueChange = {
+                                internship.activities = it
+                            }
+                        )
+                        BoxContainer("Requirements: ${internship.requirements}", edit = edit, label = "Requirements",
+                            onValueChange = {
+                                internship.requirements = it
+                            }
+                        )
+                        BoxContainer("Schedule: ${internship.schedule}",   edit = edit, label = "Schedule",
+                            onValueChange = {
+                                internship.schedule = it
+                            }
+                        )
+                        BoxContainer("Duration: ${internship.duration}", edit = edit, label = "Duration",
+                            onValueChange = {
+                                internship.duration = it
+                            }
+                        )
 
-                        BoxContainer("Salary: ${internship.salary} €")
+                        BoxContainer("Publication Date: $formattedDate", edit = false, label = "Publication Date")
 
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                        BoxContainer("Salary: ${internship.salary}", edit = edit, label = "Salary",
+                            keyboard = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            onValueChange = {
+                                internship.salary = it.toDoubleOrNull() ?: 0.0
+                            }
+                        )
 
-                        BoxContainer("Location: ${internship.city}, ${internship.country}")
+                        ComboBoxContainer(label = "Location", items = locations.map { it.toShortString() }, text = internship.city + ", " + internship.country, isEditing = edit,
+                            onValueChange = { value ->
+                                val selectedLocation = locations.find { it.toShortString() == value }
+                                if (selectedLocation != null) {
+                                    internship.city = selectedLocation.city.name
+                                    internship.country = selectedLocation.country.name
+                                }
+                            }
+                        )
 
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                        BoxContainer("Link: ${internship.link}", edit = edit, label = "Link",
+                            onValueChange = {
+                                internship.link = it
+                            }
+                        )
+                    }
 
-                        BoxContainer("Link: ${internship.link}")
+                    // Section for buttons
+                    ProfileSection("") {
+                        Column(
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        ) {
+                            Button(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    if (edit) {
+                                        edit =  false
+                                    viewModel.updateInternship(internship)
+                                    } else {
+                                        edit = true
+                                    }
+                                }
 
+                            ) {
+                                Text(text = if (edit) "Save Changes" else "Edit Internship", style = MaterialTheme.typography.bodyLarge)
+                            }
+                            Button(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+//                                    viewModel.viewParticipants(internship.id) // TODO: Cambiar por una variable
+//                                    navController.navigate("")
+                                }
+                            ) {
+                                Text(text = "View Participants", style = MaterialTheme.typography.bodyLarge)
+                            }
+                        }
                     }
                 }
             }
@@ -256,21 +329,166 @@ fun BusinessInternshipDetailScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BoxContainer(
-    text: String = ""
-) {
-    Box(
+fun ComboBoxContainer(
+    label : String,
+    text: String,
+    items : List<String>,
+    isEditing: Boolean,
+    onValueChange: (String) -> Unit = {}
+){
+    var expanded = remember { mutableStateOf(false) }
+    var selectedItem by remember { mutableStateOf(text) }
+
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.large)
-            .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f), shape = MaterialTheme.shapes.large)
-            .padding(8.dp),
+            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .animateContentSize(),
+        shape = RoundedCornerShape(12.dp),
+        tonalElevation = 2.dp,
+        shadowElevation = 4.dp,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3f))
     ) {
-        Text(
-            text = text, // TODO: Agregar la descripcion a internship
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface
+        if (isEditing) {
+            ExposedDropdownMenuBox(
+                expanded = expanded.value,
+                onExpandedChange = { expanded.value = !expanded.value }
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth().padding(8.dp)
+                        .clickable { expanded.value = true }
+                        .menuAnchor(),
+                    value = items.find { it == selectedItem } ?: label,
+                    onValueChange = {
+                        selectedItem = it
+                        onValueChange(it)
+                    },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                        cursorColor = MaterialTheme.colorScheme.primary
+                    ),
+                    readOnly = true,
+                    isError = false,
+                    label = { Text(label) },
+                    trailingIcon = {
+                        Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                    },
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded.value,
+                    onDismissRequest = { expanded.value = false }
+                ) {
+                    items.forEach { item ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedItem = item
+                                onValueChange(item)
+                                expanded.value = false
+                            },
+                            text = {
+                                Text(item)
+                            }
+                        )
+                    }
+                }
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "$label: $text",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+
+    }
+
+
+
+}
+
+@Composable
+fun BoxContainer(
+    text: String = "",
+    edit: Boolean = false,
+    label: String = "",
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit = {},
+    keyboard : KeyboardOptions = KeyboardOptions.Default
+) {
+    val animatedVisibility by remember { mutableStateOf(true) }
+    val inputValue = remember(text) {
+        mutableStateOf(
+            if (":" in text) text.substringAfter(":").trim() else text
         )
     }
+
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .animateContentSize(),
+        shape = RoundedCornerShape(12.dp),
+        tonalElevation = 2.dp,
+        shadowElevation = 4.dp,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3f))
+    ) {
+        AnimatedContent(targetState = edit, label = "EditAnimation") { isEditing ->
+            if (isEditing) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    OutlinedTextField(
+                        value = inputValue.value,
+                        onValueChange = {
+                            inputValue.value = it
+                            onValueChange(it)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(label) },
+                        placeholder = { Text("Ingrese $label...") },
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        shape = RoundedCornerShape(8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                            cursorColor = MaterialTheme.colorScheme.primary
+                        ),
+                        trailingIcon = {
+                            Icon(Icons.Default.Edit, contentDescription = "Editar")
+                        },
+                        keyboardOptions = keyboard,
+                    )
+                }
+            } else {
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        }
+    }
 }
+
+
+
+
+
