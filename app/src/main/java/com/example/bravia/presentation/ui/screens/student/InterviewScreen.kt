@@ -106,7 +106,7 @@ private fun FlutterContentView(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 50.dp)
+
 
     )
 }
