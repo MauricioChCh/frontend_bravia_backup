@@ -267,4 +267,9 @@ class SignupViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateSelectedInterests(selected: Set<Interest>) {
+        interests = selected.map { it.name }
+    }
+
 }

@@ -75,13 +75,15 @@ fun InterestsScreen(
      * It updates the selected interests based on whether the interest is already selected or not.
      */
     fun onInterestClick(interest: Interest) {
-        setSelectedInterests(
-            if (interest in selectedInterests)
-                selectedInterests - interest
-            else
-                selectedInterests + interest
-        )
+        val updated = if (interest in selectedInterests) {
+            selectedInterests - interest
+        } else {
+            selectedInterests + interest
+        }
+        setSelectedInterests(updated)
+        signupViewModel.updateSelectedInterests(updated)
     }
+
 
     Box(
         modifier = Modifier
