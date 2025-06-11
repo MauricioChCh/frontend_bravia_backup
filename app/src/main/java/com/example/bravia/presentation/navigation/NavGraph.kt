@@ -38,6 +38,7 @@ import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.bravia.presentation.ui.screens.student.InterviewScreen
 
 /**
  * NavGraph is a composable function that defines the navigation graph for the application.
@@ -60,8 +61,8 @@ fun NavGraph(
     onLogout: () -> Unit
 ) {
     val navigationManager = NavigationManager()
-//    val userSession by loginViewModel.userSession.collectAsState()
     val userSession by loginViewModel.userSession.collectAsState()
+
     // Determinar la ruta de inicio basada en la sesión
     val startDestination = navigationManager.getStartDestination(userSession)
 
@@ -159,6 +160,24 @@ fun NavGraph(
 
             }
         }
+        // Pantalla de interviews
+        composable(
+            route = BottomNavBar.Routes.INTERVIEW,
+            arguments = emptyList()
+        ) {
+            if (userSession?.hasRole(UserRole.STUDENT) == true) {
+                InterviewScreen(
+                    navController = navController,
+                    paddingValues = paddingValues,
+                )
+            }
+            else {
+                // Redirigir o mostrar error de acceso
+                UnauthorizedScreen(navController)
+
+            }
+
+        }
 
         // Pantalla de guardados
         composable(route = BottomNavBar.Routes.SAVED) {
@@ -201,7 +220,7 @@ fun NavGraph(
                 val internshipId = backStackEntry.arguments?.getLong(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
                 InternshipDetailScreen(
                     navController = navController,
-                    internshipId = internshipId,
+                    internshipId = internshipId.toString(),
                     paddingValues = PaddingValues(0.dp),
                     viewModel = internshipViewModel
                 )
@@ -213,17 +232,6 @@ fun NavGraph(
         }
 
 
-        // Pantalla de interviews
-        composable(
-            route = BottomNavBar.Routes.INTERVIEW,
-            arguments = emptyList()
-        ) {
-//            InternshipScreen(
-//                navController = navController,
-//                paddingValues = paddingValues,
-//                viewModel = viewModel
-//            )
-        }
 
 
 
