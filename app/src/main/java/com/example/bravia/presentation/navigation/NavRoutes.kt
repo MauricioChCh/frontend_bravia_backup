@@ -79,4 +79,8 @@ sealed class NavRoutes {
     data object StudentList : NavRoutes() {
         const val ROUTE = "studentList"
     }
+
+    data object ReportList : NavRoutes() {
+        const val ROUTE = "reportList"
+    }
 }

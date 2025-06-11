@@ -38,6 +38,7 @@ import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 import androidx.compose.runtime.getValue
 import com.example.bravia.presentation.ui.screens.admin.CompanyListScreen
+import com.example.bravia.presentation.ui.screens.admin.ReportListScreen
 import com.example.bravia.presentation.ui.screens.admin.StudentListScreen
 import com.example.bravia.presentation.viewmodel.AdminViewModel
 
@@ -70,7 +71,7 @@ fun NavGraph(
     NavHost(
         navController = navController,
         //startDestination = NavRoutes.Start.ROUTE
-        startDestination = NavRoutes.StudentList.ROUTE
+        startDestination = NavRoutes.ReportList.ROUTE
     ){
 //    NavHost(navController = navController, startDestination = NavRoutes.BusinessHome.ROUTE) {
 
@@ -316,6 +317,13 @@ fun NavGraph(
 
         composable(route = NavRoutes.StudentList.ROUTE) {
             StudentListScreen(
+                navController = navController,
+                viewModel = adminViewModel // o el que estés usando para student
+            )
+        }
+
+        composable(route = NavRoutes.ReportList.ROUTE) {
+            ReportListScreen(
                 navController = navController,
                 viewModel = adminViewModel // o el que estés usando para student
             )

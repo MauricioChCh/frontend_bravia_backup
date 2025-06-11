@@ -2,9 +2,11 @@ package com.example.bravia.data.repository
 
 import com.example.bravia.data.mapper.CompanyMapper
 import com.example.bravia.data.mapper.StudentMapper
+import com.example.bravia.data.mapper.UserReportMapper
 import com.example.bravia.data.remote.AdminRemoteDataSource
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Student
+import com.example.bravia.domain.model.UserReport
 import com.example.bravia.domain.repository.AdminRepository
 import javax.inject.Inject
 
@@ -12,6 +14,7 @@ class AdminRepositoryImpl @Inject constructor(
     private val remoteDataSource: AdminRemoteDataSource,
     private val companyMapper: CompanyMapper,
     private val studentMapper: StudentMapper,
+    private val userReportMapper: UserReportMapper,
 ) : AdminRepository {
 
     override suspend fun findAllCompanies(): List<Company> {
@@ -68,6 +71,33 @@ class AdminRepositoryImpl @Inject constructor(
             }
         }
 
+    }
+
+    override suspend fun findAllUserReports(): List<UserReport> {
+        val result = remoteDataSource.getAllUserReports()
+        return when {
+            result.isSuccess -> {
+                val dtos = result.getOrNull() ?: emptyList()
+                android.util.Log.d("AdminRepositoryImpl", "DTOs recibidos: ${dtos.size}")
+                dtos.forEach { dto ->
+                    android.util.Log.d("AdminRepositoryImpl", "DTO: id=${dto.id}")
+                }
+
+                val domainList = dtos.map { dto ->
+                    val domain = userReportMapper.mapToDomain(dto)
+                    android.util.Log.d("AdminRepositoryImpl", "Reporte mapeado: id=${domain.id}")
+                    domain
+                }
+
+                android.util.Log.d("AdminRepositoryImpl", "Total de reportes mapeados: ${domainList.size}")
+                domainList
+            }
+            else -> {
+                val error = result.exceptionOrNull()
+                android.util.Log.e("AdminRepositoryImpl", "Error al obtener compañías: ${error?.message}")
+                throw error ?: Exception("Unknown error fetching companies")
+            }
+        }
     }
 
 }

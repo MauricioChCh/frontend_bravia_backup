@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Student
+import com.example.bravia.domain.model.UserReport
 import com.example.bravia.domain.usecase.GetAllCompaniesUseCase
 import com.example.bravia.domain.usecase.GetAllStudentsUseCase
+import com.example.bravia.domain.usecase.GetAllUserReportsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +26,8 @@ sealed class AdminState {
 @HiltViewModel
 class AdminViewModel @Inject constructor(
     private val getAllCompaniesUseCase: GetAllCompaniesUseCase,
-    private val getAllStudentsUseCase: GetAllStudentsUseCase
+    private val getAllStudentsUseCase: GetAllStudentsUseCase,
+    private val getAllUserReportsUseCase: GetAllUserReportsUseCase
 ) : ViewModel() {
 
     private val _companies = MutableStateFlow<List<Company>>(emptyList())
@@ -32,6 +35,9 @@ class AdminViewModel @Inject constructor(
 
     private val _students = MutableStateFlow<List<Student>>(emptyList())
     val students: StateFlow<List<Student>> = _students.asStateFlow()
+
+    private val _reports = MutableStateFlow<List<UserReport>>(emptyList())
+    val reports: StateFlow<List<UserReport>> = _reports.asStateFlow()
 
     private val _adminState = MutableStateFlow<AdminState>(AdminState.Empty)
     val adminState: StateFlow<AdminState> = _adminState.asStateFlow()
@@ -71,6 +77,27 @@ class AdminViewModel @Inject constructor(
                 }
                 _students.value = studentsList
                 _adminState.value = if (studentsList.isNotEmpty()) AdminState.Success else AdminState.Empty
+            }.onFailure {
+                Log.e("AdminViewModel", "fetchAllStudents - error: ${it.message}", it)
+                _adminState.value = AdminState.Error(it.message ?: "Error fetching companies")
+            }
+
+        }
+    }
+
+    fun fetchAllReports(){
+        viewModelScope.launch {
+            _adminState.value = AdminState.Loading
+            runCatching {
+                getAllUserReportsUseCase()
+            }.onSuccess {
+                val reportsList = it.getOrDefault(emptyList())
+                Log.d("AdminViewModel", "fetchAllStudents - fetched ${reportsList.size} students")
+                reportsList.forEach { userReport ->
+                    Log.d("AdminViewModel", "student -> id: ${userReport.id}, ReporterName: ${userReport.reporterName}, description ${userReport.description} ")
+                }
+                _reports.value = reportsList
+                _adminState.value = if (reportsList.isNotEmpty()) AdminState.Success else AdminState.Empty
             }.onFailure {
                 Log.e("AdminViewModel", "fetchAllStudents - error: ${it.message}", it)
                 _adminState.value = AdminState.Error(it.message ?: "Error fetching companies")

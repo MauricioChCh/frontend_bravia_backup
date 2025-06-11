@@ -2,6 +2,7 @@ package com.example.bravia.domain.repository
 
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Student
+import com.example.bravia.domain.model.UserReport
 
 interface AdminRepository {
 
@@ -9,6 +10,7 @@ interface AdminRepository {
 
     suspend fun findAllStudents(): List<Student>
 
+    suspend fun findAllUserReports(): List<UserReport>
 }
 
 
