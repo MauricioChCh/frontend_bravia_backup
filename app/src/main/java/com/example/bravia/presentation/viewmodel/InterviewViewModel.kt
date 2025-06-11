@@ -83,6 +83,7 @@ class InterviewViewModel @Inject constructor(
                 requirements = "Knowledge of Kotlin, Android development",
                 activities = "Developing mobile applications, collaborating with the team",
                 link = "https://example.com/internship1",
+                description = "aaa",
                 isMarked = true
             ),
             Internship(
@@ -100,6 +101,7 @@ class InterviewViewModel @Inject constructor(
                 requirements = "Experience with Figma, Adobe XD",
                 activities = "Designing user interfaces, conducting user research",
                 link = "https://example.com/internship2",
+                description = "",
                 isMarked = false
             )
         )

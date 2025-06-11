@@ -3,12 +3,13 @@ package com.example.bravia.data.di
 import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.data.remote.api.AuthService
+import com.example.bravia.data.remote.api.InternshipService
 import com.example.bravia.data.remote.api.SignUpService
 import com.example.bravia.data.remote.api.StudentAreaService
 import com.example.bravia.data.remote.dto.InterestDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.interceptor.AuthInterceptor
-import com.example.bravia.data.remote.serializer.InterestDeselializer
+import com.example.bravia.data.remote.serializer.InterestDeserializer
 import com.example.bravia.data.remote.serializer.InternshipDeserializer
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -42,7 +43,7 @@ object NetworkModule {
     fun provideGson(): Gson = GsonBuilder()
         .setDateFormat(DATE_FORMAT)
         .registerTypeAdapter(InternshipDTO::class.java, InternshipDeserializer())
-        .registerTypeAdapter(InterestDTO::class.java, InterestDeselializer())
+        .registerTypeAdapter(InterestDTO::class.java, InterestDeserializer())
         .create()
     //TODO meter esto .registerTypeAdapter(InterestDTO::class.java, InterestDeserializer()) a ver si funciona
 
@@ -146,4 +147,16 @@ object NetworkModule {
     @Singleton
     fun provideBusinessService(retrofit: Retrofit): BusinessService =
         retrofit.create(BusinessService::class.java)
+
+    /**
+     * Provides the InternshipService implementation for internship-related operations.
+     *
+     * @param retrofit The Retrofit instance to create the service
+     * @return [InternshipService] implementation
+     */
+    @Provides
+    @Singleton
+    fun provideInternshipService(retrofit: Retrofit): InternshipService =
+        retrofit.create(InternshipService::class.java)
+
 }
