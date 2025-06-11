@@ -172,6 +172,24 @@ class BusinessViewModel @Inject constructor(
         }
     }
 
+    fun fetchModalities() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllInternshipModalitiesUseCase()
+            }.onSuccess { result ->
+                _modalities.value = result.getOrNull() ?: emptyList()
+                _businessState.value = if (_modalities.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch modalities")
+            }
+        }
+    }
+
     fun addInternship(internship: NewInternship) {
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading

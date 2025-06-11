@@ -54,12 +54,13 @@ fun BusinessNewInternshipScreen (
 
     LaunchedEffect(Unit) {
         businessViewModel.fetchLocations()
+        businessViewModel.fetchModalities()
     }
 
     var selectedLocationId by remember { mutableStateOf<Long?>(null) }
     var expandedLocation by remember { mutableStateOf(false) }
 
-    var selectedModality by remember { mutableStateOf<String?>(null) }
+    var selectedModality by remember { mutableStateOf<Long?>(null) }
     var expandedModality by remember { mutableStateOf(false) }
 
     var imageUrl by remember { mutableStateOf("") }
@@ -220,9 +221,9 @@ fun BusinessNewInternshipScreen (
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { expandedLocation = true }
+                        .clickable { expandedModality = true }
                         .menuAnchor(),
-                    value = selectedModality ?: "Select Modality",
+                    value = modalities.find { it.id == selectedModality }?.name ?: "Select Modality",
                     onValueChange = {},
                     readOnly = true,
                     isError = false,
@@ -238,11 +239,11 @@ fun BusinessNewInternshipScreen (
                     modalities.forEach { modality ->
                         DropdownMenuItem(
                             onClick = {
-                                selectedModality = modality
+                                selectedModality = modality.id
                                 expandedModality = false
                             },
                             text = {
-                                Text(modality)
+                                Text(modality.name)
                             }
                         )
                     }

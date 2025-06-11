@@ -36,7 +36,7 @@ interface BusinessService {
     @GET("companies/{username}/locations")
     suspend fun getAllBusinessLocations(@Path("username") username: String): Response<List<LocationDTO>>
 
-    @GET("/companies/internships/modalities")
+    @GET("companies/internships/modalities")
     suspend fun getAllInternshipsModalities(): Response<List<ModalityDTO>>
 
     @POST("internships")

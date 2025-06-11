@@ -6,10 +6,10 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class ModalityRemoteDataSource @Inject constructor(
-  private val companyService: BusinessService
+  private val businessService: BusinessService
 ) {
-    suspend fun getAllInternshipsModalities() : Result<List<ModalityDTO>> = safeApiCall {
-        return companyService.getAllInternshipsModalities()
+    suspend fun getAllInternshipsModalities(): Result<List<ModalityDTO?>> = safeApiCall {
+        businessService.getAllInternshipsModalities()
     }
 
 
