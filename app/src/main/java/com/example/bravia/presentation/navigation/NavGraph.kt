@@ -220,7 +220,7 @@ fun NavGraph(
                 val internshipId = backStackEntry.arguments?.getLong(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
                 InternshipDetailScreen(
                     navController = navController,
-                    internshipId = internshipId,
+                    internshipId = internshipId.toString(),
                     paddingValues = PaddingValues(0.dp),
                     viewModel = internshipViewModel
                 )

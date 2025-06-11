@@ -39,6 +39,12 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity
+            android:name=".FlutterDescriptionActivity"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+    </activity>
 
     </application>
 
