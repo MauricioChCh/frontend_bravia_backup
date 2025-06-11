@@ -9,6 +9,7 @@ import com.example.bravia.domain.model.UserReport
 import com.example.bravia.domain.usecase.GetAllCompaniesUseCase
 import com.example.bravia.domain.usecase.GetAllStudentsUseCase
 import com.example.bravia.domain.usecase.GetAllUserReportsUseCase
+import com.example.bravia.domain.usecase.GetUserReportByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +28,8 @@ sealed class AdminState {
 class AdminViewModel @Inject constructor(
     private val getAllCompaniesUseCase: GetAllCompaniesUseCase,
     private val getAllStudentsUseCase: GetAllStudentsUseCase,
-    private val getAllUserReportsUseCase: GetAllUserReportsUseCase
+    private val getAllUserReportsUseCase: GetAllUserReportsUseCase,
+    private val getUserReportByIdUseCase: GetUserReportByIdUseCase
 ) : ViewModel() {
 
     private val _companies = MutableStateFlow<List<Company>>(emptyList())
@@ -38,6 +40,9 @@ class AdminViewModel @Inject constructor(
 
     private val _reports = MutableStateFlow<List<UserReport>>(emptyList())
     val reports: StateFlow<List<UserReport>> = _reports.asStateFlow()
+
+    private val _report = MutableStateFlow<UserReport?>(null)
+    val report: StateFlow<UserReport?> = _report
 
     private val _adminState = MutableStateFlow<AdminState>(AdminState.Empty)
     val adminState: StateFlow<AdminState> = _adminState.asStateFlow()
@@ -106,4 +111,25 @@ class AdminViewModel @Inject constructor(
         }
     }
 
+    fun fetchReportById(reportId: Long) {
+        viewModelScope.launch {
+            _adminState.value = AdminState.Loading
+            runCatching {
+                getUserReportByIdUseCase(reportId)
+            }.onSuccess { result ->
+                val userReport = result.getOrNull()
+                if (userReport != null) {
+                    Log.d("AdminViewModel", "fetchReportById - fetched report with id: ${userReport.id}")
+                    _report.value = userReport
+                    _adminState.value = AdminState.Success
+                } else {
+                    Log.w("AdminViewModel", "fetchReportById - no report found with id: $reportId")
+                    _adminState.value = AdminState.Empty
+                }
+            }.onFailure { throwable ->
+                Log.e("AdminViewModel", "fetchReportById - error: ${throwable.message}", throwable)
+                _adminState.value = AdminState.Error(throwable.message ?: "Error fetching report")
+            }
+        }
+    }
 }

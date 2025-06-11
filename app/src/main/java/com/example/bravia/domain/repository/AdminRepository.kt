@@ -11,6 +11,8 @@ interface AdminRepository {
     suspend fun findAllStudents(): List<Student>
 
     suspend fun findAllUserReports(): List<UserReport>
+
+    suspend fun findUserReportById(reportId: Long): UserReport
 }
 
 

@@ -2,6 +2,7 @@
 package com.example.bravia.navigation
 
 import SettingsScreen
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,6 +40,7 @@ import com.example.bravia.presentation.viewmodel.SignupViewModel
 import androidx.compose.runtime.getValue
 import com.example.bravia.presentation.ui.screens.admin.CompanyListScreen
 import com.example.bravia.presentation.ui.screens.admin.ReportListScreen
+import com.example.bravia.presentation.ui.screens.admin.ReportProfileScreen
 import com.example.bravia.presentation.ui.screens.admin.StudentListScreen
 import com.example.bravia.presentation.viewmodel.AdminViewModel
 
@@ -326,6 +328,28 @@ fun NavGraph(
             ReportListScreen(
                 navController = navController,
                 viewModel = adminViewModel // o el que estés usando para student
+            )
+        }
+
+        composable(
+            route = NavRoutes.ReportProfile.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.ReportProfile.ARG_REPORT_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val reportId = backStackEntry.arguments?.getLong(NavRoutes.ReportProfile.ARG_REPORT_ID) ?: -1L
+            ReportProfileScreen(
+                navController = navController,
+                reportId = reportId,
+                paddingValues = PaddingValues(0.dp),
+                viewModel = adminViewModel,
+                onUserClick = { userName ->
+                    // Puedes navegar a la pantalla del perfil del usuario o mostrar un diálogo, etc.
+                    Log.d("Nav", "Usuario clickeado: $userName")
+                    // navController.navigate("userProfile/$userName") // ejemplo opcional
+                }
             )
         }
 

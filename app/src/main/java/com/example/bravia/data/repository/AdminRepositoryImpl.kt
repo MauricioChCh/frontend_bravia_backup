@@ -100,5 +100,30 @@ class AdminRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun findUserReportById(reportId: Long): UserReport {
+        val result = remoteDataSource.getUserReportById(reportId)
+
+        return when {
+            result.isSuccess -> {
+                val dto = result.getOrNull()
+                if (dto == null) {
+                    android.util.Log.e("AdminRepositoryImpl", "No se encontró el reporte con ID: $reportId")
+                    throw IllegalStateException("No se encontró el reporte con ID $reportId")
+                }
+
+                android.util.Log.d("AdminRepositoryImpl", "DTO recibido: id=${dto.id}")
+                val domain = userReportMapper.mapToDomain(dto)
+                android.util.Log.d("AdminRepositoryImpl", "Reporte mapeado: id=${domain.id}")
+                domain
+            }
+
+            else -> {
+                val error = result.exceptionOrNull()
+                android.util.Log.e("AdminRepositoryImpl", "Error al obtener el reporte con ID $reportId: ${error?.message}")
+                throw error ?: Exception("Unknown error fetching user report with ID $reportId")
+            }
+        }
+    }
+
 }
 

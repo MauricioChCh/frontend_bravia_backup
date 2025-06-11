@@ -125,7 +125,7 @@ fun ReportListScreen(
                                 ReportCard(
                                     report = userReport,
                                     onClick = {
-                                        navController.navigate(NavRoutes.BusinessProfile)
+                                        navController.navigate(NavRoutes.ReportProfile.createRoute(userReport.id))
                                     }
                                 )
                                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))

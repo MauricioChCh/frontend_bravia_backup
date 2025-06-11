@@ -83,4 +83,10 @@ sealed class NavRoutes {
     data object ReportList : NavRoutes() {
         const val ROUTE = "reportList"
     }
+
+    data object ReportProfile : NavRoutes() {
+        const val ARG_REPORT_ID = "reportId"
+        const val ROUTE = "reportProfile/{$ARG_REPORT_ID}"
+        fun createRoute(reportId: Long) = "reportProfile/$reportId"
+    }
 }

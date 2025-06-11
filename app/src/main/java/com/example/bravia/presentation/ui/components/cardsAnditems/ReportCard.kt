@@ -73,7 +73,7 @@ fun ReportCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Emisor del reporte: " + report.reporterName,
+                    text = report.reporterName,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,

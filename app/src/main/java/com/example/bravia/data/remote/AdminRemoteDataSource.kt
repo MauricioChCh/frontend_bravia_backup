@@ -40,5 +40,13 @@ class AdminRemoteDataSource @Inject constructor(
         response
     }
 
+    suspend fun getUserReportById(reportId: Long): Result<UserReportResponseDTO> = safeApiCall {
+        val response = adminService.getUserReportById(reportId)
+        Log.d("AdminRemoteDataSource", "Llamada ejecutada con código: ${response.code()}")
+        Log.d("AdminRemoteDataSource", "Es exitosa: ${response.isSuccessful}")
+        Log.d("AdminRemoteDataSource", "Body: ${response.body()}")
+        response
+    }
+
 
 }
