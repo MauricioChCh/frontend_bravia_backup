@@ -10,8 +10,8 @@ class ContactMapper @Inject constructor() {
         return dto.map { mapToDomain(it) }
     }
 
-    fun mapToDTOList(domain: List<Contact>): List<ContactDTO> {
-        return domain.map { mapToDto(it) }
+    fun mapToDTOList(domain: List<Contact>?): List<ContactDTO> {
+        return domain!!.map { mapToDto(it) }
     }
 
 

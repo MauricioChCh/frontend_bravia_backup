@@ -83,13 +83,13 @@ fun BusinessProfileScreen(
 
 
     company?.let{
-        businessName = it.name
-        city = it.location.city.name
-        country = it.location.country.name
-        description = it.description
-        tags = it.tags.map { tag -> tag.name }
-        businessAreas = it.businessAreas.map { area -> area.name }
-        contacts = it.contacts.map { contact -> contact.url }
+        businessName = it.name.toString()
+        city = it.location?.city?.name.toString()
+        country = it.location?.country?.name.toString()
+        description = it.description.toString()
+        tags = it.tags?.map { tag -> tag.name } ?: mutableListOf()
+        businessAreas = it.businessAreas?.map { area -> area.name } ?: mutableListOf()
+        contacts = it.contacts?.map { contact -> contact.url } ?: mutableListOf()
     }
 
 

@@ -1,18 +1,18 @@
 package com.example.bravia.data.remote.dto
 
 data class CompanyResponseDTO(
-    var id: Long,
-    var name: String,
-    var description: String,
-    var imageUrl: String,
-    var businessAreas: List<BusinessAreaDTO>,
-    var tags: List<TagDTO>,
-    var location: LocationDTO,
-    var contacts: List<ContactDTO>,
-    var firstName: String,
-    var lastName: String,
-    var email: String,
-    var verified: Boolean,
+    var id: Long? = null,
+    var name: String? = null,
+    var description: String? = null,
+    var imageUrl: String? = null,
+    var businessAreas: List<BusinessAreaDTO>? = null,
+    var tags: List<TagDTO>? = null,
+    var location: LocationDTO? = null,
+    var contacts: List<ContactDTO>? = null,
+    var firstName: String? = null,
+    var lastName: String? = null,
+    var email: String? = null,
+    var verified: Boolean? = null,
 )
 
 data class TagDTO(

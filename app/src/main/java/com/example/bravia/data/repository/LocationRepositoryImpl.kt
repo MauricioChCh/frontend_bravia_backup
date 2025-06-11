@@ -30,7 +30,7 @@ class LocationRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             Result.failure(e)
-        }
+        } as Result<List<Location>>
     }
 
 }

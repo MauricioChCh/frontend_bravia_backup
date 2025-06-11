@@ -69,7 +69,7 @@ fun BusinessHomeScreen (
     val internships by businessViewModel.internships.collectAsState()
 
     LaunchedEffect(Unit) {
-        businessViewModel.fetchAllBusinessInternships() // TODO: Cambiar por una variable
+        businessViewModel.fetchAllBusinessInternships()
         Log.d("BusinessHomeScreen", "Internships fetched: ${internships.size}")
     }
 

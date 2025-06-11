@@ -10,8 +10,8 @@ class TagMapper @Inject constructor() {
         return dto.map { mapToDomain(it) }
     }
 
-    fun mapToDTOList(domain: List<Tag>): List<TagDTO> {
-        return domain.map { mapToDto(it) }
+    fun mapToDTOList(domain: List<Tag>?): List<TagDTO> {
+        return domain!!.map { mapToDto(it) }
     }
 
 

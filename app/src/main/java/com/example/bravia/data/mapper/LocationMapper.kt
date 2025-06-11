@@ -12,18 +12,18 @@ package com.example.bravia.data.mapper
             private val cityMapper: CityMapper,
             private val countryMapper: CountryMapper
         ) {
-            fun mapToDomain(dto: LocationDTO): Location {
+            fun mapToDomain(dto: LocationDTO?): Location? {
                 return Location(
-                    id = dto.id,
-                    address = dto.address,
-                    city = cityMapper.mapToDomain(dto.city),
-                    country = countryMapper.mapToDomain(dto.country)
+                    id = dto?.id ?: 0,
+                    address = dto?.address ?: "",
+                    city = cityMapper.mapToDomain(dto?.city),
+                    country = countryMapper.mapToDomain(dto?.country)
                 )
             }
 
-            fun mapToDto(domain: Location): LocationDTO {
+            fun mapToDto(domain: Location?): LocationDTO {
                 return LocationDTO(
-                    id = domain.id,
+                    id = domain!!.id,
                     address = domain.address,
                     city = cityMapper.mapToDto(domain.city),
                     country = countryMapper.mapToDto(domain.country)
@@ -32,10 +32,10 @@ package com.example.bravia.data.mapper
         }
 
         class CityMapper @Inject constructor() {
-            fun mapToDomain(dto: CityDTO): City {
+            fun mapToDomain(dto: CityDTO?): City {
                 return City(
-                    id = dto.id,
-                    name = dto.name
+                    id = dto?.id ?: 0,
+                    name = dto?.name ?: ""
                 )
             }
 
@@ -48,10 +48,10 @@ package com.example.bravia.data.mapper
         }
 
         class CountryMapper @Inject constructor() {
-            fun mapToDomain(dto: CountryDTO): Country {
+            fun mapToDomain(dto: CountryDTO?): Country {
                 return Country(
-                    id = dto.id,
-                    name = dto.name
+                    id = dto?.id ?: 0,
+                    name = dto?.name ?: ""
                 )
             }
 
