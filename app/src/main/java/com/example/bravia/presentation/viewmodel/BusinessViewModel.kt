@@ -6,11 +6,13 @@ import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.Location
+import com.example.bravia.domain.model.Modality
 import com.example.bravia.domain.model.NewInternship
 import com.example.bravia.domain.usecase.BookmarkInternshipUseCase
 import com.example.bravia.domain.usecase.BusinessNewInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessLocationsUseCase
+import com.example.bravia.domain.usecase.GetAllInternshipModalitiesUseCase
 import com.example.bravia.domain.usecase.GetBookmarkedInternshipsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,6 +36,7 @@ class BusinessViewModel @Inject constructor(
     private val getAllBusinessInternshipUseCase: GetAllBusinessInternshipUseCase,
     private val bookmarkInternshipUseCase: BookmarkInternshipUseCase,
     private val getAllBusinessLocationsUseCase: GetAllBusinessLocationsUseCase,
+    private val getAllInternshipModalitiesUseCase: GetAllInternshipModalitiesUseCase,
     private val businessNewInternshipUseCase: BusinessNewInternshipUseCase,
     private val getCompanyByIdUseCase: GetCompanyByIdUseCase,
     private val getBusinessInternshipByIdUseCase: GetBusinessInternshipByIdUseCase,
@@ -53,10 +56,8 @@ class BusinessViewModel @Inject constructor(
     private val _businessState = MutableStateFlow<BusinessState>(BusinessState.Empty)
     val businessState: StateFlow<BusinessState> = _businessState.asStateFlow()
 
-    private val _modalities = MutableStateFlow<List<String>>(// TODO: have to come from the backend
-        listOf("Remote", "On-site", "Hybrid", "Flexible", "Part-time", "Full-time", "Internship", "Contract", "Temporary", "Volunteer")
-    )
-    val modalities: StateFlow<List<String>> = _modalities
+    private val _modalities = MutableStateFlow<List<Modality>>(emptyList())
+    val modalities: StateFlow<List<Modality>> = _modalities.asStateFlow()
 
     private val _internships = MutableStateFlow<List<Internship>>(emptyList())
     val internships: StateFlow<List<Internship>> = _internships.asStateFlow()

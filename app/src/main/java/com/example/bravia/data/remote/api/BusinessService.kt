@@ -3,6 +3,7 @@ package com.example.bravia.data.remote.api
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.dto.LocationDTO
+import com.example.bravia.data.remote.dto.ModalityDTO
 import com.example.bravia.data.remote.dto.NewInternshipDTO
 import retrofit2.Response
 import retrofit2.http.Body
@@ -34,6 +35,9 @@ interface BusinessService {
 
     @GET("companies/{username}/locations")
     suspend fun getAllBusinessLocations(@Path("username") username: String): Response<List<LocationDTO>>
+
+    @GET("/companies/internships/modalities")
+    suspend fun getAllInternshipsModalities(): Response<List<ModalityDTO>>
 
     @POST("internships")
     suspend fun newInternship(@Body internship: NewInternshipDTO): Response<InternshipDTO?>
