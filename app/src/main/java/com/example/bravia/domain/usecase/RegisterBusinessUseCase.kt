@@ -15,7 +15,7 @@ class RegisterBusinessUseCase @Inject constructor(
      *
      * @return A [Result] indicating the success or failure of the registration.
      */
-    suspend operator fun invoke(input: CompanyNew): Result<Company> {
-        return authRepository.registerBusiness(input)
+    suspend operator fun invoke(company: CompanyNew): Result<Company> {
+        return authRepository.registerBusiness(company)
     }
 }

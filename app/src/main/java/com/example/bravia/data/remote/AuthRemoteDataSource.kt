@@ -5,6 +5,8 @@ import com.example.bravia.data.mapper.AuthMapper
 import com.example.bravia.data.remote.api.AuthService
 import com.example.bravia.data.remote.dto.CompanyNewDTO
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
+import com.example.bravia.data.remote.dto.StudentNewDTO
+import com.example.bravia.data.remote.dto.StudentResponseDTO
 import com.example.bravia.domain.model.AuthResult
 import com.example.bravia.domain.model.Credentials
 import kotlinx.coroutines.Dispatchers
@@ -144,6 +146,9 @@ class AuthRemoteDataSource @Inject constructor(
         authService.registerBusiness(company)
     }
 
+    suspend fun registerStudent(student: StudentNewDTO): Result<StudentResponseDTO> = safeApiCall {
+        authService.registerStudent(student)
+    }
 
     /**
      * Helper function to handle API calls safely.

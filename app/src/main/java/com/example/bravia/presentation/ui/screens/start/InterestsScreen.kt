@@ -127,7 +127,7 @@ fun InterestsScreen(
         }
 
 
-        CreateAccountButton(navController = navController)
+        CreateAccountButton(navController = navController, signupViewModel = signupViewModel)
 
         Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
@@ -168,13 +168,17 @@ fun RedirectToLoginButton(
  */
 @Composable
 fun CreateAccountButton(
-    navController: NavController
+    navController: NavController,
+    signupViewModel: SignupViewModel
 ) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 70.dp),
-        onClick = { /*TODO*/ navController.navigate("home") },
+        onClick = {
+            signupViewModel.registerStudent()
+            navController.navigate("login")
+        },
 
     ) {
         Text(

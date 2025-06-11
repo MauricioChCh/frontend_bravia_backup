@@ -11,12 +11,14 @@ import com.example.bravia.domain.model.College
 import com.example.bravia.domain.model.CompanyNew
 import com.example.bravia.domain.model.Degree
 import com.example.bravia.domain.model.Interest
+import com.example.bravia.domain.model.StudentNew
 import com.example.bravia.domain.usecase.GetAllBusinessAreaUseCase
 import com.example.bravia.domain.usecase.GetAllCollegesUseCase
 import com.example.bravia.domain.usecase.GetAllDegreesUseCase
 import com.example.bravia.domain.usecase.GetAllInterestUseCase
 import com.example.bravia.domain.usecase.GetInterestByIdUseCase
 import com.example.bravia.domain.usecase.RegisterBusinessUseCase
+import com.example.bravia.domain.usecase.RegisterStudentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,6 +41,7 @@ class SignupViewModel @Inject constructor(
     private val getAllDegreesUseCase: GetAllDegreesUseCase,
     private val getAllBusinessAreasUseCase: GetAllBusinessAreaUseCase,
     private val registerBusinessUseCase: RegisterBusinessUseCase,
+    private val registerStudentUseCase: RegisterStudentUseCase,
 ) : ViewModel() {
 
     private val _listOfCollege = MutableStateFlow<List<College>>(emptyList())
@@ -215,8 +218,52 @@ class SignupViewModel @Inject constructor(
                 )
             }.onSuccess {
                 // TODO: Handle success, e.g., navigate to a different screen or show a success message
+                _signUpState.value = SignUpState.Success("Registration successful")
             }.onFailure {
                 // TODO: Handle failure, e.g., show an error message
+                _signUpState.value = SignUpState.Error(it.message ?: "Unknown error")
+                Log.e("SignupViewModel", "Error during registration: ${it.message}")
+            }
+        }
+    }
+
+    fun registerStudent() {
+
+        if (email.isBlank()
+            || password.isBlank()
+            || confirmPassword.isBlank()
+            || firstName.isBlank()
+            || lastName.isBlank()
+            || college.isBlank()
+            || degree.isBlank()
+            || interests.isEmpty()) {
+            _signUpState.value = SignUpState.Empty
+            return
+        }
+
+        _signUpState.value = SignUpState.Loading
+
+        viewModelScope.launch {
+            runCatching {
+                registerStudentUseCase(
+                    StudentNew(
+                        email = email,
+                        password = password,
+                        confirmPassword = confirmPassword,
+                        firstName = firstName,
+                        lastName = lastName,
+                        college = listOfCollege.value.find { it.name == college }!!,
+                        degree = listOfDegree.value.find { it.name == degree }!!,
+                        interest = interests.mapNotNull { interestName ->
+                            listOfInterest.value.find { it.name == interestName }
+                        }
+                    )
+                )
+            }.onSuccess {
+                _signUpState.value = SignUpState.Success("Registration successful")
+            }.onFailure {
+                _signUpState.value = SignUpState.Error(it.message ?: "Unknown error")
+                Log.e("SignupViewModel", "Error during registration: ${it.message}")
             }
         }
     }

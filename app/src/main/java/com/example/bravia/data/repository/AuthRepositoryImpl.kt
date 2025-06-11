@@ -3,11 +3,14 @@ package com.example.bravia.data.repository
 import android.util.Log
 import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.data.mapper.CompanyMapper
+import com.example.bravia.data.mapper.StudentMapper
 import com.example.bravia.data.remote.AuthRemoteDataSource
 import com.example.bravia.domain.model.AuthResult
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.CompanyNew
 import com.example.bravia.domain.model.Credentials
+import com.example.bravia.domain.model.Student
+import com.example.bravia.domain.model.StudentNew
 import com.example.bravia.domain.repository.AuthRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,6 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource,
     private val authPreferences: AuthPreferences,
     private val companyMapper: CompanyMapper,
+    private val studentMapper: StudentMapper
 ) : AuthRepository {
 
     /**
@@ -155,9 +159,9 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun registerBusiness(input: CompanyNew): Result<Company> {
+    override suspend fun registerBusiness(company: CompanyNew): Result<Company> {
         return try {
-            authRemoteDataSource.registerBusiness(companyMapper.mapToNewDTO(input))
+            authRemoteDataSource.registerBusiness(companyMapper.mapToNewDTO(company))
                 .onSuccess { companyDTO ->
                     Log.d("AuthRepositoryImpl", "Business registration successful: ${companyDTO.name}")
                 }
@@ -171,4 +175,21 @@ class AuthRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun registerStudent(student: StudentNew): Result<Student>{
+        return try {
+            authRemoteDataSource.registerStudent(studentMapper.mapToNewDTO(student))
+                .onSuccess { studentDTO ->
+                    Log.d("AuthRepositoryImpl", "Student registration successful: ${studentDTO.firstName} ${studentDTO.lastName}")
+                }
+                .onFailure { error ->
+                    Log.e("AuthRepositoryImpl", "Student registration failed: ${error.message}")
+                }
+                .map { studentMapper.mapToDomain(it) }
+        } catch (e: Exception) {
+            Log.e("AuthRepositoryImpl", "Student registration exception: ${e.message}", e)
+            Result.failure(e)
+        }
+    }
+
 }
