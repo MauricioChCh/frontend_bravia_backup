@@ -69,6 +69,7 @@ class LoginViewModel @Inject constructor(
     private fun checkAuthenticationStatus() {
         viewModelScope.launch {
             try {
+
                 val isAuthenticated = authPreferences.isAuthenticated()
                 _isLoggedIn.value = isAuthenticated
 

@@ -349,10 +349,7 @@ fun InternshipDetailScreen(
                     }
                     Button(
                         onClick = {
-                            val intent = Intent(context, FlutterDemoActivity::class.java).apply {
-                                // Si necesitas pasar datos a Flutter:
-                                putExtra("DEMO_MODE", "preview")
-                            }
+                            val intent = Intent(context, FlutterDemoActivity::class.java)
                             context.startActivity(intent)
                         },
                         modifier = Modifier
