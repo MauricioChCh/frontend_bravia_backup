@@ -71,4 +71,9 @@ class FlutterChatActivity : FlutterActivity() {
         Log.d("🐛 FlutterChat", "FlutterChatActivity onCreate")
         super.onCreate(savedInstanceState)
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("🐛 FlutterChat", "FlutterChatActivity onDestroy")
+    }
+
 }
