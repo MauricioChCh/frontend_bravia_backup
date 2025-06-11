@@ -75,7 +75,10 @@ fun ReportProfileScreen(
     onUserClick: (String) -> Unit
 ) {
     val report by viewModel.report.collectAsState()
+    val student by viewModel.student.collectAsState()
     val adminState by viewModel.adminState.collectAsState()
+
+
 
     // Ejecuta solo una vez al iniciar la pantalla
     LaunchedEffect(reportId) {
@@ -146,10 +149,10 @@ fun ReportProfileScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            ProfileSection(title = "Usuario Reportado") {
+                            ProfileSection(title = "Reported Company") {
                                 UserReportCard(
                                     userName = userReport.reportedUserName,
-                                    onClick = { onUserClick(userReport.reportedUserName) }
+                                    onClick = { navController.navigate(NavRoutes.StudentProfile.createRoute(userReport.reportedUserId)) }
                                 )
                             }
 
@@ -158,7 +161,7 @@ fun ReportProfileScreen(
                             ProfileSection(title = "Reportado por") {
                                 UserReportCard(
                                     userName = userReport.reporterName,
-                                    onClick = { onUserClick(userReport.reporterName) }
+                                    onClick = { navController.navigate(NavRoutes.CompanyProfile.createRoute(userReport.reporterId)) }
                                 )
                             }
 

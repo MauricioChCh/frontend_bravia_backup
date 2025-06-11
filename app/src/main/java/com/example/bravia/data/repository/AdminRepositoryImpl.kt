@@ -125,5 +125,55 @@ class AdminRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun findStudentById(studentId: Long): Student {
+        val result = remoteDataSource.getStudentById(studentId)
+
+        return when {
+            result.isSuccess -> {
+                val dto = result.getOrNull()
+                if (dto == null) {
+                    android.util.Log.e("AdminRepositoryImpl", "No se encontró el estudiante con ID: $studentId")
+                    throw IllegalStateException("No se encontró el estudiante con ID $studentId")
+                }
+
+                android.util.Log.d("AdminRepositoryImpl", "DTO de estudiante recibido: id=${dto.id}")
+                val domain = studentMapper.mapToDomain(dto)
+                android.util.Log.d("AdminRepositoryImpl", "Estudiante mapeado: id=${domain.id}")
+                domain
+            }
+
+            else -> {
+                val error = result.exceptionOrNull()
+                android.util.Log.e("AdminRepositoryImpl", "Error al obtener el estudiante con ID $studentId: ${error?.message}")
+                throw error ?: Exception("Unknown error fetching student with ID $studentId")
+            }
+        }
+    }
+
+    override suspend fun findCompanyById(companyId: Long): Company {
+        val result = remoteDataSource.getCompanyById(companyId)
+
+        return when {
+            result.isSuccess -> {
+                val dto = result.getOrNull()
+                if (dto == null) {
+                    android.util.Log.e("AdminRepositoryImpl", "No se encontró la compañía con ID: $companyId")
+                    throw IllegalStateException("No se encontró la compañía con ID $companyId")
+                }
+
+                android.util.Log.d("AdminRepositoryImpl", "DTO de compañía recibido: id=${dto.id}")
+                val domain = companyMapper.mapToDomain(dto)
+                android.util.Log.d("AdminRepositoryImpl", "Compañía mapeada: id=${domain.id}")
+                domain
+            }
+
+            else -> {
+                val error = result.exceptionOrNull()
+                android.util.Log.e("AdminRepositoryImpl", "Error al obtener la compañía con ID $companyId: ${error?.message}")
+                throw error ?: Exception("Unknown error fetching company with ID $companyId")
+            }
+        }
+    }
+
 }
 

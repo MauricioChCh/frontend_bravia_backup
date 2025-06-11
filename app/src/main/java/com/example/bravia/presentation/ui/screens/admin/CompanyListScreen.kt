@@ -117,7 +117,9 @@ fun CompanyListScreen(
                                 CompanyCard(
                                     company = company,
                                     onClick = {
-                                        navController.navigate(NavRoutes.BusinessProfile)
+                                        company.id?.let { id ->
+                                            navController.navigate(NavRoutes.CompanyProfile.createRoute(id))
+                                        }
                                     }
                                 )
                                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))

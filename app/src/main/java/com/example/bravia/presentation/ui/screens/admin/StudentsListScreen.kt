@@ -127,7 +127,9 @@ fun StudentListScreen(
                                 StudentCard(
                                     student = student,
                                     onClick = {
-                                        navController.navigate(NavRoutes.BusinessProfile)
+                                        student.userInput.id?.let { id ->
+                                            navController.navigate(NavRoutes.StudentProfile.createRoute(id))
+                                        }
                                     }
                                 )
                                 Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))

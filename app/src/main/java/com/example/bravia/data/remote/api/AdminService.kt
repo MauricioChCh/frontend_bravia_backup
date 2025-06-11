@@ -23,4 +23,21 @@ interface AdminService {
         @Path("reportId") reportId: Long
     ): Response<UserReportResponseDTO>
 
+    @GET("admin/students/{studentId}")
+    suspend fun getStudentById(
+        @Path("studentId") studentId: Long
+    ): Response<StudentResponseDTO>
+
+    @GET("admin/companies/{companyId}")
+    suspend fun getCompanyById(
+        @Path("companyId") companyId: Long
+    ): Response<CompanyResponseDTO>
+
+    @GET("admin/companies/company/{companyId}")
+    suspend fun getCompanyCompanyById(
+        @Path("companyId") companyId: Long
+    ): Response<CompanyResponseDTO>
+
+
+
 }

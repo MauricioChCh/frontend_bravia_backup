@@ -39,9 +39,11 @@ import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 import androidx.compose.runtime.getValue
 import com.example.bravia.presentation.ui.screens.admin.CompanyListScreen
+import com.example.bravia.presentation.ui.screens.admin.CompanyProfileScreen
 import com.example.bravia.presentation.ui.screens.admin.ReportListScreen
 import com.example.bravia.presentation.ui.screens.admin.ReportProfileScreen
 import com.example.bravia.presentation.ui.screens.admin.StudentListScreen
+import com.example.bravia.presentation.ui.screens.admin.StudentProfileScreen
 import com.example.bravia.presentation.viewmodel.AdminViewModel
 
 /**
@@ -73,7 +75,7 @@ fun NavGraph(
     NavHost(
         navController = navController,
         //startDestination = NavRoutes.Start.ROUTE
-        startDestination = NavRoutes.ReportList.ROUTE
+        startDestination = NavRoutes.CompanyList.ROUTE
     ){
 //    NavHost(navController = navController, startDestination = NavRoutes.BusinessHome.ROUTE) {
 
@@ -349,6 +351,48 @@ fun NavGraph(
                     // Puedes navegar a la pantalla del perfil del usuario o mostrar un diálogo, etc.
                     Log.d("Nav", "Usuario clickeado: $userName")
                     // navController.navigate("userProfile/$userName") // ejemplo opcional
+                }
+            )
+        }
+
+        composable(
+            route = NavRoutes.StudentProfile.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.StudentProfile.ARG_STUDENT_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val studentId = backStackEntry.arguments?.getLong(NavRoutes.StudentProfile.ARG_STUDENT_ID) ?: -1L
+            StudentProfileScreen(
+                navController = navController,
+                userId = studentId,
+                paddingValues = PaddingValues(0.dp),
+                viewModel = adminViewModel,
+                onUserClick = { userName ->
+                    Log.d("Nav", "Usuario clickeado: $userName")
+                    // navController.navigate("userProfile/$userName")
+                }
+            )
+        }
+
+        composable(
+            route = NavRoutes.CompanyProfile.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.CompanyProfile.ARG_COMPANY_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val companyId = backStackEntry.arguments?.getLong(NavRoutes.CompanyProfile.ARG_COMPANY_ID) ?: -1L
+            CompanyProfileScreen(
+                navController = navController,
+                userId = companyId,
+                paddingValues = PaddingValues(0.dp),
+                viewModel = adminViewModel,
+                onUserClick = { userName ->
+                    Log.d("Nav", "Usuario clickeado: $userName")
+                    // navController.navigate("userProfile/$userName")
                 }
             )
         }

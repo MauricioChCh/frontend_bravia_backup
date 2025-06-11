@@ -27,4 +27,14 @@ class CompanyRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getCompanyByCompanyId(id: Long): Result<Company?> {
+        return try {
+            remoteDataSource.getCompanyByCompanyId(id).map { dto ->
+                mapper.mapToDomain(dto!!)
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Error fetching company: ${e.message}"))
+        }
+    }
+
 }

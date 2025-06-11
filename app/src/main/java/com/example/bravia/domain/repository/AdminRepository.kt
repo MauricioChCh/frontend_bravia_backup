@@ -13,6 +13,10 @@ interface AdminRepository {
     suspend fun findAllUserReports(): List<UserReport>
 
     suspend fun findUserReportById(reportId: Long): UserReport
+
+    suspend fun findStudentById(studentId: Long): Student
+
+    suspend fun findCompanyById(companyId: Long): Company
 }
 
 

@@ -6,9 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Student
 import com.example.bravia.domain.model.UserReport
+import com.example.bravia.domain.usecase.GetAdminCompanyByIdUseCase
+import com.example.bravia.domain.usecase.GetAdminStudentByIdUseCase
 import com.example.bravia.domain.usecase.GetAllCompaniesUseCase
 import com.example.bravia.domain.usecase.GetAllStudentsUseCase
 import com.example.bravia.domain.usecase.GetAllUserReportsUseCase
+import com.example.bravia.domain.usecase.GetCompanyByCompanyIdUseCase
+import com.example.bravia.domain.usecase.GetCompanyByIdUseCase
 import com.example.bravia.domain.usecase.GetUserReportByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,14 +33,26 @@ class AdminViewModel @Inject constructor(
     private val getAllCompaniesUseCase: GetAllCompaniesUseCase,
     private val getAllStudentsUseCase: GetAllStudentsUseCase,
     private val getAllUserReportsUseCase: GetAllUserReportsUseCase,
-    private val getUserReportByIdUseCase: GetUserReportByIdUseCase
+    private val getUserReportByIdUseCase: GetUserReportByIdUseCase,
+    private val getCompanyByIdUseCase: GetAdminCompanyByIdUseCase,
+    private val getStudentByIdUseCase: GetAdminStudentByIdUseCase,
+    private val getCompanyByCompanyIdUseCase: GetCompanyByCompanyIdUseCase,
 ) : ViewModel() {
 
     private val _companies = MutableStateFlow<List<Company>>(emptyList())
     val companies: StateFlow<List<Company>> = _companies.asStateFlow()
 
+    private val _company = MutableStateFlow<Company?>(null)
+    val company: StateFlow<Company?> = _company
+
+    private val _companyC = MutableStateFlow<Company?>(null)
+    val companyC: StateFlow<Company?> = _companyC
+
     private val _students = MutableStateFlow<List<Student>>(emptyList())
     val students: StateFlow<List<Student>> = _students.asStateFlow()
+
+    private val _student = MutableStateFlow<Student?>(null)
+    val student: StateFlow<Student?> = _student
 
     private val _reports = MutableStateFlow<List<UserReport>>(emptyList())
     val reports: StateFlow<List<UserReport>> = _reports.asStateFlow()
@@ -46,6 +62,7 @@ class AdminViewModel @Inject constructor(
 
     private val _adminState = MutableStateFlow<AdminState>(AdminState.Empty)
     val adminState: StateFlow<AdminState> = _adminState.asStateFlow()
+
 
 
 
@@ -129,6 +146,72 @@ class AdminViewModel @Inject constructor(
             }.onFailure { throwable ->
                 Log.e("AdminViewModel", "fetchReportById - error: ${throwable.message}", throwable)
                 _adminState.value = AdminState.Error(throwable.message ?: "Error fetching report")
+            }
+        }
+    }
+
+    fun fetchStudentById(studentId: Long) {
+        viewModelScope.launch {
+            _adminState.value = AdminState.Loading
+            runCatching {
+                getStudentByIdUseCase(studentId)
+            }.onSuccess { result ->
+                val student = result.getOrNull()
+                if (student != null) {
+                    Log.d("AdminViewModel", "fetchStudentById - fetched student with id: ${student.id}")
+                    _student.value = student
+                    _adminState.value = AdminState.Success
+                } else {
+                    Log.w("AdminViewModel", "fetchStudentById - no student found with id: $studentId")
+                    _adminState.value = AdminState.Empty
+                }
+            }.onFailure { throwable ->
+                Log.e("AdminViewModel", "fetchStudentById - error: ${throwable.message}", throwable)
+                _adminState.value = AdminState.Error(throwable.message ?: "Error fetching student")
+            }
+        }
+    }
+
+    fun fetchCompanyById(companyId: Long) {
+        viewModelScope.launch {
+            _adminState.value = AdminState.Loading
+            runCatching {
+                getCompanyByIdUseCase(companyId)
+            }.onSuccess { result ->
+                val company = result.getOrNull()
+                if (company != null) {
+                    Log.d("AdminViewModel", "fetchCompanyById - fetched company with id: ${company.id}")
+                    _company.value = company
+                    _adminState.value = AdminState.Success
+                } else {
+                    Log.w("AdminViewModel", "fetchCompanyById - no company found with id: $companyId")
+                    _adminState.value = AdminState.Empty
+                }
+            }.onFailure { throwable ->
+                Log.e("AdminViewModel", "fetchCompanyById - error: ${throwable.message}", throwable)
+                _adminState.value = AdminState.Error(throwable.message ?: "Error fetching company")
+            }
+        }
+    }
+
+    fun fetchCompanyByCompanyId(companyId: Long) {
+        viewModelScope.launch {
+            _adminState.value = AdminState.Loading
+            runCatching {
+                getCompanyByCompanyIdUseCase(companyId)
+            }.onSuccess { result ->
+                val company = result.getOrNull()
+                if (company != null) {
+                    Log.d("AdminViewModel", "fetchCompanyById - fetched company with id: ${company.id}")
+                    _company.value = company
+                    _adminState.value = AdminState.Success
+                } else {
+                    Log.w("AdminViewModel", "fetchCompanyById - no company found with id: $companyId")
+                    _adminState.value = AdminState.Empty
+                }
+            }.onFailure { throwable ->
+                Log.e("AdminViewModel", "fetchCompanyById - error: ${throwable.message}", throwable)
+                _adminState.value = AdminState.Error(throwable.message ?: "Error fetching company")
             }
         }
     }

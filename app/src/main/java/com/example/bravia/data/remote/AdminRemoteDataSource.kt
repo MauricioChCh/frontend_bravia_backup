@@ -48,5 +48,20 @@ class AdminRemoteDataSource @Inject constructor(
         response
     }
 
+    suspend fun getStudentById(studentId: Long): Result<StudentResponseDTO> = safeApiCall {
+        val response = adminService.getStudentById(studentId)
+        Log.d("AdminRemoteDataSource", "getStudentById - Código: ${response.code()}")
+        Log.d("AdminRemoteDataSource", "getStudentById - Éxito: ${response.isSuccessful}")
+        Log.d("AdminRemoteDataSource", "getStudentById - Body: ${response.body()}")
+        response
+    }
+
+    suspend fun getCompanyById(companyId: Long): Result<CompanyResponseDTO> = safeApiCall {
+        val response = adminService.getCompanyById(companyId)
+        Log.d("AdminRemoteDataSource", "getCompanyById - Código: ${response.code()}")
+        Log.d("AdminRemoteDataSource", "getCompanyById - Éxito: ${response.isSuccessful}")
+        Log.d("AdminRemoteDataSource", "getCompanyById - Body: ${response.body()}")
+        response
+    }
 
 }
