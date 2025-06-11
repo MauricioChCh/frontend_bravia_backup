@@ -8,6 +8,7 @@ data class Internship(
     val city: String,
     val country: String,
     val title: String,
+    val description: String,
     val imageUrl: String,
     val publicationDate: Date,
     val duration: String,
@@ -17,13 +18,14 @@ data class Internship(
     val requirements: String,
     val activities: String,
     val link: String,
-val isMarked: Boolean,
+    val isMarked: Boolean,
 )
 
 data class NewInternship(
     val company: Long,
     val location: Long,
     val title: String,
+    val description: String,
     val imageUrl: String,
     val publicationDate: Date,
     val duration: String,

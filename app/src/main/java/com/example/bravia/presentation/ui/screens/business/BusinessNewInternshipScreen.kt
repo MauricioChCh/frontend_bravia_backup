@@ -64,6 +64,7 @@ fun BusinessNewInternshipScreen (
 
     var imageUrl by remember { mutableStateOf("") }
     var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
     var duration by remember { mutableStateOf("") }
     var salary by remember { mutableStateOf("") }
     var schedule by remember { mutableStateOf("") }
@@ -183,6 +184,12 @@ fun BusinessNewInternshipScreen (
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Description") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
                 value = imageUrl,
                 onValueChange = { imageUrl = it },
                 label = { Text("Image URL") },
@@ -272,6 +279,7 @@ fun BusinessNewInternshipScreen (
                         company = company?.id ?: 0L,
                         location = selectedLocationId!!, // TODO: this has to be a variable of the location selected
                         title = title,
+                        description = description,
                         imageUrl = imageUrl,
                         publicationDate = Date(),
                         duration = duration,
