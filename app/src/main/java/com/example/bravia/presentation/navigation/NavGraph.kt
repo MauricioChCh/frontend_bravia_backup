@@ -160,6 +160,24 @@ fun NavGraph(
 
             }
         }
+        // Pantalla de interviews
+        composable(
+            route = BottomNavBar.Routes.INTERVIEW,
+            arguments = emptyList()
+        ) {
+            if (userSession?.hasRole(UserRole.STUDENT) == true) {
+                InterviewScreen(
+                    navController = navController,
+                    paddingValues = paddingValues,
+                )
+            }
+            else {
+                // Redirigir o mostrar error de acceso
+                UnauthorizedScreen(navController)
+
+            }
+
+        }
 
         // Pantalla de guardados
         composable(route = BottomNavBar.Routes.SAVED) {
@@ -214,16 +232,6 @@ fun NavGraph(
         }
 
 
-        // Pantalla de interviews
-        composable(
-            route = BottomNavBar.Routes.INTERVIEW,
-            arguments = emptyList()
-        ) {
-            InterviewScreen(
-                navController = navController,
-                paddingValues = PaddingValues(0.dp),
-            )
-        }
 
 
 

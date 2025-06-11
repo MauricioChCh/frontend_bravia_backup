@@ -41,16 +41,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.ThemeViewModel
-import io.flutter.embedding.engine.FlutterEngineCache
 
-//import io.flutter.embedding.engine.FlutterEngine
-//import io.flutter.embedding.engine.FlutterEngineCache
-//import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.embedding.engine.dart.DartExecutor
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
-//    private lateinit var flutterEngine: FlutterEngine
+    private lateinit var flutterEngine: FlutterEngine
 
     // Reinicia la aplicación volviendo a la actividad principal
     fun restartApp() {
@@ -63,15 +62,15 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         //Iniciamos el flutter para no tener que esperar a que se cargue al navegar a una pantalla de Flutter
 
-//        flutterEngine = FlutterEngine(this).apply {
-//            dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
-//            // Espera a que el engine esté listo
-//            addEngineLifecycleListener(object : FlutterEngine.EngineLifecycleListener {
-//                override fun onPreEngineRestart() {}
-//                override fun onEngineWillDestroy() {}
-//            })
-//            FlutterEngineCache.getInstance().put("flutter_engine", this)
-//        }
+        flutterEngine = FlutterEngine(this).apply {
+            dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+            // Espera a que el engine esté listo
+            addEngineLifecycleListener(object : FlutterEngine.EngineLifecycleListener {
+                override fun onPreEngineRestart() {}
+                override fun onEngineWillDestroy() {}
+            })
+            FlutterEngineCache.getInstance().put("flutter_engine", this)
+        }
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -133,17 +132,17 @@ class MainActivity : FragmentActivity() {
                         )
 
                     }
-                    Spacer(modifier = Modifier.height(64.dp ))
+//                    Spacer(modifier = Modifier.height(64.dp ))
                 }
             }
         }
 
     }
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        // Limpia el FlutterEngine cuando la actividad se destruye
-//        FlutterEngineCache.getInstance().remove("flutter_engine")
-//    }
+    override fun onDestroy() {
+        super.onDestroy()
+        // Limpia el FlutterEngine cuando la actividad se destruye
+        FlutterEngineCache.getInstance().remove("flutter_engine")
+    }
 
 }
 

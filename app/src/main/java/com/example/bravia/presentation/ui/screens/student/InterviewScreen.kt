@@ -29,7 +29,8 @@ import io.flutter.embedding.engine.FlutterEngineCache
 fun InterviewScreen(
     navController: NavController,
     paddingValues: PaddingValues,
-    viewModel: InterviewViewModel = hiltViewModel()
+    viewModel: InterviewViewModel = hiltViewModel(),
+
 ) {
     val context = LocalContext.current
     val activity = context as FragmentActivity
@@ -77,7 +78,7 @@ fun InterviewScreen(
         // Contenido Flutter
         when (val state = flutterState) {
             is InterviewViewModel.FlutterState.Loading -> LoadingView()
-            is InterviewViewModel.FlutterState.Ready -> FlutterContentView()
+            is InterviewViewModel.FlutterState.Ready -> FlutterContentView(paddingValues)
             is InterviewViewModel.FlutterState.Error -> ErrorView {
                 viewModel.initializeFlutterEngine(activity)
             }
@@ -85,7 +86,9 @@ fun InterviewScreen(
     }
 }
 @Composable
-private fun FlutterContentView() {
+private fun FlutterContentView(
+    paddingValues: PaddingValues
+) {
     AndroidView(
         factory = { context ->
             FrameLayout(context).apply {
@@ -103,6 +106,7 @@ private fun FlutterContentView() {
         },
         modifier = Modifier
             .fillMaxWidth()
+            .padding(bottom = 50.dp)
 
     )
 }
