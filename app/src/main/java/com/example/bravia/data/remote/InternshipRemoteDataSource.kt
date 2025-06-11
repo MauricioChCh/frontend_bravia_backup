@@ -43,13 +43,13 @@ class InternshipRemoteDataSource @Inject constructor(
             businessService.newInternship(internship)
         }
 
-    suspend fun bookmarkInternship(internshipId: Long, userId: Long, isBookmarked: Boolean): Result<Unit> =
+    suspend fun bookmarkInternship(internshipId: Long, username: String, isBookmarked: Boolean): Result<Unit> =
         ApiCallHandler.safeApiCall<Unit> {
-            internshipService.bookmarkInternship(internshipId, userId, isBookmarked)
+            internshipService.bookmarkInternship(internshipId, username, isBookmarked)
         }
 
-    suspend fun getBookmarkedInternships(userId: Long): Result<List<InternshipDTO>> =
+    suspend fun getBookmarkedInternships(username: String): Result<List<InternshipDTO>> =
         ApiCallHandler.safeApiCall {
-            internshipService.getBookmarkedInternships(userId)
+            internshipService.getBookmarkedInternships(username)
         }
 }

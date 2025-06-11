@@ -63,10 +63,10 @@ class InternshipRepositoryImpl @Inject constructor(
      * @param id The ID of the internship to bookmark.
      * @param isBookmarked Whether the internship should be bookmarked.
      */
-    override suspend fun bookmarkInternship(internshipId: Long, userId: Long, isBookmarked: Boolean) : Result<Unit> {
+    override suspend fun bookmarkInternship(internshipId: Long, username: String, isBookmarked: Boolean) : Result<Unit> {
         return safeRepositoryCall {
             // Llama al DataSource para realizar la operación de marcador
-            remoteDataSource.bookmarkInternship(internshipId, userId, isBookmarked)
+            remoteDataSource.bookmarkInternship(internshipId, username, isBookmarked)
         }
     }
 
@@ -75,9 +75,9 @@ class InternshipRepositoryImpl @Inject constructor(
      *
      * @return A [Result] containing a list of bookmarked [Internship] objects.
      */
-    override suspend fun getBookmarkedInternships(userId: Long): Result<List<Internship>> {
+    override suspend fun getBookmarkedInternships(username: String): Result<List<Internship>> {
         return safeRepositoryCall {
-            val dtoResult = remoteDataSource.getBookmarkedInternships(userId)
+            val dtoResult = remoteDataSource.getBookmarkedInternships(username)
 
             if( dtoResult.isSuccess) {
                 dtoResult.getOrNull()?.map { dto ->

@@ -9,14 +9,14 @@ import retrofit2.http.GET
 
 interface InternshipService {
 
-    @PATCH("internships/{internshipId}/users/{userId}/bookmark")
+    @PATCH("internships/{internshipId}/users/{username}/bookmark")
     suspend fun bookmarkInternship(
         @Path("internshipId") internshipId: Long,
-        @Path("userId") userId: Long,
+        @Path("username") username: String,
         @Body isBookmarked: Boolean
     ): Response<Unit>
 
 
-    @GET("internships/users/{userId}/bookmarked")
-    suspend fun getBookmarkedInternships(@Path("userId") userId: Long): Response<List<InternshipDTO>>
+    @GET("internships/users/{username}/bookmarked")
+    suspend fun getBookmarkedInternships(@Path("username") username: String): Response<List<InternshipDTO>>
 }

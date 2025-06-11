@@ -68,7 +68,7 @@ class BusinessViewModel @Inject constructor(
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
             runCatching {
-                getBookmarkedInternshipsUseCase(company.value?.id!!)
+                getBookmarkedInternshipsUseCase(authPreferences.getUsername()!!)
             }.onSuccess { result ->
                 _bookmarkedInternships.value = result.getOrNull() ?: emptyList()
                 _businessState.value = if (result.isSuccess) {
@@ -104,8 +104,8 @@ class BusinessViewModel @Inject constructor(
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
             runCatching {
-                bookmarkInternshipUseCase(internshipId, 2, isBookmarked) // TODO : Cambiar por una variable
-                fetchAllBusinessInternships() // TODO: Cambiar por una variable
+                bookmarkInternshipUseCase(internshipId, authPreferences.getUsername()!!, isBookmarked)
+                fetchAllBusinessInternships()
             }.onSuccess {
                 _businessState.value = BusinessState.Success
             }.onFailure { exception ->

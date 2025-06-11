@@ -6,7 +6,7 @@ import javax.inject.Inject
 class BookmarkInternshipUseCase @Inject constructor (
     private val repository: InternshipRepository
 ) {
-    suspend operator fun invoke(internshipId: Long, userId: Long, isBookmarked: Boolean) {
-        repository.bookmarkInternship(internshipId, userId, isBookmarked)
+    suspend operator fun invoke(internshipId: Long, username: String, isBookmarked: Boolean) {
+        repository.bookmarkInternship(internshipId, username, isBookmarked)
     }
 }
