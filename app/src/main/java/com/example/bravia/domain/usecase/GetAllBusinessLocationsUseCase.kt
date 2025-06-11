@@ -8,8 +8,8 @@ class GetAllBusinessLocationsUseCase @Inject constructor(
     private val repository: LocationRepository
 ) {
 
-    suspend operator fun invoke(companyId: Long): Result<List<Location>> {
-        return repository.getAllBusinessLocations(companyId)
+    suspend operator fun invoke(username: String): Result<List<Location>> {
+        return repository.getAllBusinessLocations(username)
     }
 
 }

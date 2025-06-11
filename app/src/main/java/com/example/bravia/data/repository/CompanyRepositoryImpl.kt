@@ -17,9 +17,9 @@ class CompanyRepositoryImpl @Inject constructor(
      * @param id The ID of the company to retrieve.
      * @return A [Result] containing the company data or an error.
      */
-    override suspend fun getCompanyById(id: Long): Result<Company> {
+    override suspend fun getCompanyById(username: String): Result<Company> {
         return try {
-            remoteDataSource.getCompanyById(id).map { dto ->
+            remoteDataSource.getCompanyById(username).map { dto ->
                 mapper.mapToDomain(dto!!)
             }
         } catch (e: Exception) {

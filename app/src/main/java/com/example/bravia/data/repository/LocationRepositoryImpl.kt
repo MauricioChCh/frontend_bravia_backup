@@ -16,10 +16,9 @@ class LocationRepositoryImpl @Inject constructor(
      *
      * @return A [Result] containing a list of [Location] objects or an error.
      */
-    override suspend fun getAllBusinessLocations(companyId: Long): Result<List<Location>> {
-
+    override suspend fun getAllBusinessLocations(username: String): Result<List<Location>> {
         return try {
-            val response = remoteDataSource.getAllBusinessLocations(companyId)
+            val response = remoteDataSource.getAllBusinessLocations(username)
             if (response.isSuccess) {
                 response.getOrNull()?.map { dto ->
                     mapper.mapToDomain(dto)

@@ -26,14 +26,14 @@ interface BusinessService {
      * @param id The ID of the internship to retrieve.
      * @return [Response] containing the [InternshipDTO] object if successful
      */
-    @GET("companies/{companyId}/internships/{internshipId}")
-    suspend fun getBusinessInternshipById(@Path("companyId") businessId: Long, @Path("internshipId") internshipId: Long): Response<InternshipDTO?>
+    @GET("companies/{username}/internships/{internshipId}")
+    suspend fun getBusinessInternshipById(@Path("username") username: String, @Path("internshipId") internshipId: Long): Response<InternshipDTO?>
 
-    @GET("companies/{companyId}")
-    suspend fun getCompanyById(@Path("companyId") companyId: Long): Response<CompanyResponseDTO?>
+    @GET("companies/{username}")
+    suspend fun getCompanyById(@Path("username") username: String): Response<CompanyResponseDTO?>
 
-    @GET("companies/{companyId}/locations")
-    suspend fun getAllBusinessLocations(@Path("companyId") companyId: Long): Response<List<LocationDTO>>
+    @GET("companies/{username}/locations")
+    suspend fun getAllBusinessLocations(@Path("username") username: String): Response<List<LocationDTO>>
 
     @POST("internships")
     suspend fun newInternship(@Body internship: NewInternshipDTO): Response<InternshipDTO?>

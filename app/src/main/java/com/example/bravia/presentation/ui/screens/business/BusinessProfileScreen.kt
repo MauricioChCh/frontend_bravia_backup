@@ -70,7 +70,7 @@ fun BusinessProfileScreen(
     val company by businessViewModel.company.collectAsState()
 
     LaunchedEffect(Unit) {
-        businessViewModel.fetchCompanyById(companyId = 2) // TODO: this has to be a variable
+        businessViewModel.fetchCompanyById() // TODO: this has to be a variable
     }
 
     var businessName by remember { mutableStateOf("") }

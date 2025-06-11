@@ -9,5 +9,5 @@ interface CompanyRepository {
      * @param id The ID of the company to retrieve.
      * @return A [Result] containing the company data or an error.
      */
-    suspend fun getCompanyById(id: Long): Result<Company?>
+    suspend fun getCompanyById(username: String): Result<Company?>
 }

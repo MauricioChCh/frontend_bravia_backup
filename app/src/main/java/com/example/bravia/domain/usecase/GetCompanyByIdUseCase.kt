@@ -8,7 +8,7 @@ class GetCompanyByIdUseCase @Inject constructor(
     private val repository: CompanyRepository
 ){
 
-    suspend operator fun invoke(id: Long): Result<Company?> {
-        return repository.getCompanyById(id)
+    suspend operator fun invoke(username: String): Result<Company?> {
+        return repository.getCompanyById(username)
     }
 }

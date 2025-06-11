@@ -10,8 +10,8 @@ class CompanyRemoteDataSource @Inject constructor(
 ) {
 
 
-    suspend fun getCompanyById(id: Long): Result<CompanyResponseDTO?> = safeApiCall {
-        businessService.getCompanyById(id)
+    suspend fun getCompanyById(username: String): Result<CompanyResponseDTO?> = safeApiCall {
+        businessService.getCompanyById(username)
     }
 
     /**

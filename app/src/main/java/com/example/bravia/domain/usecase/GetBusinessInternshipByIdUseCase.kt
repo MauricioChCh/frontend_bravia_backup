@@ -15,7 +15,7 @@ class GetBusinessInternshipByIdUseCase @Inject constructor(
      * @param internshipId The ID of the internship to fetch.
      * @return A Result containing the Internship if found, or null if not found.
      */
-    suspend operator fun invoke(businessId: Long, internshipId: Long): Result<Internship?> {
-        return repository.getBusinessInternshipById(businessId, internshipId)
+    suspend operator fun invoke(username: String, internshipId: Long): Result<Internship?> {
+        return repository.getBusinessInternshipById(username, internshipId)
     }
 }

@@ -53,7 +53,7 @@ fun BusinessNewInternshipScreen (
     val modalities by businessViewModel.modalities.collectAsState()
 
     LaunchedEffect(Unit) {
-        businessViewModel.fetchLocations(companyId = 2) // TODO: this has to be a variable
+        businessViewModel.fetchLocations()
     }
 
     var selectedLocationId by remember { mutableStateOf<Long?>(null) }

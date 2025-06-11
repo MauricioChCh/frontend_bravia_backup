@@ -9,8 +9,8 @@ class LocationRemoteDataSource @Inject constructor(
     private val businessService: BusinessService
 ) {
 
-    suspend fun getAllBusinessLocations(companyId: Long): Result<List<LocationDTO>> = safeApiCall {
-        businessService.getAllBusinessLocations(companyId)
+    suspend fun getAllBusinessLocations(username: String): Result<List<LocationDTO>> = safeApiCall {
+        businessService.getAllBusinessLocations(username)
     }
 
 

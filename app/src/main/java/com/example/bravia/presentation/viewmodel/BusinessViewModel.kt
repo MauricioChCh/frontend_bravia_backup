@@ -118,7 +118,7 @@ class BusinessViewModel @Inject constructor(
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
             runCatching {
-                getBusinessInternshipByIdUseCase( 2, internshipId ) // TODO: Cambiar por una variable
+                getBusinessInternshipByIdUseCase( authPreferences.getUsername()!!, internshipId )
             }.onSuccess { result ->
                 _internship.value = result.getOrNull()
                 _businessState.value = if (_internship.value != null) {
@@ -134,11 +134,11 @@ class BusinessViewModel @Inject constructor(
 
 
     // This is for profile
-    fun fetchCompanyById(companyId: Long) {
+    fun fetchCompanyById() {
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
             runCatching {
-                getCompanyByIdUseCase(companyId)
+                getCompanyByIdUseCase(authPreferences.getUsername()!!)
             }.onSuccess { result ->
                 _company.value = result.getOrNull()
                 _businessState.value = if (_company.value != null) {
@@ -153,11 +153,11 @@ class BusinessViewModel @Inject constructor(
     }
 
 
-    fun fetchLocations(companyId: Long) {
+    fun fetchLocations() {
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
             runCatching {
-                getAllBusinessLocationsUseCase(companyId)
+                getAllBusinessLocationsUseCase(authPreferences.getUsername()!!)
             }.onSuccess { result ->
                 _locations.value = result.getOrNull() ?: emptyList()
                 _businessState.value = if (_locations.value.isNotEmpty()) {
