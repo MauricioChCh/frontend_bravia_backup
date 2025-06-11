@@ -2,6 +2,7 @@ package com.example.bravia.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.Location
@@ -36,7 +37,8 @@ class BusinessViewModel @Inject constructor(
     private val businessNewInternshipUseCase: BusinessNewInternshipUseCase,
     private val getCompanyByIdUseCase: GetCompanyByIdUseCase,
     private val getBusinessInternshipByIdUseCase: GetBusinessInternshipByIdUseCase,
-    private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase
+    private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase,
+    private val authPreferences: AuthPreferences,
 ) : ViewModel() {
 
     private val _company = MutableStateFlow<Company?>(null)
@@ -80,11 +82,11 @@ class BusinessViewModel @Inject constructor(
         }
     }
 
-    fun fetchAllBusinessInternships(businessId: Long) {
+    fun fetchAllBusinessInternships() {
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
             runCatching {
-                getAllBusinessInternshipUseCase(businessId)
+                getAllBusinessInternshipUseCase(authPreferences.getUsername()!!)
             }.onSuccess { result ->
                 _internships.value = result.getOrNull() ?: emptyList()
                 _businessState.value = if (result.isSuccess) {
@@ -103,7 +105,7 @@ class BusinessViewModel @Inject constructor(
             _businessState.value = BusinessState.Loading
             runCatching {
                 bookmarkInternshipUseCase(internshipId, 2, isBookmarked) // TODO : Cambiar por una variable
-                fetchAllBusinessInternships(2) // TODO: Cambiar por una variable
+                fetchAllBusinessInternships() // TODO: Cambiar por una variable
             }.onSuccess {
                 _businessState.value = BusinessState.Success
             }.onFailure { exception ->

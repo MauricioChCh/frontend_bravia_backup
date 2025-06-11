@@ -17,8 +17,8 @@ interface BusinessService {
      * @param bId The ID of the business.
      * @return [Response] containing a list of [InternshipDTO] objects if successful
      */
-    @GET("companies/{businessId}/internships") // TODO: we have to use this endpoint
-    suspend fun getAllBusinessInternships(@Path("businessId") businessId: Long): Response<List<InternshipDTO>>
+    @GET("companies/{username}/internships")
+    suspend fun getAllBusinessInternships(@Path("username") username: String): Response<List<InternshipDTO>>
 
     /**
      * Retrieves a specific business internship by its ID from the remote API.

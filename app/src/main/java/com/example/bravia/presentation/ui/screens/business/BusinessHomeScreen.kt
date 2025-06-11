@@ -69,7 +69,7 @@ fun BusinessHomeScreen (
     val internships by businessViewModel.internships.collectAsState()
 
     LaunchedEffect(Unit) {
-        businessViewModel.fetchAllBusinessInternships(2) // TODO: Cambiar por una variable
+        businessViewModel.fetchAllBusinessInternships() // TODO: Cambiar por una variable
         Log.d("BusinessHomeScreen", "Internships fetched: ${internships.size}")
     }
 
@@ -169,7 +169,7 @@ fun InternshipList(
                 onRefresh = {
                     scope.launch {
                         isRefreshing = true
-                        viewModel.fetchAllBusinessInternships(2) // TODO: change to a variable
+                        viewModel.fetchAllBusinessInternships()
                         isRefreshing = false
                     }
                 }
