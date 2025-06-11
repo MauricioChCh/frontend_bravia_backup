@@ -66,11 +66,11 @@ class FlutterDescriptionActivity : FlutterActivity() {
             "requirements" to internship.requirements.split(",").map { it.trim() }.filter { it.isNotEmpty() },
             "activities" to internship.activities.split(",").map { it.trim() }.filter { it.isNotEmpty() },
             "benefits" to listOf(
-                "Modalidad: ${internship.modality}",
-                "Horario: ${internship.schedule}",
-                "Duración: ${internship.duration}",
-                "Salario: $${internship.salary}",
-                "Ubicación: ${internship.city}, ${internship.country}"
+                "Modality: ${internship.modality}",
+                "Schedule: ${internship.schedule}",
+                "Duration: ${internship.duration}",
+                "Salary: $${internship.salary}",
+                "Location: ${internship.city}, ${internship.country}"
             ),
             "salary" to internship.salary,
             "duration" to internship.duration,

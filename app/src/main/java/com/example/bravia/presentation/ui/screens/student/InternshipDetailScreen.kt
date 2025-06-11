@@ -96,7 +96,7 @@ fun InternshipDetailScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No se encontró la internship")
+                    Text("Internship not found" , style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }
@@ -160,16 +160,16 @@ private fun InternshipDetailContent(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = "Información General",
+                            text = "General Information",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(12.dp))
 
-                        InfoRow("Duración", internship.duration)
-                        InfoRow("Modalidad", internship.modality)
-                        InfoRow("Horario", internship.schedule)
-                        InfoRow("Salario", "$${internship.salary}")
+                        InfoRow("Duration", internship.duration)
+                        InfoRow("Modality", internship.modality)
+                        InfoRow("Schedule", internship.schedule)
+                        InfoRow("Salary", "$${internship.salary}")
                     }
                 }
             }
@@ -186,13 +186,13 @@ private fun InternshipDetailContent(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = "📋 Descripción Detallada",
+                            text = "📋 Detailed Description",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "Ver descripción completa, requisitos y actividades en Flutter",
+                            text = "View full description, requirements, and activities in Flutter",
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Spacer(modifier = Modifier.height(12.dp))
@@ -207,7 +207,7 @@ private fun InternshipDetailContent(
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Ver Descripción Completa")
+                            Text("View full description")
                         }
                     }
                 }
@@ -223,7 +223,7 @@ private fun InternshipDetailContent(
                         onClick = onApply,
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Aplicar")
+                        Text("Apply")
                     }
 
                     OutlinedButton(
@@ -236,7 +236,7 @@ private fun InternshipDetailContent(
                             modifier = Modifier.size(18.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(if (internship.isMarked) "Guardado" else "Guardar")
+                        Text(if (internship.isMarked) "Saved" else "Save")
                     }
                 }
             }
