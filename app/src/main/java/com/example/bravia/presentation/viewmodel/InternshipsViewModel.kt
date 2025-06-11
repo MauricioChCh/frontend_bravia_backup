@@ -3,6 +3,7 @@ package com.example.bravia.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.usecase.BookmarkInternshipUseCase
 import com.example.bravia.domain.usecase.GetRecommendedInternshipsUseCase
@@ -38,7 +39,8 @@ class InternshipViewModel @Inject constructor(
     private val getAllInternshipsUseCase: GetRecommendedInternshipsUseCase,
     private val getInternshipByIdUseCase: GetInternshipByIdUseCase,
     private val bookmarkInternshipUseCase: BookmarkInternshipUseCase,
-    private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase
+    private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase,
+    private val authPreferences: AuthPreferences // Assuming you have a way to get the authenticated user's preferences
 ) : ViewModel() {
 
     // MutableStateFlow to hold the current internship state
@@ -154,7 +156,7 @@ class InternshipViewModel @Inject constructor(
     fun bookmarkInternship(internshipId: Long, isBookmarked: Boolean) {
         viewModelScope.launch {
             try {
-                bookmarkInternshipUseCase(internshipId, 1, isBookmarked) // TODO: Cambiar el userId por el del usuario logueado
+                bookmarkInternshipUseCase(internshipId, authPreferences.getUsername()!!, isBookmarked) // TODO: Cambiar el userId por el del usuario logueado
                 findAllInternships()
                 loadBookmarkedInternships()
 
