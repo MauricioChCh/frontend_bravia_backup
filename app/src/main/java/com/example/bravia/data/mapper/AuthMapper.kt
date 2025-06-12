@@ -21,12 +21,12 @@ object AuthMapper {
     /**
      * Converts authentication response DTO to domain model
      */
-    fun dtoToAuthResult(dto: AuthResponseDto): AuthResult {
+    fun dtoToAuthResult(dto: AuthResponseDto, token: String): AuthResult {
         Log.d("AuthMapper", "------------------------------- User roles: ${dto.authorities.joinToString(", ")}")
         Log.d("AuthMapper", " User roles: ${dto.userId}")
         Log.d("AuthMapper", " User roles: ${dto.username}")
         return AuthResult(
-            token = dto.token,
+            token = token,
             userId = dto.userId,
             username = dto.username, authorities = dto.authorities.map { authorityDto -> Authority(authorityDto.authority) } // Convert AuthorityDto to String
         )

@@ -8,7 +8,6 @@ data class AuthorityDto(
 )
 
 data class AuthResponseDto(
-    val token: String,
     val username: String,
     val userId: String,
     val authorities: List<AuthorityDto>
