@@ -273,7 +273,11 @@ fun BusinessInternshipDetailScreen(
                             }
                         )
 
-                        ComboBoxContainer(label = "Location", items = locations.map { it.toShortString() }, text = internship.city + ", " + internship.country, isEditing = edit,
+                        ComboBoxContainer(
+                            label = "Location",
+                            items = locations.map { it.toShortString() },
+                            text = internship.city + ", " + internship.country,
+                            isEditing = edit,
                             onValueChange = { value ->
                                 val selectedLocation = locations.find { it.toShortString() == value }
                                 if (selectedLocation != null) {

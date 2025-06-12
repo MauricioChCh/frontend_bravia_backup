@@ -3,11 +3,15 @@ package com.example.bravia.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bravia.data.local.AuthPreferences
+import com.example.bravia.domain.model.BusinessArea
+import com.example.bravia.domain.model.City
 import com.example.bravia.domain.model.Company
+import com.example.bravia.domain.model.Country
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.Location
 import com.example.bravia.domain.model.Modality
 import com.example.bravia.domain.model.NewInternship
+import com.example.bravia.domain.model.Tag
 import com.example.bravia.domain.model.UpdateInternship
 import com.example.bravia.domain.usecase.BookmarkInternshipUseCase
 import com.example.bravia.domain.usecase.BusinessNewInternshipUseCase
@@ -67,6 +71,18 @@ class BusinessViewModel @Inject constructor(
 
     private val _bookmarkedInternships = MutableStateFlow<List<Internship>>(emptyList())
     val bookmarkedInternships: StateFlow<List<Internship>> = _bookmarkedInternships.asStateFlow()
+
+    private val _cities = MutableStateFlow<List<City>>(emptyList())
+    val cities: StateFlow<List<City>> = _cities.asStateFlow()
+
+    private val _countries = MutableStateFlow<List<Country>>(emptyList())
+    val countries: StateFlow<List<Country>> = _countries.asStateFlow()
+
+    private val _businessAreas = MutableStateFlow<List<BusinessArea>>(emptyList())
+    val businessAreas: StateFlow<List<BusinessArea>> = _businessAreas.asStateFlow()
+
+    private val _tags = MutableStateFlow<List<Tag>>(emptyList())
+    val tags: StateFlow<List<Tag>> = _tags.asStateFlow()
 
     fun fetchAllBookmarkedInternships() {
         viewModelScope.launch {

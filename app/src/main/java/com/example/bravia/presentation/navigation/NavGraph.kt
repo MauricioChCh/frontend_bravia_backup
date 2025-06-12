@@ -46,6 +46,7 @@ import com.example.bravia.presentation.ui.screens.admin.StudentListScreen
 import com.example.bravia.presentation.ui.screens.admin.StudentProfileScreen
 import com.example.bravia.presentation.viewmodel.AdminViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.bravia.presentation.ui.screens.business.BusinessEditProfileScreen
 import com.example.bravia.presentation.ui.screens.student.InterviewScreen
 
 /**
@@ -313,6 +314,18 @@ fun NavGraph(
                 BusinessNewInternshipScreen(
                     navController = navController,
                     businessViewModel = businessViewModel
+                )
+            } else {
+                UnauthorizedScreen(navController)
+            }
+        }
+
+        composable(route = NavRoutes.BusinessEditProfile.ROUTE) {
+            if (userSession?.hasRole(UserRole.BUSINESS) == true) {
+                BusinessEditProfileScreen(
+                    businessViewModel = businessViewModel,
+                    navController = navController,
+                    paddingValues = PaddingValues(0.dp)
                 )
             } else {
                 UnauthorizedScreen(navController)

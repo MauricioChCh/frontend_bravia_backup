@@ -3,16 +3,16 @@ package com.example.bravia.domain.model
 
 data class Company(
     val id: Long?,
-    val name: String?,
-    val description: String?,
+    var name: String?,
+    var description: String?,
     val imageUrl: String?,
     val businessAreas: List<BusinessArea>?,
     val tags: List<Tag>?,
     val location: Location?,
     val contacts: List<Contact>?,
-    val firstName: String?,
-    val lastName: String?,
-    val email: String?,
+    var firstName: String?,
+    var lastName: String?,
+    var email: String?,
     val verified: Boolean?,
 )
 
