@@ -5,7 +5,7 @@ import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.data.remote.api.AuthService
 import com.example.bravia.data.remote.api.InternshipService
 import com.example.bravia.data.remote.api.SignUpService
-import com.example.bravia.data.remote.api.StudentAreaService
+import com.example.bravia.data.remote.api.StudentService
 import com.example.bravia.data.remote.dto.InterestDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.interceptor.AuthInterceptor
@@ -125,8 +125,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideStudentAreaService(retrofit: Retrofit): StudentAreaService =
-        retrofit.create(StudentAreaService::class.java)
+    fun provideStudentAreaService(retrofit: Retrofit): StudentService =
+        retrofit.create(StudentService::class.java)
 
     /**
      * Provides the AuthService implementation for authentication operations.

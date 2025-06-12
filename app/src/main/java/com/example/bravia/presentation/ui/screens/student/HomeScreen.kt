@@ -83,16 +83,19 @@ fun HomeScreen(
             // Campo de búsqueda
             OutlinedTextField(
                 value = searchText,
-                onValueChange = { searchText = it },
+                onValueChange = {
+                    searchText = it
+                    viewModel.searchInternships(it) //cada que se escribe algo se llama al viewmodel
+                },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Search interships...") },
+                placeholder = { Text("Search internships...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(ThemeDefaults.searchFieldShape),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Theme.colors.onPrimary,
                     unfocusedContainerColor = Theme.colors.background,
-                    focusedIndicatorColor = Theme.colors.primary, // Correct parameter for focused border
-                    unfocusedIndicatorColor = Theme.colors.onBackground // Correct parameter for unfocused border
+                    focusedIndicatorColor = Theme.colors.primary,
+                    unfocusedIndicatorColor = Theme.colors.onBackground
                 )
             )
 

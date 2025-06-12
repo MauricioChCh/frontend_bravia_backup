@@ -51,6 +51,8 @@ import androidx.navigation.NavController
 import com.example.bravia.R
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.layout.MainLayout
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
+
 
 /**
  * Pantalla que muestra el perfil del estudiante.
@@ -68,7 +70,7 @@ fun ProfileScreen(
     // Lista de intereses de ejemplo
     val interests = listOf("Frontend", "Backend", "CyberSecurity", "Figma", "Docker", "Kotlin")
 
-    // Datos de ejemplo para educación y certificados
+    // certificate y education seran listas
     val education = ProfileEducation(
         institution = "Universidad Nacional",
         degree = "Ingeniería Informática",
@@ -80,6 +82,8 @@ fun ProfileScreen(
         name = "CCNA 2 Cisco networking",
         startDate = "12/02/2021"
     )
+
+
     MainLayout(paddingValues = paddingValues) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -191,7 +195,8 @@ fun ProfileScreen(
                     color = Color.Gray
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
+
 
                 // Botón CV
                 Button(
@@ -206,11 +211,12 @@ fun ProfileScreen(
                 ) {
                     Text(
                         text = "CV",
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
+
 
                 // Redes sociales
                 Row(
@@ -224,13 +230,15 @@ fun ProfileScreen(
                     NetworkIcon(iconId = R.drawable.ic_launcher_background, "LinkedIn")
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
+
 
                 // Opciones de mejora del perfil
                 EnhanceOption(text = "Enchance profile")
                 EnhanceOption(text = "Enchance CV")
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
+
             }
 
             item {
@@ -239,18 +247,19 @@ fun ProfileScreen(
                     Text(
                         text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elementum tortor vitae bibendum pretium. Integer lectus leo, laoreet eu ultricies in, egestas ac diam. Proin rutrum lorem lorem. Praesent in eros iaculis, consequat odio eu, tincidunt",
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        modifier = Modifier.padding(ThemeDefaults.textPadding)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
+
 
                 // Sección "Interests"
                 ProfileSection(title = "Interests") {
                     LazyRow(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
+                            .padding(horizontal = ThemeDefaults.smallPadding),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(interests) { interest ->
@@ -259,14 +268,15 @@ fun ProfileScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
 
                 // Sección "Education"
                 ProfileSection(title = "Education") {
                     EducationItem(education)
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
+
 
                 // Sección "Certificates"
                 ProfileSection(title = "Certificates") {
@@ -277,24 +287,25 @@ fun ProfileScreen(
             }
         }
 
-            // Barra de navegación inferior
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .background(Color.White)
+//            // Barra de navegación inferior
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(100.dp)
+//                    .background(Color.White)
+//
+//            ) {
+//                Row(
+//                    modifier = Modifier.fillMaxSize(),
+//                    horizontalArrangement = Arrangement.SpaceEvenly,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Icon(Icons.Default.Home, contentDescription = "Home", tint = Color.Gray)
+//                    Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.Gray)
+//                    Icon(Icons.Default.Person, contentDescription = "Person", tint = Color.Green)
+//                }
+//            }
 
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.Home, contentDescription = "Home", tint = Color.Gray)
-                    Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.Gray)
-                    Icon(Icons.Default.Person, contentDescription = "Person", tint = Color.Green)
-                }
-            }
         }
     }
 
@@ -303,13 +314,13 @@ fun ProfileSection(title: String, content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal =ThemeDefaults.mediumPadding)
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = ThemeDefaults.smallPadding)
         )
 
         content()
@@ -339,13 +350,14 @@ fun EnhanceOption(text: String) {
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary
         )
 
         Icon(
             imageVector = Icons.Outlined.Star,
             contentDescription = "Enhance",
-            tint = Color.Black,
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(16.dp)
         )
     }
@@ -355,12 +367,12 @@ fun EnhanceOption(text: String) {
 fun InterestChip(text: String) {
     Surface(
         shape = RoundedCornerShape(16.dp),
-        color = Color.LightGray,
+        color = MaterialTheme.colorScheme.primaryContainer,
         modifier = Modifier.height(36.dp)
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = ThemeDefaults.mediumPadding, vertical = ThemeDefaults.smallPadding)
         ) {
             Text(
                 text = text,
@@ -381,13 +393,13 @@ fun EducationItem(education: ProfileEducation) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = ThemeDefaults.smallPadding),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(ThemeDefaults.smallPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Logo de la institución (simulado con un Box)
@@ -447,7 +459,7 @@ fun CertificateItem(certificate: ProfileCertificate) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = ThemeDefaults.smallPadding),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
