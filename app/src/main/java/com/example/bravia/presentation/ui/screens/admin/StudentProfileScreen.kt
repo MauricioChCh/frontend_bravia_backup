@@ -110,16 +110,42 @@ fun StudentProfileScreen(
                     color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    onClick = { /* Ver CV */ },
+
+
+                Row(
                     modifier = Modifier
-                        .width(200.dp)
-                        .height(40.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = MaterialTheme.shapes.medium
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text(text = "BANEAR", color = Color.Black)
+                    Button(
+                        onClick = {
+                            viewModel.banUserById(userId, false) // false = habilitar
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                            .padding(end = 8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    ) {
+                        Text(text = "HABILITAR", color = Color.Black)
+                    }
+
+                    Button(
+                        onClick = {
+                            viewModel.banUserById(userId, true) // true = deshabilitar
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                            .padding(start = 8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                    ) {
+                        Text(text = "DESHABILITAR", color = Color.White)
+                    }
                 }
+
+
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
