@@ -3,6 +3,7 @@ package com.example.bravia.data.remote
 import com.example.bravia.data.remote.api.AdminService
 import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
+import com.example.bravia.data.remote.dto.TagDTO
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -18,6 +19,10 @@ class CompanyRemoteDataSource @Inject constructor(
 
     suspend fun getCompanyByCompanyId(id: Long): Result<CompanyResponseDTO?> = safeApiCall {
         adminService.getCompanyCompanyById(id)
+    }
+
+    suspend fun getAllTags(): Result<List<TagDTO>> = safeApiCall {
+        businessService.getAllTags()
     }
 
     /**

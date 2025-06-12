@@ -1,6 +1,7 @@
 package com.example.bravia.domain.repository
 
 import com.example.bravia.domain.model.Company
+import com.example.bravia.domain.model.Tag
 
 interface CompanyRepository {
     /**
@@ -10,8 +11,9 @@ interface CompanyRepository {
      * @return A [Result] containing the company data or an error.
      */
     suspend fun getCompanyById(username: String): Result<Company?>
-//    suspend fun getCompanyById(id: Long): Result<Company?>
 
     suspend fun getCompanyByCompanyId(id: Long): Result<Company?>
+
+    suspend fun getAllTags(): Result<List<Tag>>
 
 }

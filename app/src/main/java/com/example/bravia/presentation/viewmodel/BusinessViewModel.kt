@@ -16,11 +16,13 @@ import com.example.bravia.domain.model.UpdateInternship
 import com.example.bravia.domain.usecase.BookmarkInternshipUseCase
 import com.example.bravia.domain.usecase.BusinessNewInternshipUseCase
 import com.example.bravia.domain.usecase.BusinessUpdateInternshipUseCase
+import com.example.bravia.domain.usecase.GetAllBusinessAreaUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessLocationsUseCase
 import com.example.bravia.domain.usecase.GetAllCitiesUseCase
 import com.example.bravia.domain.usecase.GetAllCountriesUseCase
 import com.example.bravia.domain.usecase.GetAllInternshipModalitiesUseCase
+import com.example.bravia.domain.usecase.GetAllTagsUseCase
 import com.example.bravia.domain.usecase.GetBookmarkedInternshipsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,8 +54,8 @@ class BusinessViewModel @Inject constructor(
     private val businessUpdateInternshipUseCase: BusinessUpdateInternshipUseCase,
     private val getAllCitiesUseCase: GetAllCitiesUseCase,
     private val getAllCountriesUseCase: GetAllCountriesUseCase,
-    //private val getAllBusinessAreasUseCase: GetAllBusinessAreasUseCase,
-    //private val getAllTagsUseCase: GetAllTagsUseCase,
+    private val getAllBusinessAreasUseCase: GetAllBusinessAreaUseCase,
+    private val getAllTagsUseCase: GetAllTagsUseCase,
     private val authPreferences: AuthPreferences,
 ) : ViewModel() {
 
@@ -252,39 +254,39 @@ class BusinessViewModel @Inject constructor(
     }
 
     fun fetchBusinessAreas() {
-//        viewModelScope.launch {
-//            _businessState.value = BusinessState.Loading
-//            runCatching {
-//                getAllBusinessLocationsUseCase(authPreferences.getUsername()!!)
-//            }.onSuccess { result ->
-//                _businessAreas.value = result.getOrNull()?.map { it.businessArea }?.distinct() ?: emptyList()
-//                _businessState.value = if (_businessAreas.value.isNotEmpty()) {
-//                    BusinessState.Success
-//                } else {
-//                    BusinessState.Empty
-//                }
-//            }.onFailure { exception ->
-//                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch business areas")
-//            }
-//        }
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllBusinessAreasUseCase()
+            }.onSuccess { result ->
+                _businessAreas.value = result.getOrNull()?.map { it }?.distinct() ?: emptyList()
+                _businessState.value = if (_businessAreas.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch business areas")
+            }
+        }
     }
 
     fun fetchTags() {
-//        viewModelScope.launch {
-//            _businessState.value = BusinessState.Loading
-//            runCatching {
-//                getAllBusinessLocationsUseCase(authPreferences.getUsername()!!)
-//            }.onSuccess { result ->
-//                _tags.value = result.getOrNull()?.flatMap { it.tags }?.distinct() ?: emptyList()
-//                _businessState.value = if (_tags.value.isNotEmpty()) {
-//                    BusinessState.Success
-//                } else {
-//                    BusinessState.Empty
-//                }
-//            }.onFailure { exception ->
-//                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch tags")
-//            }
-//        }
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllTagsUseCase()
+            }.onSuccess { result ->
+                _tags.value = result.getOrNull()?.map { it }?.distinct() ?: emptyList()
+                _businessState.value = if (_tags.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch tags")
+            }
+        }
     }
 
 

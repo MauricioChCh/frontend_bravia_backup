@@ -7,6 +7,7 @@ import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.dto.LocationDTO
 import com.example.bravia.data.remote.dto.ModalityDTO
 import com.example.bravia.data.remote.dto.NewInternshipDTO
+import com.example.bravia.data.remote.dto.TagDTO
 import com.example.bravia.data.remote.dto.UpdateInternshipDTO
 import com.example.bravia.domain.model.Country
 import retrofit2.Response
@@ -55,5 +56,8 @@ interface BusinessService {
 
     @GET("companies/countries")
     suspend fun getAllCountries(): Response<List<CountryDTO>>
+
+    @GET("companies/tags")
+    suspend fun getAllTags(): Response<List<TagDTO>>
 
 }
