@@ -1,9 +1,11 @@
+
 package com.example.bravia.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.domain.model.Student
+import com.example.bravia.domain.model.StudentProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,8 +27,8 @@ class StudentViewModel @Inject constructor(
     private val authPreferences: AuthPreferences,
 ) : ViewModel() {
 
-    private val _student = MutableStateFlow<Student?>(null)
-    val student: StateFlow<Student?> = _student.asStateFlow()
+    private val _student = MutableStateFlow<StudentProfile?>(null)
+    val student: StateFlow<StudentProfile?> = _student.asStateFlow()
 
     private val _studentState = MutableStateFlow<StudentState>(StudentState.Empty)
     val studentState: StateFlow<StudentState> = _studentState.asStateFlow()
@@ -37,7 +39,7 @@ class StudentViewModel @Inject constructor(
             runCatching {
                 getStudentByIdUseCase(authPreferences.getUsername()!!)
             }.onSuccess { result ->
-                _student.value = result.getOrNull() as Student?
+                _student.value = result.getOrNull() as StudentProfile?
                 _studentState.value = if (_student.value != null) {
                     StudentState.Success
                 } else {

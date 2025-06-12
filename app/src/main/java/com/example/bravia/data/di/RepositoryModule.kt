@@ -8,6 +8,7 @@ import com.example.bravia.data.repository.InterestRepositoryImpl
 import com.example.bravia.data.repository.InternshipRepositoryImpl
 import com.example.bravia.data.repository.LocationRepositoryImpl
 import com.example.bravia.data.repository.ModalityRepositoryImpl
+import com.example.bravia.data.repository.StudentRepositoryImpl
 import com.example.bravia.domain.repository.BusinessAreaRepository
 import com.example.bravia.domain.repository.CollegeRepository
 import com.example.bravia.domain.repository.CompanyRepository
@@ -16,6 +17,7 @@ import com.example.bravia.domain.repository.InterestRepository
 import com.example.bravia.domain.repository.InternshipRepository
 import com.example.bravia.domain.repository.LocationRepository
 import com.example.bravia.domain.repository.ModalityRepository
+import com.example.bravia.domain.repository.StudentRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -104,4 +106,9 @@ abstract class RepositoryModule {
         modalityRepositoryImpl: ModalityRepositoryImpl
     ): ModalityRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindStudentRepository(
+        studentRepositoryImpl: StudentRepositoryImpl
+    ): StudentRepository
 }

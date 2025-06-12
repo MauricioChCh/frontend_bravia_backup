@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 //    val BASE_URL = "http://192.168.182.2:8080/api/v1/"
-    val BASE_URL = "http://192.168.68.66:8080/api/v1/"
+    val BASE_URL = "http://192.168.28.1:8080/api/v1/"
 
 //    private const val BASE_URL = "https://bravia-app-v01-bbd26053b419.herokuapp.com/api/v1/"
     private const val DATE_FORMAT = "yyyy-MM-dd"

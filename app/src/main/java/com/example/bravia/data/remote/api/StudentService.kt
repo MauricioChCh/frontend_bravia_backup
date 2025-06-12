@@ -3,6 +3,7 @@ package com.example.bravia.data.remote.api
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.dto.StudentResponseDTO
+import com.example.bravia.data.remote.dto.StudentResponseProfileDTO
 import com.example.bravia.domain.model.BookmarkRequest
 
 import java.util.List
@@ -25,14 +26,14 @@ interface StudentService {
     @GET("internships/{internshipId}")
     suspend fun getInternshipById( @Path("internshipId") id: Long): Response<InternshipDTO?>
 
-    @GET("student/bookmarkedInternships")
+    @GET("students/bookmarkedInternships")
     suspend fun getBookmarkedInternships(): Response<List<InternshipDTO>>
 
-    @POST("student/bookmarkInternship")
+    @POST("students/bookmarkInternship")
     suspend fun bookmarkInternship(@Body bookmarkData: BookmarkRequest): Response<Unit>
 
-    @GET("companies/{username}")
-    suspend fun getStudentByUsername(@Path("username") username: String): Response<StudentResponseDTO?>
+    @GET("students/email/{username}")
+    suspend fun getStudentByUsername(@Path("username") username: String): Response<StudentResponseProfileDTO?>
 
 
 
