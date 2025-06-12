@@ -3,6 +3,7 @@ package com.example.bravia.data.di
 import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.data.remote.api.AuthService
+import com.example.bravia.data.remote.api.CVService
 import com.example.bravia.data.remote.api.InternshipService
 import com.example.bravia.data.remote.api.SignUpService
 import com.example.bravia.data.remote.api.StudentService
@@ -160,5 +161,11 @@ object NetworkModule {
     @Singleton
     fun provideInternshipService(retrofit: Retrofit): InternshipService =
         retrofit.create(InternshipService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCVService(retrofit: Retrofit): CVService =
+        retrofit.create(CVService::class.java)
+
 
 }

@@ -61,6 +61,7 @@ import com.example.bravia.R
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.layout.MainLayout
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
+import com.example.bravia.presentation.viewmodel.CVGenerationState
 import com.example.bravia.presentation.viewmodel.StudentViewModel
 import com.example.bravia.presentation.viewmodel.StudentState
 
@@ -80,6 +81,10 @@ fun ProfileScreen(
 ) {
     val student by studentViewModel.student.collectAsState()
     val studentState by studentViewModel.studentState.collectAsState()
+    val cvGenerationState by studentViewModel.cvGenerationState.collectAsState()
+
+    var showCVDialog by remember { mutableStateOf(false) }
+
 
     LaunchedEffect(Unit) {
         studentViewModel.fetchStudentById()
@@ -165,6 +170,29 @@ fun ProfileScreen(
         // Mapear contacts
         studentContacts = studentData.contacts?.map { it.url } ?: studentData.cvUrls ?: emptyList()
     }
+
+    // Mostrar diálogo de generación de CV
+        if (showCVDialog) {
+            CVGenerationDialog(
+                onDismiss = { showCVDialog = false },
+                onGenerate = { additionalInfo ->
+                    studentViewModel.generateCV(additionalInfo)
+                    showCVDialog = false
+                }
+            )
+        }
+
+        // Mostrar estado de generación de CV
+        if (cvGenerationState != CVGenerationState.Idle) {
+            CVGenerationScreen(
+                state = cvGenerationState,
+                onDismiss = { studentViewModel.resetCVGenerationState() },
+                onDownload = { url ->
+                    // Implementar la descarga del PDF
+                    downloadPDF(url, "my_cv.pdf")
+                }
+            )
+        }
 
         MainLayout(paddingValues = paddingValues) {
             when (studentState) {
@@ -294,7 +322,7 @@ fun ProfileScreen(
 
                             // Botón CV
                             Button(
-                                onClick = { /* Acción CV */ },
+                                onClick = { showCVDialog = true }, // Cambiado para mostrar el diálogo
                                 modifier = Modifier
                                     .width(200.dp)
                                     .height(40.dp),
@@ -304,7 +332,7 @@ fun ProfileScreen(
                                 shape = MaterialTheme.shapes.medium
                             ) {
                                 Text(
-                                    text = "CV",
+                                    text = "Generate CV", // Cambiado el texto
                                     color = MaterialTheme.colorScheme.onPrimary,
                                 )
                             }
@@ -398,6 +426,8 @@ fun ProfileScreen(
                 }
             }
         }
+
+
     }
 
     @Composable
@@ -624,3 +654,8 @@ fun ProfileScreen(
             }
         }
     }
+
+fun downloadPDF(url: String, fileName: String) {
+    // Implementar la lógica de descarga usando Android DownloadManager
+    // o una librería como Accompanist Permissions para manejar permisos
+}

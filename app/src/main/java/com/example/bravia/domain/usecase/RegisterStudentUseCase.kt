@@ -18,3 +18,4 @@ class RegisterStudentUseCase @Inject constructor(
         return authRepository.registerStudent(student)
     }
 }
+
