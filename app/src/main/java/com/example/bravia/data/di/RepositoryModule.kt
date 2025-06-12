@@ -1,5 +1,6 @@
 package com.example.bravia.data.di
 
+import com.example.bravia.data.repository.AdminRepositoryImpl
 import com.example.bravia.data.repository.BusinessAreaRepositoryImpl
 import com.example.bravia.data.repository.CollegeRepositoryImpl
 import com.example.bravia.data.repository.CompanyRepositoryImpl
@@ -8,6 +9,7 @@ import com.example.bravia.data.repository.InterestRepositoryImpl
 import com.example.bravia.data.repository.InternshipRepositoryImpl
 import com.example.bravia.data.repository.LocationRepositoryImpl
 import com.example.bravia.data.repository.ModalityRepositoryImpl
+import com.example.bravia.domain.repository.AdminRepository
 import com.example.bravia.domain.repository.BusinessAreaRepository
 import com.example.bravia.domain.repository.CollegeRepository
 import com.example.bravia.domain.repository.CompanyRepository
@@ -103,5 +105,11 @@ abstract class RepositoryModule {
     abstract fun bindModalityRepository(
         modalityRepositoryImpl: ModalityRepositoryImpl
     ): ModalityRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAdminRepository(
+        adminRepositoryImpl: AdminRepositoryImpl
+    ): AdminRepository
 
 }

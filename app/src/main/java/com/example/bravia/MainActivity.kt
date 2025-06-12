@@ -39,6 +39,8 @@ import com.example.bravia.presentation.navigation.BottomNavBar
 import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.bravia.presentation.viewmodel.AdminViewModel
+
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.ThemeViewModel
 
@@ -86,6 +88,7 @@ class MainActivity : FragmentActivity() {
                 val internshipViewModel: InternshipViewModel = hiltViewModel()
                 val signUpViewModel: SignupViewModel = hiltViewModel()
                 val businessViewModel: BusinessViewModel = hiltViewModel()
+                val adminViewModel: AdminViewModel = hiltViewModel()
 
                 // Estado de la sesión del usuario
                 val userSession by loginViewModel.userSession.collectAsState()
@@ -128,6 +131,7 @@ class MainActivity : FragmentActivity() {
                             signUpViewModel = signUpViewModel,
                             loginViewModel = loginViewModel,
                             businessViewModel = businessViewModel,
+                            adminViewModel = adminViewModel,
                             onLogout = { restartApp() }
                         )
 

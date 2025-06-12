@@ -10,4 +10,8 @@ interface CompanyRepository {
      * @return A [Result] containing the company data or an error.
      */
     suspend fun getCompanyById(username: String): Result<Company?>
+    suspend fun getCompanyById(id: Long): Result<Company?>
+
+    suspend fun getCompanyByCompanyId(id: Long): Result<Company?>
+
 }

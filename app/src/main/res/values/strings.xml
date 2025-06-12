@@ -8,6 +8,8 @@
     <string name="profile">Profile</string>
     <string name="options">Select options</string>
     <string name="starred">Starred</string>
-
+    <string name="students">Students</string>
+    <string name="reports">Reports</string>
+    <string name="companies">Companies</string>
 </resources>
 

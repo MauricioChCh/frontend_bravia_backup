@@ -61,7 +61,15 @@ class NavigationManager {
 
     private fun isAdminRoute(route: String): Boolean {
         // Implementar rutas de admin cuando las tengas
-        return true
+        return route in listOf(
+            BottomNavBar.Routes.ADMIN_REPORTS,
+            BottomNavBar.Routes.ADMIN_COMPANIES,
+            BottomNavBar.Routes.ADMIN_STUDENTS,
+            NavRoutes.ReportProfile.ROUTE,
+            NavRoutes.StudentProfile.ROUTE,
+            NavRoutes.CompanyProfile.ROUTE,
+            NavRoutes.Settings.ROUTE
+        )
     }
 
     /**
