@@ -5,9 +5,9 @@ data class Student(
     val firstName: String?,
     val lastName: String?,
     val email: String?,
-    val description: String,
-    val academicCenter: String,
-    val userInput: UserResult
+    val description: String?,
+    val academicCenter: String?,
+    val userInput: UserResult?,
 )
 
 data class UserResult(

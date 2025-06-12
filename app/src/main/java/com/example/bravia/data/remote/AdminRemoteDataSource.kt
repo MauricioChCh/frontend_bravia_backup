@@ -3,6 +3,7 @@ package com.example.bravia.data.remote
 import android.util.Log
 import com.example.bravia.data.remote.api.AdminService
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
+import com.example.bravia.data.remote.dto.StudentResponseAdminDTO
 import com.example.bravia.data.remote.dto.StudentResponseDTO
 import com.example.bravia.data.remote.dto.UserReportResponseDTO
 import com.example.bravia.data.remote.utils.ApiCallHandler.Companion.safeApiCall
@@ -22,7 +23,7 @@ class AdminRemoteDataSource @Inject constructor(
         response
     }
 
-    suspend fun getAllStudents(): Result<List<StudentResponseDTO>> = safeApiCall {
+    suspend fun getAllStudents(): Result<List<StudentResponseAdminDTO>> = safeApiCall {
         val response = adminService.getAllStudents()
         Log.d("AdminRemoteDataSource", "Llamada ejecutada con código: ${response.code()}")
         Log.d("AdminRemoteDataSource", "Es exitosa: ${response.isSuccessful}")
@@ -48,7 +49,7 @@ class AdminRemoteDataSource @Inject constructor(
         response
     }
 
-    suspend fun getStudentById(studentId: Long): Result<StudentResponseDTO> = safeApiCall {
+    suspend fun getStudentById(studentId: Long): Result<StudentResponseAdminDTO> = safeApiCall {
         val response = adminService.getStudentById(studentId)
         Log.d("AdminRemoteDataSource", "getStudentById - Código: ${response.code()}")
         Log.d("AdminRemoteDataSource", "getStudentById - Éxito: ${response.isSuccessful}")

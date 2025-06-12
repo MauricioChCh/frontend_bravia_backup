@@ -2,10 +2,11 @@ package com.example.bravia.data.di
 
 import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.local.AuthPreferences
+import com.example.bravia.data.remote.api.AdminService
 import com.example.bravia.data.remote.api.AuthService
 import com.example.bravia.data.remote.api.InternshipService
 import com.example.bravia.data.remote.api.SignUpService
-import com.example.bravia.data.remote.api.StudentAreaService
+import com.example.bravia.data.remote.api.StudentService
 import com.example.bravia.data.remote.dto.InterestDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.interceptor.AuthInterceptor
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    val BASE_URL = "http://192.168.28.1:8080/api/v1/"
+    val BASE_URL = "http://192.168.68.66:8080/api/v1/"
 
 //    private const val BASE_URL = "https://bravia-app-v01-bbd26053b419.herokuapp.com/api/v1/"
     private const val DATE_FORMAT = "yyyy-MM-dd"
@@ -122,8 +123,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideStudentAreaService(retrofit: Retrofit): StudentAreaService =
-        retrofit.create(StudentAreaService::class.java)
+    fun provideStudentAreaService(retrofit: Retrofit): StudentService =
+        retrofit.create(StudentService::class.java)
 
     /**
      * Provides the AuthService implementation for authentication operations.
@@ -157,4 +158,11 @@ object NetworkModule {
     @Singleton
     fun provideInternshipService(retrofit: Retrofit): InternshipService =
         retrofit.create(InternshipService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAdminService(retrofit: Retrofit): AdminService {
+        return retrofit.create(AdminService::class.java)
+    }
+
 }

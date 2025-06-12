@@ -13,7 +13,7 @@ class GetAdminStudentByIdUseCase @Inject constructor(
             val student = repository.findStudentById(studentId)
             Log.d(
                 "GetAdminStudentByIdUseCase",
-                "Fetched student id: ${student.id}, name: ${student.userInput.firstName} ${student.userInput.lastName}"
+                "Fetched student id: ${student.id}, name: ${student.userInput?.firstName} ${student.userInput?.lastName}"
             )
             Result.success(student)
         } catch (e: Exception) {

@@ -82,7 +82,7 @@ fun CompanyCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = company.name,
+                    text = company.name.toString(),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
@@ -90,12 +90,12 @@ fun CompanyCard(
                 )
 
                 Text(
-                    text = company.location.address,
+                    text = company.location?.address ?: "Sin dirección",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = company.email,
+                    text = company.email.toString(),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

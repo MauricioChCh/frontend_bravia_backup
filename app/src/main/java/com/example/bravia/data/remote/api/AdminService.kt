@@ -1,6 +1,7 @@
 package com.example.bravia.data.remote.api
 
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
+import com.example.bravia.data.remote.dto.StudentResponseAdminDTO
 import com.example.bravia.data.remote.dto.StudentResponseDTO
 import com.example.bravia.data.remote.dto.UserReportResponseDTO
 import retrofit2.Response
@@ -13,7 +14,7 @@ interface AdminService {
     suspend fun getAllCompanies(): Response<List<CompanyResponseDTO>>
 
     @GET("admin/students")
-    suspend fun getAllStudents(): Response<List<StudentResponseDTO>>
+    suspend fun getAllStudents(): Response<List<StudentResponseAdminDTO>>
 
     @GET("userReports")
     suspend fun getAllUserReports(): Response<List<UserReportResponseDTO>>
@@ -26,7 +27,7 @@ interface AdminService {
     @GET("admin/students/{studentId}")
     suspend fun getStudentById(
         @Path("studentId") studentId: Long
-    ): Response<StudentResponseDTO>
+    ): Response<StudentResponseAdminDTO>
 
     @GET("admin/companies/{companyId}")
     suspend fun getCompanyById(

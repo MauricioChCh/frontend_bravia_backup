@@ -95,7 +95,7 @@ class AdminViewModel @Inject constructor(
                 val studentsList = it.getOrDefault(emptyList())
                 Log.d("AdminViewModel", "fetchAllStudents - fetched ${studentsList.size} students")
                 studentsList.forEach { student ->
-                    Log.d("AdminViewModel", "student -> id: ${student.id}, name: ${student.userInput.firstName} ${student.userInput.lastName} ")
+                    Log.d("AdminViewModel", "student -> id: ${student.id}, name: ${student.userInput?.firstName} ${student.userInput?.lastName} ")
                 }
                 _students.value = studentsList
                 _adminState.value = if (studentsList.isNotEmpty()) AdminState.Success else AdminState.Empty

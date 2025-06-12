@@ -63,7 +63,7 @@ fun StudentListScreen(
     LaunchedEffect(students) {
         Log.d(TAG, "Students list updated: size = ${students.size}")
         students.forEach { students ->
-            Log.d(TAG, "Student: id=${students.id}, name=${students.userInput.firstName}")
+            Log.d(TAG, "Student: id=${students.id}, name=${students.userInput?.firstName}")
         }
     }
 
@@ -127,7 +127,7 @@ fun StudentListScreen(
                                 StudentCard(
                                     student = student,
                                     onClick = {
-                                        student.userInput.id?.let { id ->
+                                        student.userInput?.id?.let { id ->
                                             navController.navigate(NavRoutes.StudentProfile.createRoute(id))
                                         }
                                     }

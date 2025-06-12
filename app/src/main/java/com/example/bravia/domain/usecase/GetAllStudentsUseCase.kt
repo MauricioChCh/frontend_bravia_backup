@@ -14,7 +14,7 @@ class GetAllStudentsUseCase @Inject constructor(
             val students = repository.findAllStudents()
             Log.d("GetAllStudentsUseCase", "Fetched students count: ${students.size}")
             students.forEach { student ->
-                Log.d("GetAllStudentsUseCase", "student -> id: ${student.id}, name: ${student.userInput.firstName} ${student.userInput.lastName}, description: ${student.description}")
+                Log.d("GetAllStudentsUseCase", "student -> id: ${student.id}, name: ${student.userInput?.firstName} ${student.userInput?.lastName}, description: ${student.description}")
             }
             Result.success(students)
         } catch (e: Exception) {

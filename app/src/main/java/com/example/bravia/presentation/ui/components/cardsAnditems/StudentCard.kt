@@ -70,7 +70,7 @@ fun StudentCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = student.userInput.firstName + " " + student.userInput.lastName,
+                    text = student.userInput?.firstName + " " + student.userInput?.lastName,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSecondary
                 )
@@ -83,18 +83,18 @@ fun StudentCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = student.userInput.firstName + " " + student.userInput.lastName,
+                    text = student.userInput?.firstName + " " + student.userInput?.lastName,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = student.academicCenter,
+                    text = student.academicCenter.toString(),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                student.userInput.email?.let {
+                student.userInput?.email?.let {
                     Text(
                         text = it,
                         style = MaterialTheme.typography.bodyMedium,
