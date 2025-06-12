@@ -278,26 +278,26 @@ fun BusinessEditProfileScreen(
                     }
 
 
-                    BoxContainer(
-                        label = "Recruiter First Name",
-                        text = company.firstName.toString(),
-                        edit = edit,
-                        onValueChange = { company.firstName = it },
-                    )
-
-                    BoxContainer(
-                        label = "Recruiter Last Name",
-                        text = company.lastName.toString(),
-                        edit = edit,
-                        onValueChange = { company.lastName = it },
-                    )
-
-                    BoxContainer(
-                        label = "Recruiter Email",
-                        text = company.email.toString(),
-                        edit = edit,
-                        onValueChange = { company.email = it },
-                    )
+//                    BoxContainer(
+//                        label = "Recruiter First Name",
+//                        text = company.firstName.toString(),
+//                        edit = edit,
+//                        onValueChange = { company.firstName = it },
+//                    )
+//
+//                    BoxContainer(
+//                        label = "Recruiter Last Name",
+//                        text = company.lastName.toString(),
+//                        edit = edit,
+//                        onValueChange = { company.lastName = it },
+//                    )
+//
+//                    BoxContainer(
+//                        label = "Recruiter Email",
+//                        text = company.email.toString(),
+//                        edit = edit,
+//                        onValueChange = { company.email = it },
+//                    )
 
                     ProfileSection("") {
                         Column (

@@ -234,15 +234,15 @@ fun BusinessProfileScreen(
 
                     Spacer(modifier = Modifier.width(16.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(5.dp),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // Estos deberían ser iconos de redes sociales reales
-                        NetworkIcon(iconId = R.drawable.ic_launcher_background, "Email")
-                        NetworkIcon(iconId = R.drawable.ic_launcher_background, "LinkedIn")
-                    }
+//                    Row(
+//                        modifier = Modifier.fillMaxWidth().padding(5.dp),
+//                        horizontalArrangement = Arrangement.End,
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        // Estos deberían ser iconos de redes sociales reales
+//                        NetworkIcon(iconId = R.drawable.ic_launcher_background, "Email")
+//                        NetworkIcon(iconId = R.drawable.ic_launcher_background, "LinkedIn")
+//                    }
 
                 }
 
@@ -261,15 +261,15 @@ fun BusinessProfileScreen(
                     )
                 }
 
-                DivisionSection()
-
-                ProfileSection(title = "Contact") {
-                    Text(
-                        text = contacts.joinToString(separator = "\n") { contact -> contact },
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Start,
-                    )
-                }
+//                DivisionSection()
+//
+//                ProfileSection(title = "Contact") {
+//                    Text(
+//                        text = contacts.joinToString(separator = "\n") { contact -> contact },
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        textAlign = TextAlign.Start,
+//                    )
+//                }
 
                 DivisionSection()
 
