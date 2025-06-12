@@ -69,7 +69,8 @@ class NavigationManager {
             NavRoutes.ReportProfile.ROUTE,
             NavRoutes.StudentProfile.ROUTE,
             NavRoutes.CompanyProfile.ROUTE,
-            NavRoutes.Settings.ROUTE
+            NavRoutes.Settings.ROUTE,
+            BottomNavBar.Routes.ADMIN_SETTINGS,
         )
     }
 

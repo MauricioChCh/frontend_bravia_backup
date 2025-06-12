@@ -39,6 +39,7 @@ sealed class BottomNavBar(
         const val ADMIN_STUDENTS = "studentList"
         const val ADMIN_REPORTS = "reportList"
         const val ADMIN_COMPANIES = "companyList"
+        const val ADMIN_SETTINGS = "adminSettings"
     }
 
     /**
@@ -131,6 +132,12 @@ sealed class BottomNavBar(
         Icons.Filled.Business
     )
 
+    data object AdminSettings : BottomNavBar(
+        Routes.ADMIN_SETTINGS,
+        R.string.settings,
+        Icons.Filled.Dashboard
+    )
+
 
     companion object {
         /**
@@ -142,7 +149,7 @@ sealed class BottomNavBar(
          */
         fun businessItems() = listOf(BusinessHome, BusinessStarred, BusinessProfile)
 
-        fun adminItems() = listOf(AdminStudents, AdminReports, AdminCompanies)
+        fun adminItems() = listOf(AdminStudents, AdminReports, AdminCompanies, AdminSettings)
 
         /**
          * Determina si la ruta proporcionada coincide con cualquier ruta de elemento de navegación inferior.
@@ -157,7 +164,7 @@ sealed class BottomNavBar(
                 // Business routes
                 Routes.BUSINESS_HOME, Routes.STARRED, Routes.BUSINESS_PROFILE,
                 // Admin routes
-                Routes.ADMIN_STUDENTS, Routes.ADMIN_REPORTS, Routes.ADMIN_COMPANIES
+                Routes.ADMIN_STUDENTS, Routes.ADMIN_REPORTS, Routes.ADMIN_COMPANIES, Routes.ADMIN_SETTINGS
             )
         }
         fun getItemsForRole(role: com.example.bravia.domain.model.UserRole): List<BottomNavBar> {

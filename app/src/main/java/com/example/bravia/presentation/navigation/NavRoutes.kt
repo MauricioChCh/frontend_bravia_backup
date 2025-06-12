@@ -105,4 +105,5 @@ sealed class NavRoutes {
         const val ROUTE = "companyProfile/{$ARG_COMPANY_ID}"
         fun createRoute(companyId: Long) = "companyProfile/$companyId"
     }
+
 }

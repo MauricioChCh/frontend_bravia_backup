@@ -437,6 +437,19 @@ fun NavGraph(
             )
         }
 
+        composable(route = BottomNavBar.Routes.ADMIN_SETTINGS) {
+            if (userSession?.hasRole(UserRole.ADMIN) == true) {
+                SettingsScreen(
+                    onNavigateToLogin = onLogout,
+                    loginViewModel = loginViewModel,
+                    navController = navController
+                )
+            } else {
+                UnauthorizedScreen(navController)
+            }
+        }
+
+
     }
 }
 
