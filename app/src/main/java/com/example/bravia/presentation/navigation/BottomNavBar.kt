@@ -2,11 +2,13 @@ package com.example.bravia.presentation.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Business
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,10 +35,10 @@ sealed class BottomNavBar(
         const val BUSINESS_PROFILE = "businessProfile"
 
         // Admin routes
-        const val ADMIN_HOME = "adminHome"
-//        const val ADMIN_USERS = "adminUsers"
-//        const val ADMIN_REPORTS = "adminReports"
-//        const val ADMIN_PROFILE = "adminProfile"
+        //const val ADMIN_HOME = "adminHome"
+        const val ADMIN_STUDENTS = "studentList"
+        const val ADMIN_REPORTS = "reportList"
+        const val ADMIN_COMPANIES = "companyList"
     }
 
     /**
@@ -105,10 +107,28 @@ sealed class BottomNavBar(
     )
 
     //ADMIN NAVIGATION ITEMS ============================
-    data object AdminHome : BottomNavBar(
+    /*data object AdminHome : BottomNavBar(
         Routes.ADMIN_HOME,
         R.string.home,
         Icons.Filled.Dashboard
+    )*/
+
+    data object AdminStudents : BottomNavBar(
+        Routes.ADMIN_STUDENTS,
+        R.string.students,
+        Icons.Filled.Person
+    )
+
+    data object AdminReports : BottomNavBar(
+        Routes.ADMIN_REPORTS,
+        R.string.reports,
+        Icons.Filled.Report
+    )
+
+    data object AdminCompanies : BottomNavBar(
+        Routes.ADMIN_COMPANIES,
+        R.string.companies,
+        Icons.Filled.Business
     )
 
 
@@ -122,7 +142,7 @@ sealed class BottomNavBar(
          */
         fun businessItems() = listOf(BusinessHome, BusinessStarred, BusinessProfile)
 
-        fun adminItems() = listOf(AdminHome)
+        fun adminItems() = listOf(AdminStudents, AdminReports, AdminCompanies)
 
         /**
          * Determina si la ruta proporcionada coincide con cualquier ruta de elemento de navegación inferior.
@@ -137,7 +157,7 @@ sealed class BottomNavBar(
                 // Business routes
                 Routes.BUSINESS_HOME, Routes.STARRED, Routes.BUSINESS_PROFILE,
                 // Admin routes
-//                Routes.ADMIN_HOME, Routes.ADMIN_USERS, Routes.ADMIN_REPORTS, Routes.ADMIN_PROFILE
+                Routes.ADMIN_STUDENTS, Routes.ADMIN_REPORTS, Routes.ADMIN_COMPANIES
             )
         }
         fun getItemsForRole(role: com.example.bravia.domain.model.UserRole): List<BottomNavBar> {

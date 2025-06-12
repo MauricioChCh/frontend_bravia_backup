@@ -54,12 +54,14 @@ fun SignInScreen(
             is LoginState.Error -> {
                 val error = loginState as LoginState.Error
                 errorMessage = when {
+                    error.message.contains("Invalid", ignoreCase = true) ->
+                        "Incorrect credentials. Please check and try again."
                     error.message.contains("Unauthorized", ignoreCase = true) ->
-                        "Credenciales incorrectas. Por favor, verifica e intenta nuevamente."
+                        "Your account is banned."
                     error.message.contains("network", ignoreCase = true) ||
                             error.message.contains("connect", ignoreCase = true) ->
-                        "Error de conexión. Verifica tu internet e intenta nuevamente."
-                    else -> "Error al iniciar sesión. Por favor, intenta nuevamente."
+                        "Connection error. Please check your internet and try again."
+                    else -> "Error at sign in . Please try again."
                 }
                 showErrorSnackbar = true
             }

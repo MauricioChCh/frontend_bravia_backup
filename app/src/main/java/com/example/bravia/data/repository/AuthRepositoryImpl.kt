@@ -55,17 +55,13 @@ class AuthRepositoryImpl @Inject constructor(
 
             authRemoteDataSource.login(credentials)
                 .onSuccess { authResult ->
-                    val token = authResult.token
-                    if (token.isNotBlank()) {
-                        Log.d(
-                            "AuthRepositoryImpl",
-                            "Login successful, token: ${token.take(10)}..."
-                        )
-                        // Save auth state to preferences
-                        authPreferences.saveAuthToken(token)
+                    if (authResult.token.isNotBlank()) {
+                        Log.d("AuthRepositoryImpl", "Token received: ${authResult.token.take(10)}...")
+                        authPreferences.saveAuthToken(authResult.token)
                         authPreferences.saveUsername(username)
                     } else {
-                        Log.e("AuthRepositoryImpl", "Received empty token in auth result")
+                        Log.e("AuthRepositoryImpl", "Received empty token")
+                        throw Exception("Empty token received")
                     }
                 }
                 .onFailure { error ->

@@ -1,17 +1,23 @@
 package com.example.bravia.data.remote
 
+import com.example.bravia.data.remote.api.AdminService
 import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import retrofit2.Response
 import javax.inject.Inject
 
 class CompanyRemoteDataSource @Inject constructor(
-    private val businessService: BusinessService
+    private val businessService: BusinessService,
+    private val adminService: AdminService
 ) {
 
 
     suspend fun getCompanyById(username: String): Result<CompanyResponseDTO?> = safeApiCall {
         businessService.getCompanyById(username)
+    }
+
+    suspend fun getCompanyByCompanyId(id: Long): Result<CompanyResponseDTO?> = safeApiCall {
+        adminService.getCompanyCompanyById(id)
     }
 
     /**

@@ -81,14 +81,15 @@ fun SignUpScreen(
             style = MaterialTheme.typography.displayLarge
         )
 
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
         Text(
             text = "Sign Up",
             style = MaterialTheme.typography.displayMedium
         )
 
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
+
 
         Card(
             modifier = Modifier.fillMaxWidth(),

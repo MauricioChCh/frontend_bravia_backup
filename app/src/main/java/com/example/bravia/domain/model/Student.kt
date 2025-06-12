@@ -5,9 +5,17 @@ data class Student(
     val firstName: String?,
     val lastName: String?,
     val email: String?,
+    val description: String?,
+    val academicCenter: String?,
+    val userInput: UserResult?,
 )
 
-
+data class UserResult(
+    var id: Long? = null,
+    var email: String? = null,
+    var firstName: String? = null,
+    var lastName: String? = null,
+    )
 
 data class StudentNew(
     val email: String,

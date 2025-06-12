@@ -1,6 +1,7 @@
 package com.example.bravia.data.mapper
 
 import com.example.bravia.data.remote.dto.StudentNewDTO
+import com.example.bravia.data.remote.dto.StudentResponseAdminDTO
 import com.example.bravia.data.remote.dto.StudentResponseDTO
 import com.example.bravia.domain.model.Student
 import com.example.bravia.domain.model.StudentNew
@@ -18,8 +19,24 @@ class StudentMapper @Inject constructor(
             firstName = dto.firstName,
             lastName = dto.lastName,
             email = dto.email,
+            description = null,
+            academicCenter = null,
+            userInput = null
         )
     }
+
+    fun mapToDomain(dto: StudentResponseAdminDTO): Student {
+        return Student(
+            id = dto.id,
+            description = dto.description,
+            academicCenter = dto.academicCenter,
+            userInput = dto.userInput,
+            firstName = null,
+            lastName = null,
+            email = null
+        )
+    }
+
 
     fun mapToNewDTO(student: StudentNew): StudentNewDTO {
         return StudentNewDTO(
@@ -36,3 +53,7 @@ class StudentMapper @Inject constructor(
 
 
 }
+
+
+
+

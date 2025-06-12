@@ -2,6 +2,7 @@
 package com.example.bravia.navigation
 
 import SettingsScreen
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,7 +38,15 @@ import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 
 import androidx.compose.runtime.getValue
+import com.example.bravia.presentation.ui.screens.admin.CompanyListScreen
+import com.example.bravia.presentation.ui.screens.admin.CompanyProfileScreen
+import com.example.bravia.presentation.ui.screens.admin.ReportListScreen
+import com.example.bravia.presentation.ui.screens.admin.ReportProfileScreen
+import com.example.bravia.presentation.ui.screens.admin.StudentListScreen
+import com.example.bravia.presentation.ui.screens.admin.StudentProfileScreen
+import com.example.bravia.presentation.viewmodel.AdminViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.bravia.presentation.ui.screens.student.InterviewScreen
 
 /**
  * NavGraph is a composable function that defines the navigation graph for the application.
@@ -57,11 +66,12 @@ fun NavGraph(
     signUpViewModel: SignupViewModel,
     loginViewModel: LoginViewModel,
     businessViewModel: BusinessViewModel,
-    onLogout: () -> Unit
+    adminViewModel: AdminViewModel,
+    onLogout: () -> Unit,
 ) {
     val navigationManager = NavigationManager()
-//    val userSession by loginViewModel.userSession.collectAsState()
     val userSession by loginViewModel.userSession.collectAsState()
+
     // Determinar la ruta de inicio basada en la sesión
     val startDestination = navigationManager.getStartDestination(userSession)
 
@@ -159,6 +169,24 @@ fun NavGraph(
 
             }
         }
+        // Pantalla de interviews
+        composable(
+            route = BottomNavBar.Routes.INTERVIEW,
+            arguments = emptyList()
+        ) {
+            if (userSession?.hasRole(UserRole.STUDENT) == true) {
+                InterviewScreen(
+                    navController = navController,
+                    paddingValues = paddingValues,
+                )
+            }
+            else {
+                // Redirigir o mostrar error de acceso
+                UnauthorizedScreen(navController)
+
+            }
+
+        }
 
         // Pantalla de guardados
         composable(route = BottomNavBar.Routes.SAVED) {
@@ -201,7 +229,7 @@ fun NavGraph(
                 val internshipId = backStackEntry.arguments?.getLong(NavRoutes.InternshipDetail.ARG_INTERNSHIP_ID) ?: -1L
                 InternshipDetailScreen(
                     navController = navController,
-                    internshipId = internshipId,
+                    internshipId = internshipId.toString(),
                     paddingValues = PaddingValues(0.dp),
                     viewModel = internshipViewModel
                 )
@@ -213,17 +241,6 @@ fun NavGraph(
         }
 
 
-        // Pantalla de interviews
-        composable(
-            route = BottomNavBar.Routes.INTERVIEW,
-            arguments = emptyList()
-        ) {
-//            InternshipScreen(
-//                navController = navController,
-//                paddingValues = paddingValues,
-//                viewModel = viewModel
-//            )
-        }
 
 
 
@@ -302,8 +319,92 @@ fun NavGraph(
             }
         }
 
+        //Admin Screens
 
+        composable(route = NavRoutes.CompanyList.ROUTE) {
+            CompanyListScreen(
+                navController = navController,
+                viewModel = adminViewModel // o el que estés usando para Company
+            )
+        }
 
+        composable(route = NavRoutes.StudentList.ROUTE) {
+            StudentListScreen(
+                navController = navController,
+                viewModel = adminViewModel // o el que estés usando para student
+            )
+        }
+
+        composable(route = NavRoutes.ReportList.ROUTE) {
+            ReportListScreen(
+                navController = navController,
+                viewModel = adminViewModel // o el que estés usando para student
+            )
+        }
+
+        composable(
+            route = NavRoutes.ReportProfile.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.ReportProfile.ARG_REPORT_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val reportId = backStackEntry.arguments?.getLong(NavRoutes.ReportProfile.ARG_REPORT_ID) ?: -1L
+            ReportProfileScreen(
+                navController = navController,
+                reportId = reportId,
+                paddingValues = PaddingValues(0.dp),
+                viewModel = adminViewModel,
+                onUserClick = { userName ->
+                    // Puedes navegar a la pantalla del perfil del usuario o mostrar un diálogo, etc.
+                    Log.d("Nav", "Usuario clickeado: $userName")
+                    // navController.navigate("userProfile/$userName") // ejemplo opcional
+                }
+            )
+        }
+
+        composable(
+            route = NavRoutes.StudentProfile.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.StudentProfile.ARG_STUDENT_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val studentId = backStackEntry.arguments?.getLong(NavRoutes.StudentProfile.ARG_STUDENT_ID) ?: -1L
+            StudentProfileScreen(
+                navController = navController,
+                userId = studentId,
+                paddingValues = PaddingValues(0.dp),
+                viewModel = adminViewModel,
+                onUserClick = { userName ->
+                    Log.d("Nav", "Usuario clickeado: $userName")
+                    // navController.navigate("userProfile/$userName")
+                }
+            )
+        }
+
+        composable(
+            route = NavRoutes.CompanyProfile.ROUTE,
+            arguments = listOf(
+                navArgument(NavRoutes.CompanyProfile.ARG_COMPANY_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val companyId = backStackEntry.arguments?.getLong(NavRoutes.CompanyProfile.ARG_COMPANY_ID) ?: -1L
+            CompanyProfileScreen(
+                navController = navController,
+                userId = companyId,
+                paddingValues = PaddingValues(0.dp),
+                viewModel = adminViewModel,
+                onUserClick = { userName ->
+                    Log.d("Nav", "Usuario clickeado: $userName")
+                    // navController.navigate("userProfile/$userName")
+                }
+            )
+        }
 
         //Main SCREENS===========================================
 

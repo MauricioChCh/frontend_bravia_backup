@@ -98,12 +98,13 @@ fun SignUpProfileScreen (
             style = Typography.displayLarge
         )
 
-        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightLarge))
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightSmall))
 
         AccountType(
             selectedUserType = selectedUserType,
             onSelectedUserTypeChange = { selectedUserType = it }
         )
+        Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeightExtraSmall))
 
         if (selectedUserType == "Student") {
 

@@ -198,6 +198,7 @@ class InternshipViewModel @Inject constructor(
      *
      * @param query The search query string
      */
+    //TODO: hacer que busqe en las que aparecen cerca como ya esta (lista de recommended) pero si no esta que haga un llamado a el server a buscar entre todas
     fun searchInternships(query: String) {
         viewModelScope.launch {
             if (query.isEmpty()) {

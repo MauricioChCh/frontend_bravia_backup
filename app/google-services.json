@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "438176897787",
+    "project_id": "bravia-580d0",
+    "storage_bucket": "bravia-580d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438176897787:android:c3f39005c3a885fee82e5e",
+        "android_client_info": {
+          "package_name": "com.example.bravia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa5_P1gCy8kPdFffZfEI_l9YLye2i2uzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

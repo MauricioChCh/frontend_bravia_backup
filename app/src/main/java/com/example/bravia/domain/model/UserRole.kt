@@ -6,7 +6,7 @@ package com.example.bravia.domain.model
 enum class UserRole(val authority: String, val startDestination: String) {
     STUDENT("ROLE_STUDENT", "home"),
     BUSINESS("ROLE_COMPANY", "businessHome"),
-    ADMIN("ROLE_ADMIN", "adminHome");
+    ADMIN("ROLE_ADMIN", "reportList");
 
     companion object {
         /**

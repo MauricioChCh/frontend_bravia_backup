@@ -8,6 +8,7 @@ import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import com.example.bravia.data.remote.dto.StudentNewDTO
 import com.example.bravia.data.remote.dto.StudentResponseDTO
 import com.example.bravia.domain.model.AuthResult
+import com.example.bravia.domain.model.Authority
 import com.example.bravia.domain.model.Credentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,6 +28,7 @@ class AuthRemoteDataSource @Inject constructor(
      * @param credentials The user credentials
      * @return [Result] containing [AuthResult] if successful, or an exception if failed
      */
+    //Vercion un poco diferente a la del profe, maneja errores de manera separada y maneja roles de usuario
     suspend fun login(credentials: Credentials): Result<AuthResult> = withContext(Dispatchers.IO) {
         try {
             // Convert credentials and log the request payload for debugging
@@ -38,100 +40,55 @@ class AuthRemoteDataSource @Inject constructor(
 
             val response = authService.login(requestDto)
 
-            if (response.isSuccessful) {
-
-                val body = response.body()
-
-                if (body != null) {
-                    Log.d("AuthRemoteDataSource", "=== Response Body Debug ===")
-                    Log.d("AuthRemoteDataSource", "Body token: ${body.token.take(20)}...")
-                    Log.d("AuthRemoteDataSource", "Body userId: ${body.userId}")
-                    Log.d("AuthRemoteDataSource", "Body username: ${body.username}")
-                    Log.d("AuthRemoteDataSource", "Body authorities: ${body.authorities.map { it.authority }}")
-
-                    // Usar el mapper para convertir DTO a AuthResult
-                    val authResult = AuthMapper.dtoToAuthResult(body)
-
-                    Log.d("AuthRemoteDataSource", "=== Converted AuthResult ===")
-                    Log.d("AuthRemoteDataSource", "AuthResult token: ${authResult.token.take(20)}...")
-                    Log.d("AuthRemoteDataSource", "AuthResult userId: ${authResult.userId}")
-                    Log.d("AuthRemoteDataSource", "AuthResult username: ${authResult.username}")
-                    Log.d("AuthRemoteDataSource", "AuthResult authorities: ${authResult.authorities.map { it.authority }}")
-
-                    return@withContext Result.success(authResult)
-                } else {
-                    // Fallback al header si el body es null (caso raro)
-                    val authHeader = response.headers()["Authorization"]
-                    if (!authHeader.isNullOrBlank()) {
-                        Log.w("AuthRemoteDataSource", "Using fallback header token (incomplete data)")
-                        return@withContext Result.success(
-                            AuthResult(
-                                token = authHeader,
-                                userId = "", // Será vacío en este caso
-                                username = "",
-                                authorities = emptyList()
-                            )
-                        )
-                    } else {
-                        Log.e("AuthRemoteDataSource", "Both response body and Authorization header are empty")
-                        return@withContext Result.failure(Exception("No authentication data found in response"))
-                    }
-                }
-
-//            val response = authService.login(requestDto)
-//
-//            if (response.isSuccessful) {
-//                // Extract the token from the Authorization header
-//                val authHeader = response.headers()["Authorization"]
-//
-//                if (!authHeader.isNullOrBlank()) {
-//                    Log.d(
-//                        "AuthRemoteDataSource",
-//                        "Found token in Authorization header: ${authHeader.take(15)}..."
-//                    )
-//                    return@withContext Result.success(
-//                        AuthResult(
-//                            token = authHeader,
-//                            userId = "" // Using empty string as placeholder
-//                        )
-//                    )
-//                }
-//
-//                // Fallback to response body if header is not present
-//                val body = response.body()
-//                return@withContext if (body != null) {
-//                    Log.d("AuthRemoteDataSource", "Login successful with response body: $body")
-//                    Result.success(AuthMapper.dtoToAuthResult(body))
-//                } else {
-//                    Log.e(
-//                        "AuthRemoteDataSource",
-//                        "Login response body was null and no Authorization header found"
-//                    )
-//                    Result.failure(Exception("No token found in response"))
-//                }
-            } else {
-                val errorBody = response.errorBody()?.string()
-                // Specific error handling based on HTTP status code
-                val errorMessage = when (response.code()) {
-                    403 -> "Invalid username or password"
-                    401 -> "Unauthorized access"
-                    404 -> "Service not found"
-                    500 -> "Server error occurred"
-                    else -> "API error ${response.code()}: $errorBody"
-                }
-
-                Log.e(
-                    "AuthRemoteDataSource",
-                    "Login failed: $errorMessage"
-                )
-                return@withContext Result.failure(Exception(errorMessage))
+            if (!response.isSuccessful) {
+                // Manejo de errores HTTP
+                return@withContext handleErrorResponse(response)
             }
+            // Verificar el header Authorization
+            val authHeader = response.headers()["Authorization"]
+                ?: return@withContext Result.failure(Exception("Missing Authorization header"))
+            //Verificamos que el header Authorization tenga el formato correcto
+            if (!authHeader.startsWith("Bearer ")) {
+                return@withContext Result.failure(Exception("Invalid token format"))
+            }
+            // Extraer el token del header Authorization
+            val token = authHeader.substring(7) // Remove "Bearer "
+
+            // Obtener datos del body
+            val body = response.body() ?: return@withContext Result.failure(Exception("Empty response body"))
+
+            // 3. Construir AuthResult
+            val authResult = AuthResult(
+                token = token, // Del header
+                userId = body.userId,
+                username = body.username,
+                authorities = body.authorities.map { Authority(it.authority) }
+            )
+
+            Log.d("AuthRemote", "Login success - Token: ${token.take(5)}...")
+            Result.success(authResult)
         } catch (e: Exception) {
-            Log.e("AuthRemoteDataSource", "Login exception: ${e.message}", e)
-            return@withContext Result.failure(e)
+            Log.e("AuthRemote", "Login error", e)
+            Result.failure(e)
         }
+
     }
 
+private fun handleErrorResponse(response: Response<*>): Result<AuthResult> {
+    val errorMsg = when (response.code()) {
+        403 -> "Invalid username or password"
+        401 -> "Unauthorized access"
+        404 -> "Service not found"
+        500 -> "Server error occurred"
+        else -> "Error ${response.code()}: ${response.errorBody()?.string()}"
+    }
+    Log.e(
+        "AuthRemoteDataSource",
+        "Login failed: $errorMsg"
+    )
+
+    return Result.failure(Exception(errorMsg))
+}
     /**
      * Logs out the current user
      *
