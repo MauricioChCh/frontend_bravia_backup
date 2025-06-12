@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    val BASE_URL = "http://192.168.68.66:8080/api/v1/"
+    val BASE_URL = "http://192.168.100.14:8080/api/v1/"
 
 //    private const val BASE_URL = "https://bravia-app-v01-bbd26053b419.herokuapp.com/api/v1/"
     private const val DATE_FORMAT = "yyyy-MM-dd"
@@ -80,10 +80,12 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: HttpLoggingInterceptor,
+        authInterceptor: AuthInterceptor
     ) : OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
@@ -161,8 +163,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAdminService(retrofit: Retrofit): AdminService {
-        return retrofit.create(AdminService::class.java)
-    }
+    fun provideAdminService(retrofit: Retrofit): AdminService =
+        retrofit.create(AdminService::class.java)
+
 
 }
