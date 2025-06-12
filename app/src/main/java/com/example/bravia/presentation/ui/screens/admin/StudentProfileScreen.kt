@@ -120,7 +120,7 @@ fun StudentProfileScreen(
                 ) {
                     Button(
                         onClick = {
-                            viewModel.banUserById(userId, false) // false = habilitar
+                            viewModel.banUserById(userId, true)
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -133,7 +133,7 @@ fun StudentProfileScreen(
 
                     Button(
                         onClick = {
-                            viewModel.banUserById(userId, true) // true = deshabilitar
+                            viewModel.banUserById(userId, false)
                         },
                         modifier = Modifier
                             .weight(1f)
