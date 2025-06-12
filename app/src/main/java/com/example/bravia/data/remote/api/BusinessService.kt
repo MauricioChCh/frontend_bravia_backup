@@ -5,9 +5,11 @@ import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.dto.LocationDTO
 import com.example.bravia.data.remote.dto.ModalityDTO
 import com.example.bravia.data.remote.dto.NewInternshipDTO
+import com.example.bravia.data.remote.dto.UpdateInternshipDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -42,5 +44,7 @@ interface BusinessService {
     @POST("internships")
     suspend fun newInternship(@Body internship: NewInternshipDTO): Response<InternshipDTO?>
 
+    @PATCH("companies/{username}/internships")
+    suspend fun updateInternship(@Path("username") username: String, @Body internship: UpdateInternshipDTO): Response<InternshipDTO?>
 
 }

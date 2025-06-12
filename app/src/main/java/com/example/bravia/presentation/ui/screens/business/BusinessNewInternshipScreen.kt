@@ -113,7 +113,7 @@ fun BusinessNewInternshipScreen (
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 48.dp, top = 160.dp)
+            .padding(bottom = 80.dp, top = 160.dp)
             .verticalScroll(rememberScrollState()),
 
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -285,7 +285,7 @@ fun BusinessNewInternshipScreen (
                         publicationDate = Date(),
                         duration = duration,
                         salary = salary.toDoubleOrNull() ?: 0.0,
-                        modality = selectedModality.toString(),
+                        modality = selectedModality!!,
                         schedule = schedule,
                         requirements = requirements,
                         activities = activities,

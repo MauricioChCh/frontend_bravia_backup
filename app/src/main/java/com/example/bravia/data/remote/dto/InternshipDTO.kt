@@ -31,6 +31,23 @@ data class NewInternshipDTO(
     val publicationDate: Date,
     val duration: String,
     val salary: Double,
+    val modality: Long,
+    val schedule: String,
+    val requirements: String,
+    val activities: String,
+    val link: String,
+)
+
+data class UpdateInternshipDTO(
+    val id: Long,
+    val company: String,
+    val location: Long,
+    val title: String,
+    val description: String,
+    val imageUrl: String,
+    val publicationDate: Date,
+    val duration: String,
+    val salary: Double,
     val modality: String,
     val schedule: String,
     val requirements: String,

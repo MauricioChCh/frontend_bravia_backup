@@ -5,6 +5,7 @@ import com.example.bravia.data.remote.InternshipRemoteDataSource
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.NewInternship
+import com.example.bravia.domain.model.UpdateInternship
 import com.example.bravia.domain.repository.InternshipRepository
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -134,6 +135,18 @@ class InternshipRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateInternship(username: String, internship: UpdateInternship): Result<Internship?> {
+        return safeRepositoryCall {
+            val dto = mapper.mapToUpdateDTO(internship)
+            val dtoResult = remoteDataSource.updateInternship(username, dto)
+
+            if (dtoResult.isSuccess) {
+                dtoResult.getOrNull()?.let { mapper.mapToDomain(it) }
+            } else {
+                throw dtoResult.exceptionOrNull() ?: Exception("Unknown error updating internship")
+            }
+        }
+    }
 
 
 

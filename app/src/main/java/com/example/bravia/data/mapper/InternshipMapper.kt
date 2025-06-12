@@ -2,8 +2,10 @@ package com.example.bravia.data.mapper
 
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.dto.NewInternshipDTO
+import com.example.bravia.data.remote.dto.UpdateInternshipDTO
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.NewInternship
+import com.example.bravia.domain.model.UpdateInternship
 import javax.inject.Inject
 
 class InternshipMapper @Inject constructor()  {
@@ -66,6 +68,25 @@ class InternshipMapper @Inject constructor()  {
             requirements = domain.requirements,
             activities = domain.activities,
             link = domain.link
+        )
+    }
+
+    fun mapToUpdateDTO(domain: UpdateInternship) : UpdateInternshipDTO{
+        return UpdateInternshipDTO(
+            id = domain.id,
+            company = domain.company,
+            location = domain.location,
+            title = domain.title,
+            description = domain.description,
+            imageUrl = domain.imageUrl,
+            publicationDate = domain.publicationDate,
+            duration = domain.duration,
+            salary = domain.salary,
+            modality = domain.modality,
+            schedule = domain.schedule,
+            requirements = domain.requirements,
+            activities = domain.activities,
+            link = domain.link,
         )
     }
 }

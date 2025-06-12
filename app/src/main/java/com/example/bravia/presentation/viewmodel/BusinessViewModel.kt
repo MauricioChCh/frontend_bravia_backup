@@ -8,8 +8,10 @@ import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.Location
 import com.example.bravia.domain.model.Modality
 import com.example.bravia.domain.model.NewInternship
+import com.example.bravia.domain.model.UpdateInternship
 import com.example.bravia.domain.usecase.BookmarkInternshipUseCase
 import com.example.bravia.domain.usecase.BusinessNewInternshipUseCase
+import com.example.bravia.domain.usecase.BusinessUpdateInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessLocationsUseCase
 import com.example.bravia.domain.usecase.GetAllInternshipModalitiesUseCase
@@ -41,6 +43,7 @@ class BusinessViewModel @Inject constructor(
     private val getCompanyByIdUseCase: GetCompanyByIdUseCase,
     private val getBusinessInternshipByIdUseCase: GetBusinessInternshipByIdUseCase,
     private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase,
+    private val businessUpdateInternshipUseCase: BusinessUpdateInternshipUseCase,
     private val authPreferences: AuthPreferences,
 ) : ViewModel() {
 
@@ -203,6 +206,23 @@ class BusinessViewModel @Inject constructor(
                 }
             }.onFailure { exception ->
                 _businessState.value = BusinessState.Error(exception.message ?: "Failed to add internship")
+            }
+        }
+    }
+
+    fun updateInternship(internship: UpdateInternship) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                businessUpdateInternshipUseCase(authPreferences.getUsername()!!, internship)
+            }.onSuccess { result ->
+                if (result.isSuccess) {
+                    _businessState.value = BusinessState.Success
+                } else {
+                    _businessState.value = BusinessState.Error("Failed to update internship")
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to update internship")
             }
         }
     }

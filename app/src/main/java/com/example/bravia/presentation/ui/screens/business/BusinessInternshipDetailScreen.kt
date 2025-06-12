@@ -53,6 +53,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bravia.domain.model.UpdateInternship
 import com.example.bravia.presentation.ui.screens.shared.ErrorScreen
 import com.example.bravia.presentation.ui.screens.shared.LoadingScreen
 import com.example.bravia.presentation.ui.screens.student.ProfileSection
@@ -301,7 +302,24 @@ fun BusinessInternshipDetailScreen(
                                 onClick = {
                                     if (edit) {
                                         edit =  false
-                                    viewModel.updateInternship(internship)
+                                    viewModel.updateInternship(
+                                        UpdateInternship(
+                                            id = internship.id,
+                                            company = internship.company,
+                                            location = locations.firstOrNull { it.city.name == internship.city && it.country.name == internship.country }?.id ?: 0L,
+                                            title = internship.title,
+                                            description = internship.description,
+                                            imageUrl = internship.imageUrl,
+                                            publicationDate = internship.publicationDate,
+                                            duration = internship.duration,
+                                            salary = internship.salary,
+                                            modality = internship.modality,
+                                            schedule = internship.schedule,
+                                            requirements = internship.requirements,
+                                            activities = internship.activities,
+                                            link = internship.link,
+                                        )
+                                    )
                                     } else {
                                         edit = true
                                     }
