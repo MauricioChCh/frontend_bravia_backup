@@ -1,11 +1,14 @@
 package com.example.bravia.data.remote.api
 
+import com.example.bravia.data.remote.dto.CityDTO
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
+import com.example.bravia.data.remote.dto.CountryDTO
 import com.example.bravia.data.remote.dto.InternshipDTO
 import com.example.bravia.data.remote.dto.LocationDTO
 import com.example.bravia.data.remote.dto.ModalityDTO
 import com.example.bravia.data.remote.dto.NewInternshipDTO
 import com.example.bravia.data.remote.dto.UpdateInternshipDTO
+import com.example.bravia.domain.model.Country
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -46,5 +49,11 @@ interface BusinessService {
 
     @PATCH("companies/{username}/internships")
     suspend fun updateInternship(@Path("username") username: String, @Body internship: UpdateInternshipDTO): Response<InternshipDTO?>
+
+    @GET("companies/cities")
+    suspend fun getAllCities(): Response<List<CityDTO>>
+
+    @GET("companies/countries")
+    suspend fun getAllCountries(): Response<List<CountryDTO>>
 
 }

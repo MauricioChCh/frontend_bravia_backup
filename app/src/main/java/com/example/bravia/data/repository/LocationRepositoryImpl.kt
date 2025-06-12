@@ -1,14 +1,20 @@
 package com.example.bravia.data.repository
 
+import com.example.bravia.data.mapper.CityMapper
+import com.example.bravia.data.mapper.CountryMapper
 import com.example.bravia.data.mapper.LocationMapper
 import com.example.bravia.data.remote.LocationRemoteDataSource
+import com.example.bravia.domain.model.City
+import com.example.bravia.domain.model.Country
 import com.example.bravia.domain.model.Location
 import com.example.bravia.domain.repository.LocationRepository
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
     private val remoteDataSource: LocationRemoteDataSource,
-    private val mapper: LocationMapper
+    private val locationMapper: LocationMapper,
+    private val cityMapper: CityMapper,
+    private val countryMapper: CountryMapper
 ) : LocationRepository {
 
     /**
@@ -21,7 +27,7 @@ class LocationRepositoryImpl @Inject constructor(
             val response = remoteDataSource.getAllBusinessLocations(username)
             if (response.isSuccess) {
                 response.getOrNull()?.map { dto ->
-                    mapper.mapToDomain(dto)
+                    locationMapper.mapToDomain(dto)
                 }?.let { locations ->
                     Result.success(locations)
                 } ?: Result.success(emptyList())
@@ -33,4 +39,37 @@ class LocationRepositoryImpl @Inject constructor(
         } as Result<List<Location>>
     }
 
+    override suspend fun getAllCities(): Result<List<City>> {
+        return try {
+            val response = remoteDataSource.getAllCities()
+            if (response.isSuccess) {
+                response.getOrNull()?.map { dto ->
+                    cityMapper.mapToDomain(dto)
+                }?.let { cities ->
+                    Result.success(cities)
+                } ?: Result.success(emptyList())
+            } else {
+                Result.failure(response.exceptionOrNull() ?: Exception("Unknown error fetching cities"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getAllCountries(): Result<List<Country>> {
+        return try {
+            val response = remoteDataSource.getAllCountries()
+            if (response.isSuccess) {
+                response.getOrNull()?.map { dto ->
+                    countryMapper.mapToDomain(dto)
+                }?.let { countries ->
+                    Result.success(countries)
+                } ?: Result.success(emptyList())
+            } else {
+                Result.failure(response.exceptionOrNull() ?: Exception("Unknown error fetching countries"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

@@ -83,6 +83,10 @@ fun BusinessEditProfileScreen(
 
     LaunchedEffect(Unit) {
         businessViewModel.fetchCompanyById()
+        businessViewModel.fetchCities()
+        businessViewModel.fetchCountries()
+        businessViewModel.fetchBusinessAreas()
+        businessViewModel.fetchTags()
     }
 
     var isMarked by remember { mutableStateOf(false) }

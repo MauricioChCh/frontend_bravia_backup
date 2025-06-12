@@ -18,6 +18,8 @@ import com.example.bravia.domain.usecase.BusinessNewInternshipUseCase
 import com.example.bravia.domain.usecase.BusinessUpdateInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessLocationsUseCase
+import com.example.bravia.domain.usecase.GetAllCitiesUseCase
+import com.example.bravia.domain.usecase.GetAllCountriesUseCase
 import com.example.bravia.domain.usecase.GetAllInternshipModalitiesUseCase
 import com.example.bravia.domain.usecase.GetBookmarkedInternshipsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,6 +50,10 @@ class BusinessViewModel @Inject constructor(
     private val getBusinessInternshipByIdUseCase: GetBusinessInternshipByIdUseCase,
     private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase,
     private val businessUpdateInternshipUseCase: BusinessUpdateInternshipUseCase,
+    private val getAllCitiesUseCase: GetAllCitiesUseCase,
+    private val getAllCountriesUseCase: GetAllCountriesUseCase,
+    //private val getAllBusinessAreasUseCase: GetAllBusinessAreasUseCase,
+    //private val getAllTagsUseCase: GetAllTagsUseCase,
     private val authPreferences: AuthPreferences,
 ) : ViewModel() {
 
@@ -208,6 +214,79 @@ class BusinessViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchCities() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllCitiesUseCase()
+            }.onSuccess { result ->
+                _cities.value = result.getOrNull()?.map { it }?.distinct() ?: emptyList()
+                _businessState.value = if (_cities.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch cities")
+            }
+        }
+    }
+
+    fun fetchCountries() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllCountriesUseCase()
+            }.onSuccess { result ->
+                _countries.value = result.getOrNull()?.map { it }?.distinct() ?: emptyList()
+                _businessState.value = if (_countries.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch countries")
+            }
+        }
+    }
+
+    fun fetchBusinessAreas() {
+//        viewModelScope.launch {
+//            _businessState.value = BusinessState.Loading
+//            runCatching {
+//                getAllBusinessLocationsUseCase(authPreferences.getUsername()!!)
+//            }.onSuccess { result ->
+//                _businessAreas.value = result.getOrNull()?.map { it.businessArea }?.distinct() ?: emptyList()
+//                _businessState.value = if (_businessAreas.value.isNotEmpty()) {
+//                    BusinessState.Success
+//                } else {
+//                    BusinessState.Empty
+//                }
+//            }.onFailure { exception ->
+//                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch business areas")
+//            }
+//        }
+    }
+
+    fun fetchTags() {
+//        viewModelScope.launch {
+//            _businessState.value = BusinessState.Loading
+//            runCatching {
+//                getAllBusinessLocationsUseCase(authPreferences.getUsername()!!)
+//            }.onSuccess { result ->
+//                _tags.value = result.getOrNull()?.flatMap { it.tags }?.distinct() ?: emptyList()
+//                _businessState.value = if (_tags.value.isNotEmpty()) {
+//                    BusinessState.Success
+//                } else {
+//                    BusinessState.Empty
+//                }
+//            }.onFailure { exception ->
+//                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch tags")
+//            }
+//        }
+    }
+
 
     fun addInternship(internship: NewInternship) {
         viewModelScope.launch {
