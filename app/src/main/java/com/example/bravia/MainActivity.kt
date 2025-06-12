@@ -5,6 +5,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -25,15 +30,26 @@ import com.example.bravia.presentation.viewmodel.LoginViewModel
 import com.example.bravia.presentation.viewmodel.SignupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentActivity
 import com.example.bravia.presentation.navigation.BottomNavBar
 import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.bravia.presentation.ui.theme.ThemeDefaults
 import com.example.bravia.presentation.viewmodel.ThemeViewModel
 
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.embedding.engine.dart.DartExecutor
+
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
+
+    private lateinit var flutterEngine: FlutterEngine
 
     // Reinicia la aplicación volviendo a la actividad principal
     fun restartApp() {
@@ -44,6 +60,18 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Iniciamos el flutter para no tener que esperar a que se cargue al navegar a una pantalla de Flutter
+
+        flutterEngine = FlutterEngine(this).apply {
+            dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+            // Espera a que el engine esté listo
+            addEngineLifecycleListener(object : FlutterEngine.EngineLifecycleListener {
+                override fun onPreEngineRestart() {}
+                override fun onEngineWillDestroy() {}
+            })
+            FlutterEngineCache.getInstance().put("flutter_engine", this)
+        }
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -73,13 +101,17 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+                // Verificar si se debe mostrar la bottom bar
+                val currentRoute = navController.currentBackStackEntry?.destination?.route
+                val shouldShowBottomBar = userSession?.let { session ->
+                    currentRoute != null && BottomNavBar.isBottomNavRoute(currentRoute)
+                } ?: false
+
+
                 Scaffold(
                     bottomBar = {
-                        // Solo mostrar bottom bar si el usuario está autenticado
                         userSession?.let { session ->
-                            val currentRoute =
-                                navController.currentBackStackEntry?.destination?.route
-                            if (currentRoute != null && BottomNavBar.isBottomNavRoute(currentRoute)) {
+                            if (shouldShowBottomBar) {
                                 BottomNavigationBar(
                                     navController = navController,
                                     userRole = session.role
@@ -88,19 +120,30 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { paddingValues ->
-                    NavGraph(
-                        navController = navController,
-                        paddingValues = paddingValues,
-                        internshipViewModel = internshipViewModel,
-                        signUpViewModel = signUpViewModel,
-                        loginViewModel = loginViewModel,
-                        businessViewModel = businessViewModel,
-                        onLogout = { restartApp() } // ← Pasa el callback aquí
-                    )
+                    Column {
+                        NavGraph(
+                            navController = navController,
+                            paddingValues = paddingValues,
+                            internshipViewModel = internshipViewModel,
+                            signUpViewModel = signUpViewModel,
+                            loginViewModel = loginViewModel,
+                            businessViewModel = businessViewModel,
+                            onLogout = { restartApp() }
+                        )
+
+                    }
+//                    Spacer(modifier = Modifier.height(64.dp ))
                 }
             }
         }
+
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        // Limpia el FlutterEngine cuando la actividad se destruye
+        FlutterEngineCache.getInstance().remove("flutter_engine")
+    }
+
 }
 
 
@@ -115,11 +158,26 @@ fun BottomNavigationBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    NavigationBar {
+
+    NavigationBar(
+        modifier = Modifier.height(64.dp), // ← Altura personalizada (default es ~80dp)
+        tonalElevation = 0.dp // Opcional: quitar elevación
+    ){
         items.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = null) },
-                label = { Text(stringResource(item.title)) },
+                icon = {
+                    Icon(
+                        item.icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp) // ← Iconos más pequeños
+                    )
+                },
+                label = {
+                    Text(
+                        stringResource(item.title),
+                        fontSize = 11.sp // ← Texto más pequeño
+                    )
+                },
                 selected = currentRoute == item.route,
                 onClick = {
                     if (currentRoute != item.route) {
