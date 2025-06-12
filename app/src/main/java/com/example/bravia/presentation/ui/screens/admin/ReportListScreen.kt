@@ -76,7 +76,10 @@ fun ReportListScreen(
         ) {
             OutlinedTextField(
                 value = searchText,
-                onValueChange = { searchText = it },
+                onValueChange = {
+                    searchText = it
+                    viewModel.searchReports(it) // Llamar a la función de búsqueda
+                },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Search reports...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },

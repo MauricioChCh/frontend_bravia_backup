@@ -83,24 +83,24 @@ fun SettingsScreen(
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Settings") },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
-            )
-        }
+//        topBar = {
+//            TopAppBar(
+//                title = { Text("Settings") },
+//                navigationIcon = {
+//                    IconButton(onClick = {
+//                        navController.popBackStack()
+//                    }) {
+//                        Icon(
+//                            imageVector = Icons.Default.ArrowBack,
+//                            contentDescription = "Back"
+//                        )
+//                    }
+//                },
+//                colors = TopAppBarDefaults.topAppBarColors(
+//                    containerColor = MaterialTheme.colorScheme.surface
+//                )
+//            )
+//        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -171,46 +171,46 @@ fun SettingsScreen(
                     )
                 }
 
-                item {
-                    SettingsItem(
-                        title = "Language",
-                        onClick = { /* No es necesario, el dropdown maneja la interacción */ },
-                        trailingContent = {
-                            LanguageDropdown(
-                                selectedLanguage = selectedLanguage,
-                                onLanguageSelected = { selectedLanguage = it }
-                            )
-                        }
-                    )
-                }
-
-                item {
-                    SettingsItem(
-                        title = "Preferences",
-                        onClick = { /* Acción para preferencias */ }
-                    )
-                }
-
-                item {
-                    SettingsItem(
-                        title = "Activity log",
-                        onClick = { /* Acción para registro de actividad */ }
-                    )
-                }
-
-                item {
-                    SettingsItem(
-                        title = "Subscription & payment method",
-                        onClick = { /* Acción para suscripción y pagos */ }
-                    )
-                }
-
-                item {
-                    SettingsItem(
-                        title = "Account management",
-                        onClick = { /* Acción para gestión de cuenta */ }
-                    )
-                }
+//                item {
+//                    SettingsItem(
+//                        title = "Language",
+//                        onClick = { /* No es necesario, el dropdown maneja la interacción */ },
+//                        trailingContent = {
+//                            LanguageDropdown(
+//                                selectedLanguage = selectedLanguage,
+//                                onLanguageSelected = { selectedLanguage = it }
+//                            )
+//                        }
+//                    )
+//                }
+//
+//                item {
+//                    SettingsItem(
+//                        title = "Preferences",
+//                        onClick = { /* Acción para preferencias */ }
+//                    )
+//                }
+//
+//                item {
+//                    SettingsItem(
+//                        title = "Activity log",
+//                        onClick = { /* Acción para registro de actividad */ }
+//                    )
+//                }
+//
+//                item {
+//                    SettingsItem(
+//                        title = "Subscription & payment method",
+//                        onClick = { /* Acción para suscripción y pagos */ }
+//                    )
+//                }
+//
+//                item {
+//                    SettingsItem(
+//                        title = "Account management",
+//                        onClick = { /* Acción para gestión de cuenta */ }
+//                    )
+//                }
 
                 // Espacio para el botón de logout
                 item {

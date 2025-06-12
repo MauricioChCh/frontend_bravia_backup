@@ -68,7 +68,10 @@ fun CompanyListScreen(
         ) {
             OutlinedTextField(
                 value = searchText,
-                onValueChange = { searchText = it },
+                onValueChange = {
+                    searchText = it
+                    viewModel.searchCompanies(it) // Llamar a la función de búsqueda
+                },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Search companies...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },

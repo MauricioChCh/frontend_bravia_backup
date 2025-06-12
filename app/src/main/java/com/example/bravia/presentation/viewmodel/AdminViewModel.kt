@@ -232,4 +232,63 @@ class AdminViewModel @Inject constructor(
             }
         }
     }
+
+    // En AdminViewModel.kt
+
+    // Función para buscar empresas
+    fun searchCompanies(query: String) {
+        viewModelScope.launch {
+            if (query.isEmpty()) {
+                fetchAllCompanies()
+                return@launch
+            }
+
+            val currentList = _companies.value
+            val filtered = currentList.filter {
+                it.name?.contains(query, true) == true ||
+                        it.description?.contains(query, true) == true ||
+                        it.email?.contains(query, true) == true
+            }
+            _companies.value = filtered
+        }
+    }
+
+    // Función para buscar estudiantes
+    fun searchStudents(query: String) {
+        viewModelScope.launch {
+            if (query.isEmpty()) {
+                fetchAllStudents()
+                return@launch
+            }
+
+            val currentList = _students.value
+            val filtered = currentList.filter { student ->
+                student.userInput?.firstName?.contains(query, true) == true ||
+                        student.userInput?.lastName?.contains(query, true) == true ||
+                        student.userInput?.email?.contains(query, true) == true
+            }
+            _students.value = filtered
+        }
+    }
+
+    // Función para buscar reportes
+    fun searchReports(query: String) {
+        viewModelScope.launch {
+            if (query.isEmpty()) {
+                fetchAllReports()
+                return@launch
+            }
+
+            val currentList = _reports.value
+            val filtered = currentList.filter { report ->
+                report.reporterName?.contains(query, true) == true ||
+                        report.description?.contains(query, true) == true ||
+                        report.reportedUserName?.contains(query, true) == true
+            }
+            _reports.value = filtered
+        }
+    }
+
+
+
 }

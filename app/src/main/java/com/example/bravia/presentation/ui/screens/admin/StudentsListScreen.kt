@@ -78,7 +78,10 @@ fun StudentListScreen(
         ) {
             OutlinedTextField(
                 value = searchText,
-                onValueChange = { searchText = it },
+                onValueChange = {
+                    searchText = it
+                    viewModel.searchStudents(it) // Llamar a la función de búsqueda
+                },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Search students...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },

@@ -282,16 +282,16 @@ fun ProfileScreen(
                                         )
                                     }
 
-                                    IconButton(
-                                        onClick = { /* Función para editar */ }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Edit,
-                                            contentDescription = "Editar",
-                                            tint = MaterialTheme.colorScheme.onSurface,
-                                            modifier = Modifier.size(28.dp)
-                                        )
-                                    }
+//                                    IconButton(
+//                                        onClick = { /* Función para editar */ }
+//                                    ) {
+//                                        Icon(
+//                                            imageVector = Icons.Default.Edit,
+//                                            contentDescription = "Editar",
+//                                            tint = MaterialTheme.colorScheme.onSurface,
+//                                            modifier = Modifier.size(28.dp)
+//                                        )
+//                                    }
                                 }
                             }
                         }
@@ -359,8 +359,8 @@ fun ProfileScreen(
                             Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
 
                             // Opciones de mejora del perfil
-                            EnhanceOption(text = "Enhance profile")
-                            EnhanceOption(text = "Enhance CV")
+//                            EnhanceOption(text = "Enhance profile")
+//                            EnhanceOption(text = "Enhance CV")
 
                             Spacer(modifier = Modifier.height(ThemeDefaults.screenPadding))
                         }
