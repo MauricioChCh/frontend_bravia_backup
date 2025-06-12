@@ -42,6 +42,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.bravia.presentation.viewmodel.AdminViewModel
 
 import com.example.bravia.presentation.ui.theme.ThemeDefaults
+import com.example.bravia.presentation.viewmodel.StudentViewModel
 import com.example.bravia.presentation.viewmodel.ThemeViewModel
 
 import io.flutter.embedding.engine.FlutterEngine
@@ -88,6 +89,7 @@ class MainActivity : FragmentActivity() {
                 val internshipViewModel: InternshipViewModel = hiltViewModel()
                 val signUpViewModel: SignupViewModel = hiltViewModel()
                 val businessViewModel: BusinessViewModel = hiltViewModel()
+                val studentViewModel: StudentViewModel = hiltViewModel()
                 val adminViewModel: AdminViewModel = hiltViewModel()
 
                 // Estado de la sesión del usuario
@@ -132,6 +134,7 @@ class MainActivity : FragmentActivity() {
                             loginViewModel = loginViewModel,
                             businessViewModel = businessViewModel,
                             adminViewModel = adminViewModel,
+                            studentViewModel = studentViewModel,
                             onLogout = { restartApp() }
                         )
 

@@ -4,6 +4,7 @@ import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.local.AuthPreferences
 import com.example.bravia.data.remote.api.AdminService
 import com.example.bravia.data.remote.api.AuthService
+import com.example.bravia.data.remote.api.CVService
 import com.example.bravia.data.remote.api.InternshipService
 import com.example.bravia.data.remote.api.SignUpService
 import com.example.bravia.data.remote.api.StudentService
@@ -28,9 +29,10 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-//    val BASE_URL = "http://192.168.100.96:8080/api/v1/"
-//
-    private const val BASE_URL = "https://bravia-app-v01-bbd26053b419.herokuapp.com/api/v1/"
+//    val BASE_URL = "http://192.168.182.2:8080/api/v1/"
+    val BASE_URL = "http://192.168.28.1:8080/api/v1/"
+
+//    private const val BASE_URL = "https://bravia-app-v01-bbd26053b419.herokuapp.com/api/v1/"
     private const val DATE_FORMAT = "yyyy-MM-dd"
 
     /**
@@ -165,6 +167,12 @@ object NetworkModule {
     @Singleton
     fun provideAdminService(retrofit: Retrofit): AdminService =
         retrofit.create(AdminService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideCVService(retrofit: Retrofit): CVService =
+        retrofit.create(CVService::class.java)
 
 
 }

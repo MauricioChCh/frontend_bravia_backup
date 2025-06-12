@@ -2,6 +2,7 @@ package com.example.bravia.data.di
 
 import com.example.bravia.data.repository.AdminRepositoryImpl
 import com.example.bravia.data.repository.BusinessAreaRepositoryImpl
+import com.example.bravia.data.repository.CVRepositoryImpl
 import com.example.bravia.data.repository.CollegeRepositoryImpl
 import com.example.bravia.data.repository.CompanyRepositoryImpl
 import com.example.bravia.data.repository.DegreeRepositoryImpl
@@ -10,7 +11,9 @@ import com.example.bravia.data.repository.InternshipRepositoryImpl
 import com.example.bravia.data.repository.LocationRepositoryImpl
 import com.example.bravia.data.repository.ModalityRepositoryImpl
 import com.example.bravia.domain.repository.AdminRepository
+import com.example.bravia.data.repository.StudentRepositoryImpl
 import com.example.bravia.domain.repository.BusinessAreaRepository
+import com.example.bravia.domain.repository.CVRepository
 import com.example.bravia.domain.repository.CollegeRepository
 import com.example.bravia.domain.repository.CompanyRepository
 import com.example.bravia.domain.repository.DegreeRepository
@@ -18,6 +21,7 @@ import com.example.bravia.domain.repository.InterestRepository
 import com.example.bravia.domain.repository.InternshipRepository
 import com.example.bravia.domain.repository.LocationRepository
 import com.example.bravia.domain.repository.ModalityRepository
+import com.example.bravia.domain.repository.StudentRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -111,5 +115,17 @@ abstract class RepositoryModule {
     abstract fun bindAdminRepository(
         adminRepositoryImpl: AdminRepositoryImpl
     ): AdminRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindStudentRepository(
+        studentRepositoryImpl: StudentRepositoryImpl
+    ): StudentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCVRepository(
+        cvRepositoryImpl: CVRepositoryImpl
+    ): CVRepository
 
 }
