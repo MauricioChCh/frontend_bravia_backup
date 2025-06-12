@@ -24,3 +24,25 @@ data class CompanyNew(
     val name: String,
     val businessArea: BusinessArea,
 )
+
+data class CompanyDescription(
+    val id: Long,
+    var description: String,
+)
+
+data class CompanName(
+    val id: Long,
+    var name: String,
+)
+
+data class CompanyTags(
+    val tags: List<TagID>,
+)
+
+data class CompanyBusinessAreas(
+    val businessAreas: List<BusinessAreaID>,
+)
+
+data class CompanyContact(
+    val url: String,
+)

@@ -1,8 +1,11 @@
 package com.example.bravia.presentation.ui.screens.business
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,15 +14,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -39,10 +46,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bravia.domain.model.Location
+import com.example.bravia.domain.model.UpdateInternship
+import com.example.bravia.presentation.ui.screens.admin.ProfileSection
 import com.example.bravia.presentation.ui.screens.shared.ErrorScreen
 import com.example.bravia.presentation.ui.screens.shared.LoadingScreen
 import com.example.bravia.presentation.viewmodel.BusinessState
 
+@SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusinessEditProfileScreen(
@@ -56,6 +67,10 @@ fun BusinessEditProfileScreen(
     val countries by businessViewModel.countries.collectAsState()
     val businessAreas by businessViewModel.businessAreas.collectAsState()
     val tags by businessViewModel.tags.collectAsState()
+
+    val selectedBusinessAreas = remember { mutableStateOf(company!!.businessAreas?.map { it }!!.toMutableSet()) }
+    val selectedTags = remember { mutableStateOf(company!!.tags?.map { it }!!.toMutableSet()) }
+
 
     var address by remember { mutableStateOf("") }
 
@@ -162,18 +177,18 @@ fun BusinessEditProfileScreen(
                         }
                     }
 
-                    FieldEditText(
+                    BoxContainer(
                         label = "Company Name",
-                        value = company!!.name.toString(),
+                        text = company!!.name.toString(),
                         onValueChange = { company.name = it },
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        edit = edit,
                     )
 
-                    FieldEditText(
+                    BoxContainer(
                         label = "Company Description",
-                        value = company.description.toString(),
+                        text = company.description.toString(),
+                        edit = edit,
                         onValueChange = { company.description = it },
-                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
 
                     ComboBoxContainer(
@@ -202,36 +217,115 @@ fun BusinessEditProfileScreen(
                         isEditing = edit
                     )
 
-                    FieldEditText(
+                    BoxContainer(
                         label = "Address",
-                        value = address,
+                        text = address,
+                        edit = edit,
                         onValueChange = { address = it },
-                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
 
-                    // TODO: Add items for business areas, tags.
+                    Text(
+                        text = "Select Business Areas",
+                        modifier = Modifier.padding(start = 16.dp, top = 8.dp),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
 
-                    FieldEditText(
+                    FlowRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        businessAreas.forEach { area ->
+                            SelectableChip(
+                                label = area.name,
+                                isSelected = selectedBusinessAreas.value.contains(area),
+                                onClick = {
+                                    if (selectedBusinessAreas.value.contains(area)) {
+                                        selectedBusinessAreas.value.remove(area)
+                                    } else {
+                                        selectedBusinessAreas.value.add(area)
+                                    }
+                                }
+                            )
+                        }
+                    }
+
+
+                    Text(
+                        text = "Select Tags",
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+
+                    FlowRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        tags.forEach { tag ->
+                            SelectableChip(
+                                label = tag.name,
+                                isSelected = selectedTags.value.contains(tag),
+                                onClick = {
+                                    if (selectedTags.value.contains(tag)) {
+                                        selectedTags.value.remove(tag)
+                                    } else {
+                                        selectedTags.value.add(tag)
+                                    }
+                                }
+                            )
+                        }
+                    }
+
+
+                    BoxContainer(
                         label = "Recruiter First Name",
-                        value = company.firstName.toString(),
+                        text = company.firstName.toString(),
+                        edit = edit,
                         onValueChange = { company.firstName = it },
-                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
 
-                    FieldEditText(
+                    BoxContainer(
                         label = "Recruiter Last Name",
-                        value = company.lastName.toString(),
+                        text = company.lastName.toString(),
+                        edit = edit,
                         onValueChange = { company.lastName = it },
-                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
 
-                    FieldEditText(
+                    BoxContainer(
                         label = "Recruiter Email",
-                        value = company.email.toString(),
+                        text = company.email.toString(),
+                        edit = edit,
                         onValueChange = { company.email = it },
-                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
 
+                    ProfileSection("") {
+                        Column (
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        ) {
+                            Button(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    businessViewModel.updateCompany(
+                                        company,
+                                        selectedBusinessAreas.value.toList(),
+                                        selectedTags.value.toList(),
+                                        Location(
+                                            id = 0L,
+                                            address = address,
+                                            city = cities.first(),
+                                            country = countries.first()
+                                        )
+                                    )
+                                }
+
+                            ) {
+                                Text(text = "Saved", style = MaterialTheme.typography.bodyLarge)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -241,23 +335,29 @@ fun BusinessEditProfileScreen(
 
 
 
-@Composable
-fun FieldEditText(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        textStyle = MaterialTheme.typography.bodyLarge,
-        singleLine = true,
-        shape = MaterialTheme.shapes.medium
-    )
 
+
+
+@Composable
+fun SelectableChip(
+    label: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 4.dp, vertical = 4.dp)
+            .clickable { onClick() },
+        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+        shape = RoundedCornerShape(50),
+        tonalElevation = 4.dp,
+        border = if (isSelected) null else ButtonDefaults.outlinedButtonBorder
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+        )
+    }
 }
+

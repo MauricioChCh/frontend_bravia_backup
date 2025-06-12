@@ -4,6 +4,11 @@ import com.example.bravia.data.remote.api.AdminService
 import com.example.bravia.data.remote.api.BusinessService
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import com.example.bravia.data.remote.dto.TagDTO
+import com.example.bravia.domain.model.CompanName
+import com.example.bravia.domain.model.CompanyBusinessAreas
+import com.example.bravia.domain.model.CompanyDescription
+import com.example.bravia.domain.model.CompanyTags
+import com.example.bravia.domain.model.Location
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -23,6 +28,26 @@ class CompanyRemoteDataSource @Inject constructor(
 
     suspend fun getAllTags(): Result<List<TagDTO>> = safeApiCall {
         businessService.getAllTags()
+    }
+
+    suspend fun updateCompanyDescription(company: CompanyDescription): Result<Unit> = safeApiCall {
+        businessService.updateCompanyDescription(company.id, company)
+    }
+
+    suspend fun updateCompanyName(company: CompanName): Result<Unit> = safeApiCall {
+        businessService.updateCompanyName(company.id, company)
+    }
+
+    suspend fun updateCompanyLocation(id: Long, location: Location): Result<Unit> = safeApiCall {
+        businessService.updateCompanyLocation(id, location)
+    }
+
+    suspend fun updateCompanyTags(companyId: Long, companyTags: CompanyTags): Result<Unit> = safeApiCall {
+        businessService.updateCompanyTags(companyId, companyTags)
+    }
+
+    suspend fun updateCompanyBusinessAreas(companyId: Long, businessAreas: CompanyBusinessAreas): Result<Unit> = safeApiCall {
+        businessService.updateCompanyBusinessAreas(companyId, businessAreas)
     }
 
     /**

@@ -4,3 +4,7 @@ data class Tag(
     val id: Long,
     val name: String,
 )
+
+data class TagID(
+    val id: Long,
+)

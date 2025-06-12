@@ -10,3 +10,11 @@ data class Location(
         return "$address, ${city.name}, ${country.name}"
     }
 }
+
+
+data class LocationUpdate(
+    val id: Long,
+    val address: String,
+    val city: CityID,
+    val country: CountryID,
+)
