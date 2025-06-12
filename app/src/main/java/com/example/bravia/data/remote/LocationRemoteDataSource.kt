@@ -1,6 +1,8 @@
 package com.example.bravia.data.remote
 
 import com.example.bravia.data.remote.api.BusinessService
+import com.example.bravia.data.remote.dto.CityDTO
+import com.example.bravia.data.remote.dto.CountryDTO
 import com.example.bravia.data.remote.dto.LocationDTO
 import retrofit2.Response
 import javax.inject.Inject
@@ -13,6 +15,13 @@ class LocationRemoteDataSource @Inject constructor(
         businessService.getAllBusinessLocations(username)
     }
 
+    suspend fun getAllCities(): Result<List<CityDTO>> = safeApiCall {
+        businessService.getAllCities()
+    }
+
+    suspend fun getAllCountries(): Result<List<CountryDTO>> = safeApiCall {
+        businessService.getAllCountries()
+    }
 
     /**
      * Helper function to handle API calls safely.

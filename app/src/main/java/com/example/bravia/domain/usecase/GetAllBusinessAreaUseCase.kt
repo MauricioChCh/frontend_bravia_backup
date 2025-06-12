@@ -21,7 +21,7 @@ class GetAllBusinessAreaUseCase @Inject constructor (
      *
      * @return A list of [BusinessArea] objects representing all business areas.
      */
-    operator suspend  fun invoke(): Result<List<BusinessArea>> {
+    suspend operator fun invoke(): Result<List<BusinessArea>> {
         return repository.getAllBusinessAreas()
     }
 }

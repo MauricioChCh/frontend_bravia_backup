@@ -55,7 +55,8 @@ class NavigationManager {
             BottomNavBar.Routes.BUSINESS_PROFILE,
             NavRoutes.BusinessInternshipDetail.ROUTE,
             NavRoutes.BusinessNewInternship.ROUTE,
-            NavRoutes.Settings.ROUTE
+            NavRoutes.Settings.ROUTE,
+            NavRoutes.BusinessEditProfile.ROUTE
         )
     }
 

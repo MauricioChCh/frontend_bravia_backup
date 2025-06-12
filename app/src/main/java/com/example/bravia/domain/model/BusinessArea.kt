@@ -11,3 +11,7 @@ data class BusinessArea (
     val id: Long,
     val name: String
 )
+
+data class BusinessAreaID(
+    val id: Long
+)

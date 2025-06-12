@@ -3,18 +3,33 @@ package com.example.bravia.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bravia.data.local.AuthPreferences
+import com.example.bravia.domain.model.BusinessArea
+import com.example.bravia.domain.model.BusinessAreaID
+import com.example.bravia.domain.model.City
+import com.example.bravia.domain.model.CompanName
 import com.example.bravia.domain.model.Company
+import com.example.bravia.domain.model.CompanyBusinessAreas
+import com.example.bravia.domain.model.CompanyContact
+import com.example.bravia.domain.model.CompanyDescription
+import com.example.bravia.domain.model.CompanyTags
+import com.example.bravia.domain.model.Country
 import com.example.bravia.domain.model.Internship
 import com.example.bravia.domain.model.Location
 import com.example.bravia.domain.model.Modality
 import com.example.bravia.domain.model.NewInternship
+import com.example.bravia.domain.model.Tag
+import com.example.bravia.domain.model.TagID
 import com.example.bravia.domain.model.UpdateInternship
 import com.example.bravia.domain.usecase.BookmarkInternshipUseCase
 import com.example.bravia.domain.usecase.BusinessNewInternshipUseCase
 import com.example.bravia.domain.usecase.BusinessUpdateInternshipUseCase
+import com.example.bravia.domain.usecase.GetAllBusinessAreaUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessInternshipUseCase
 import com.example.bravia.domain.usecase.GetAllBusinessLocationsUseCase
+import com.example.bravia.domain.usecase.GetAllCitiesUseCase
+import com.example.bravia.domain.usecase.GetAllCountriesUseCase
 import com.example.bravia.domain.usecase.GetAllInternshipModalitiesUseCase
+import com.example.bravia.domain.usecase.GetAllTagsUseCase
 import com.example.bravia.domain.usecase.GetBookmarkedInternshipsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +39,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.bravia.domain.usecase.GetBusinessInternshipByIdUseCase
 import com.example.bravia.domain.usecase.GetCompanyByIdUseCase
+import com.example.bravia.domain.usecase.UpdateCompanyBusinessAreasUseCase
+import com.example.bravia.domain.usecase.UpdateCompanyDescriptionUseCase
+import com.example.bravia.domain.usecase.UpdateCompanyLocationUseCase
+import com.example.bravia.domain.usecase.UpdateCompanyNameUseCase
+import com.example.bravia.domain.usecase.UpdateCompanyTagsUseCase
 
 sealed class BusinessState {
     data object Loading : BusinessState()
@@ -44,6 +64,15 @@ class BusinessViewModel @Inject constructor(
     private val getBusinessInternshipByIdUseCase: GetBusinessInternshipByIdUseCase,
     private val getBookmarkedInternshipsUseCase: GetBookmarkedInternshipsUseCase,
     private val businessUpdateInternshipUseCase: BusinessUpdateInternshipUseCase,
+    private val getAllCitiesUseCase: GetAllCitiesUseCase,
+    private val getAllCountriesUseCase: GetAllCountriesUseCase,
+    private val getAllBusinessAreasUseCase: GetAllBusinessAreaUseCase,
+    private val getAllTagsUseCase: GetAllTagsUseCase,
+    private val updateCompanyDescriptionUseCase: UpdateCompanyDescriptionUseCase,
+    private val updateCompanyNameUseCase: UpdateCompanyNameUseCase,
+    private val updateCompanyLocationUseCase: UpdateCompanyLocationUseCase,
+    private val updateCompanyTagsUseCase: UpdateCompanyTagsUseCase,
+    private val updateCompanyBusinessAreasUseCase: UpdateCompanyBusinessAreasUseCase,
     private val authPreferences: AuthPreferences,
 ) : ViewModel() {
 
@@ -67,6 +96,18 @@ class BusinessViewModel @Inject constructor(
 
     private val _bookmarkedInternships = MutableStateFlow<List<Internship>>(emptyList())
     val bookmarkedInternships: StateFlow<List<Internship>> = _bookmarkedInternships.asStateFlow()
+
+    private val _cities = MutableStateFlow<List<City>>(emptyList())
+    val cities: StateFlow<List<City>> = _cities.asStateFlow()
+
+    private val _countries = MutableStateFlow<List<Country>>(emptyList())
+    val countries: StateFlow<List<Country>> = _countries.asStateFlow()
+
+    private val _businessAreas = MutableStateFlow<List<BusinessArea>>(emptyList())
+    val businessAreas: StateFlow<List<BusinessArea>> = _businessAreas.asStateFlow()
+
+    private val _tags = MutableStateFlow<List<Tag>>(emptyList())
+    val tags: StateFlow<List<Tag>> = _tags.asStateFlow()
 
     fun fetchAllBookmarkedInternships() {
         viewModelScope.launch {
@@ -193,6 +234,79 @@ class BusinessViewModel @Inject constructor(
         }
     }
 
+    fun fetchCities() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllCitiesUseCase()
+            }.onSuccess { result ->
+                _cities.value = result.getOrNull()?.map { it }?.distinct() ?: emptyList()
+                _businessState.value = if (_cities.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch cities")
+            }
+        }
+    }
+
+    fun fetchCountries() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllCountriesUseCase()
+            }.onSuccess { result ->
+                _countries.value = result.getOrNull()?.map { it }?.distinct() ?: emptyList()
+                _businessState.value = if (_countries.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch countries")
+            }
+        }
+    }
+
+    fun fetchBusinessAreas() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllBusinessAreasUseCase()
+            }.onSuccess { result ->
+                _businessAreas.value = result.getOrNull()?.map { it }?.distinct() ?: emptyList()
+                _businessState.value = if (_businessAreas.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch business areas")
+            }
+        }
+    }
+
+    fun fetchTags() {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                getAllTagsUseCase()
+            }.onSuccess { result ->
+                _tags.value = result.getOrNull()?.map { it }?.distinct() ?: emptyList()
+                _businessState.value = if (_tags.value.isNotEmpty()) {
+                    BusinessState.Success
+                } else {
+                    BusinessState.Empty
+                }
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to fetch tags")
+            }
+        }
+    }
+
+
     fun addInternship(internship: NewInternship) {
         viewModelScope.launch {
             _businessState.value = BusinessState.Loading
@@ -227,4 +341,104 @@ class BusinessViewModel @Inject constructor(
         }
     }
 
+    fun updateCompany(company: Company, businessAreas: List<BusinessArea>, tags: List<Tag>, location: Location) {
+        updateDescription(CompanyDescription(company.id!!, company.description!!))
+//        updateContact(company)
+        updateCompanyName(company)
+        updateCompanyLocation(company.id, location)
+        updateCompanyTags(company.id, CompanyTags(tags.map { TagID(it.id) }))
+        updateCompanyBusinessAreas(company.id, CompanyBusinessAreas(businessAreas.map { BusinessAreaID(it.id) }))
+    }
+    
+    fun updateCompanyBusinessAreas(id: Long, businessAreas: CompanyBusinessAreas) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                updateCompanyBusinessAreasUseCase(id, businessAreas)
+            }.onSuccess {
+                _businessState.value = BusinessState.Success
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to update company business areas")
+            }
+        }
+    }
+
+    fun updateCompanyTags(id: Long, tags: CompanyTags) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                updateCompanyTagsUseCase(id, tags)
+            }.onSuccess {
+                _businessState.value = BusinessState.Success
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to update company tags")
+            }
+        }
+    }
+
+    fun updateCompanyLocation(id: Long, location: Location) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                 updateCompanyLocationUseCase(id, location)
+            }.onSuccess {
+                _businessState.value = BusinessState.Success
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to update company location")
+            }
+        }
+    }
+
+
+
+
+    fun updateCompanyName(company: Company){
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                updateCompanyNameUseCase(
+                    CompanName(
+                        id = company.id!!,
+                        name = company.name ?: ""
+                    )
+                )
+            }.onSuccess {
+                _businessState.value = BusinessState.Success
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to update company name")
+            }
+        }
+    }
+
+
+//    fun updateContact(company: Company){
+//        viewModelScope.launch {
+//            _businessState.value = BusinessState.Loading
+//            runCatching {
+//                updateCompanyContactUseCase(
+//                    company.id!!,
+//                    CompanyContact(
+//                        url = company.contacts?.firstOrNull()?.url ?: ""
+//                    )
+//                )
+//            }.onSuccess {
+//                _businessState.value = BusinessState.Success
+//            }.onFailure { exception ->
+//                _businessState.value = BusinessState.Error(exception.message ?: "Failed to update contact")
+//            }
+//        }
+//    }
+
+    fun updateDescription(companyDescription: CompanyDescription) {
+        viewModelScope.launch {
+            _businessState.value = BusinessState.Loading
+            runCatching {
+                 updateCompanyDescriptionUseCase(companyDescription)
+            }.onSuccess {
+                _businessState.value = BusinessState.Success
+            }.onFailure { exception ->
+                _businessState.value = BusinessState.Error(exception.message ?: "Failed to update description")
+            }
+        }
+    }
 }

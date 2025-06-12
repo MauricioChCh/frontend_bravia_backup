@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Verified
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +38,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -48,15 +46,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.bravia.R
-import com.example.bravia.domain.model.Internship
 import com.example.bravia.presentation.navigation.NavRoutes
 import com.example.bravia.presentation.ui.layout.MainLayout
-import com.example.bravia.presentation.ui.screens.student.CertificateItem
-import com.example.bravia.presentation.ui.screens.student.EducationItem
-import com.example.bravia.presentation.ui.screens.student.EnhanceOption
 import com.example.bravia.presentation.ui.screens.student.InterestChip
-import com.example.bravia.presentation.ui.screens.student.NetworkIcon
 import com.example.bravia.presentation.ui.screens.student.ProfileSection
 import com.example.bravia.presentation.viewmodel.BusinessViewModel
 
@@ -161,7 +153,7 @@ fun BusinessProfileScreen(
 
                        // Icono de edición (derecha)
                        IconButton(
-                           onClick = { /* Función para editar */ }
+                           onClick = { navController.navigate(NavRoutes.BusinessEditProfile.ROUTE) }
                        ) {
                            Icon(
                                imageVector = Icons.Default.Edit,
@@ -234,15 +226,15 @@ fun BusinessProfileScreen(
 
                     Spacer(modifier = Modifier.width(16.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(5.dp),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // Estos deberían ser iconos de redes sociales reales
-                        NetworkIcon(iconId = R.drawable.ic_launcher_background, "Email")
-                        NetworkIcon(iconId = R.drawable.ic_launcher_background, "LinkedIn")
-                    }
+//                    Row(
+//                        modifier = Modifier.fillMaxWidth().padding(5.dp),
+//                        horizontalArrangement = Arrangement.End,
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        // Estos deberían ser iconos de redes sociales reales
+//                        NetworkIcon(iconId = R.drawable.ic_launcher_background, "Email")
+//                        NetworkIcon(iconId = R.drawable.ic_launcher_background, "LinkedIn")
+//                    }
 
                 }
 
@@ -261,15 +253,15 @@ fun BusinessProfileScreen(
                     )
                 }
 
-                DivisionSection()
-
-                ProfileSection(title = "Contact") {
-                    Text(
-                        text = contacts.joinToString(separator = "\n") { contact -> contact },
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Start,
-                    )
-                }
+//                DivisionSection()
+//
+//                ProfileSection(title = "Contact") {
+//                    Text(
+//                        text = contacts.joinToString(separator = "\n") { contact -> contact },
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        textAlign = TextAlign.Start,
+//                    )
+//                }
 
                 DivisionSection()
 
@@ -305,30 +297,30 @@ fun BusinessProfileScreen(
                     }
                 }
 
-//                DivisionSection()
-//
-//                ProfileSection(title = "Recruiter Information") {
-//                    Column(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(start = 5.dp)
-//                    ) {
-//                        Text(
-//                            text = "${company?.firstName} ${company?.lastName}",
-//                            style = MaterialTheme.typography.bodyMedium,
-//                            fontWeight = FontWeight.Bold,
-//                            fontSize = 16.sp,
-//                        )
-//                        Text(
-//                            text = company?.email ?: "No email provided",
-//                            style = MaterialTheme.typography.bodySmall,
-//                            color = Color.Gray,
-//                            fontSize = 14.sp,
-//                        )
-//                    }
-//                }
-//
-//                Spacer(modifier = Modifier.height(15.dp))
+                DivisionSection()
+
+                ProfileSection(title = "Recruiter Information") {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 5.dp)
+                    ) {
+                        Text(
+                            text = "${company?.firstName} ${company?.lastName}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                        )
+                        Text(
+                            text = company?.email ?: "No email provided",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(15.dp))
 
             }
         }

@@ -273,7 +273,11 @@ fun BusinessInternshipDetailScreen(
                             }
                         )
 
-                        ComboBoxContainer(label = "Location", items = locations.map { it.toShortString() }, text = internship.city + ", " + internship.country, isEditing = edit,
+                        ComboBoxContainer(
+                            label = "Location",
+                            items = locations.map { it.toShortString() },
+                            text = internship.city + ", " + internship.country,
+                            isEditing = edit,
                             onValueChange = { value ->
                                 val selectedLocation = locations.find { it.toShortString() == value }
                                 if (selectedLocation != null) {
@@ -328,17 +332,17 @@ fun BusinessInternshipDetailScreen(
                             ) {
                                 Text(text = if (edit) "Save Changes" else "Edit Internship", style = MaterialTheme.typography.bodyLarge)
                             }
-                            Button(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .fillMaxWidth(),
-                                onClick = {
-//                                    viewModel.viewParticipants(internship.id) // TODO: Cambiar por una variable
-//                                    navController.navigate("")
-                                }
-                            ) {
-                                Text(text = "View Participants", style = MaterialTheme.typography.bodyLarge)
-                            }
+//                            Button(
+//                                modifier = Modifier
+//                                    .padding(16.dp)
+//                                    .fillMaxWidth(),
+//                                onClick = {
+////                                    viewModel.viewParticipants(internship.id) // TODO: Cambiar por una variable
+////                                    navController.navigate("")
+//                                }
+//                            ) {
+//                                Text(text = "View Participants", style = MaterialTheme.typography.bodyLarge)
+//                            }
                         }
                     }
                 }
