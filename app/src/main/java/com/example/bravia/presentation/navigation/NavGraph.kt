@@ -67,15 +67,14 @@ fun NavGraph(
     adminViewModel: AdminViewModel,
 ) {
     val navigationManager = NavigationManager()
-//    val userSession by loginViewModel.userSession.collectAsState()
     val userSession by loginViewModel.userSession.collectAsState()
     // Determinar la ruta de inicio basada en la sesión
     val startDestination = navigationManager.getStartDestination(userSession)
 
     NavHost(
         navController = navController,
-        //startDestination = NavRoutes.Start.ROUTE
-        startDestination = NavRoutes.CompanyList.ROUTE
+        startDestination = NavRoutes.Start.ROUTE
+        //startDestination = NavRoutes.CompanyList.ROUTE
     ){
 //    NavHost(navController = navController, startDestination = NavRoutes.BusinessHome.ROUTE) {
 

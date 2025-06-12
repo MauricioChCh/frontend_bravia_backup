@@ -71,7 +71,7 @@ fun StudentProfileScreen(
                     ) {
                         // Puedes cargar imagen aquí con AsyncImage si tienes URL
                     }
-                    Row(
+                    /*Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
@@ -86,7 +86,7 @@ fun StudentProfileScreen(
                                 modifier = Modifier.size(28.dp)
                             )
                         }
-                        IconButton(onClick = { /* Editar perfil */ }) {
+                        IconButton(onClick = { *//* Editar perfil *//* }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = "Editar",
@@ -94,7 +94,7 @@ fun StudentProfileScreen(
                                 modifier = Modifier.size(28.dp)
                             )
                         }
-                    }
+                    }*/
                 }
             }
 
@@ -118,7 +118,7 @@ fun StudentProfileScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    Text(text = "CV", color = Color.Black)
+                    Text(text = "BANEAR", color = Color.Black)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
@@ -128,8 +128,8 @@ fun StudentProfileScreen(
                     // Iconos de redes sociales
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                EnhanceOption("Enhance profile")
-                EnhanceOption("Enhance CV")
+/*                EnhanceOption("Enhance profile")
+                EnhanceOption("Enhance CV")*/
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
@@ -174,7 +174,7 @@ fun StudentProfileScreen(
     }
 }
 
-@Composable
+/*@Composable
 fun EnhanceOption(text: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -194,4 +194,4 @@ fun EnhanceOption(text: String) {
             modifier = Modifier.size(16.dp)
         )
     }
-}
+}*/

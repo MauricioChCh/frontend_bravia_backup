@@ -88,11 +88,7 @@ fun CompanyCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(
-                    text = company.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+
                 Text(
                     text = company.location.address,
                     style = MaterialTheme.typography.bodyMedium,

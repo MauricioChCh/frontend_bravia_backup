@@ -82,7 +82,7 @@ fun CompanyProfileScreen(
                     ) {
                         // Aquí podrías cargar la imagen de company.imageUrl si tienes alguna librería para imágenes
                     }
-                    Row(
+                    /*Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
@@ -97,7 +97,7 @@ fun CompanyProfileScreen(
                                 modifier = Modifier.size(28.dp)
                             )
                         }
-                        IconButton(onClick = { /* Editar perfil */ }) {
+                        IconButton(onClick = { *//* Editar perfil *//* }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = "Editar",
@@ -105,7 +105,7 @@ fun CompanyProfileScreen(
                                 modifier = Modifier.size(28.dp)
                             )
                         }
-                    }
+                    }*/
                 }
             }
 
@@ -130,7 +130,7 @@ fun CompanyProfileScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    Text(text = "CV", color = Color.Black)
+                    Text(text = "BANEAR", color = Color.Black)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
@@ -140,8 +140,8 @@ fun CompanyProfileScreen(
                     // Iconos de redes sociales o contactos
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                EnhanceOption("Enhance profile")
-                EnhanceOption("Enhance CV")
+/*                EnhanceOption("Enhance profile")
+                EnhanceOption("Enhance CV")*/
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
