@@ -171,7 +171,14 @@ fun SignInScreen(
 
             Spacer(modifier = Modifier.height(ThemeDefaults.spacerHeight))
 
-            RedirectToSignup(navController)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                RedirectToSignup(navController)
+            }
         }
 
         // Snackbar alternativo (opcional)
@@ -277,17 +284,23 @@ fun ContinueButton(
 fun RedirectToSignup(
     navController: NavController
 ) {
-    Button(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 50.dp),
-        onClick = { navController.navigate("signup") },
-        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary)
+            .padding(vertical = 16.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "Create an Account",
-            style = MaterialTheme.typography.headlineSmall
-        )
+        Button(
+            modifier = Modifier
+                .padding(horizontal = 50.dp),
+            onClick = { navController.navigate("signup") },
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary)
+        ) {
+            Text(
+                text = "Create an Account",
+                style = MaterialTheme.typography.headlineSmall
+            )
+        }
     }
 }
 
