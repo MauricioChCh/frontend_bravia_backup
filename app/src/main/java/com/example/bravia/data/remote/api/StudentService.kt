@@ -19,8 +19,8 @@ interface StudentService {
     // This is the interface for the Student Page API
     // It show the interhips in the main page
 //    @GET("student/1/recommended-internships")
-    @GET("internships")
-    suspend fun getRecommendedInternships(): Response<List<InternshipDTO>>
+    @GET("internships/recommended/{username}")
+    suspend fun getRecommendedInternships(username: String): Response<List<InternshipDTO>>
 
     //It show a especific internship
     @GET("internships/{internshipId}")

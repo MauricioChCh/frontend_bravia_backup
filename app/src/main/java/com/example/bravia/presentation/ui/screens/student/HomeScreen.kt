@@ -59,9 +59,9 @@ fun HomeScreen(
     // Realizar búsqueda cuando cambia el texto
     LaunchedEffect(Unit) {
         // Cargar solo si es necesario (primera vez o datos vacíos)
-        if (internships.isEmpty()) {
+//        if (internships.isEmpty()) {
             viewModel.findAllInternships()
-        }
+//        }
     }
 
 

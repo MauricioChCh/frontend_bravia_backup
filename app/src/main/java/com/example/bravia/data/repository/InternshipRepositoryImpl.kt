@@ -23,9 +23,9 @@ class InternshipRepositoryImpl @Inject constructor(
      *
      * @return A [Result] containing a list of [Internship] objects or an error.
      */
-    override suspend fun getRecommendedInternships(): Result<List<Internship>> {
+    override suspend fun getRecommendedInternships(username: String): Result<List<Internship>> {
         return safeRepositoryCall {
-            val dtoResult = remoteDataSource.getRecommendedInternships()
+            val dtoResult = remoteDataSource.getRecommendedInternships(username)
 
             // Desenvuelve el Result del DataSource
             if (dtoResult.isSuccess) {

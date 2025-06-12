@@ -130,10 +130,10 @@ class InternshipViewModel @Inject constructor(
         viewModelScope.launch {
             // Si no es carga forzada y ya tenemos datos, no hacemos nada
             //TODO: Investigar si seria bueno meter que se actualice cada cierto tiempo siempre que elusuario no este en la pagina
-            if (!forceRefresh && _internshipList.value.isNotEmpty()) return@launch
+//            if (!forceRefresh && _internshipList.value.isNotEmpty()) return@launch
 
             _internshipState.value = InternshipState.Loading
-            getAllInternshipsUseCase().onSuccess { internships ->
+            getAllInternshipsUseCase(authPreferences.getUsername()!!).onSuccess { internships ->
                 _internshipList.value = internships
                 _internshipState.value = if (internships.isEmpty()) {
                     InternshipState.Empty
@@ -206,7 +206,7 @@ class InternshipViewModel @Inject constructor(
                 return@launch
             }
 
-            getAllInternshipsUseCase().onSuccess { allInternships ->
+            getAllInternshipsUseCase(authPreferences.getUsername()!!).onSuccess { allInternships ->
                 val filtered = allInternships.filter {
                     it.title.contains(query, true) ||
                             it.company.contains(query, true)

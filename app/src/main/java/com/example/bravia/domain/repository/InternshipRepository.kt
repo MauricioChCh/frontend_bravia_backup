@@ -6,7 +6,7 @@ import com.example.bravia.domain.model.NewInternship
 import com.example.bravia.domain.model.UpdateInternship
 
 interface InternshipRepository {
-    suspend fun getRecommendedInternships(): Result<List<Internship>>
+    suspend fun getRecommendedInternships(username: String): Result<List<Internship>>
     suspend fun getInternshipById(id: Long): Result<Internship?>
     suspend fun bookmarkInternship(internshipId: Long, username: String, isBookmarked: Boolean) : Result<Unit>
     suspend fun getBookmarkedInternships(username: String): Result<List<Internship>>
