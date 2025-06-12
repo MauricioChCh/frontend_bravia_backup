@@ -2,6 +2,7 @@ package com.example.bravia.data.remote
 
 import android.util.Log
 import com.example.bravia.data.remote.api.AdminService
+import com.example.bravia.data.remote.dto.AdminBanningStudentRequestDTO
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import com.example.bravia.data.remote.dto.StudentResponseAdminDTO
 import com.example.bravia.data.remote.dto.StudentResponseDTO
@@ -65,4 +66,55 @@ class AdminRemoteDataSource @Inject constructor(
         response
     }
 
+    suspend fun banStudent(userId: Long, banStatus: Boolean): Result<Unit> = safeApiCall {
+        Log.d("AdminRemoteDataSource", "=== INICIO banStudent ===")
+        Log.d("AdminRemoteDataSource", "banStudent - Input userId: $userId")
+        Log.d("AdminRemoteDataSource", "banStudent - Input banStatus: $banStatus")
+
+        // Crear el DTO con los parámetros recibidos
+        val banRequest = AdminBanningStudentRequestDTO(
+            userId = userId,
+            bannStatus = banStatus
+        )
+
+        Log.d("AdminRemoteDataSource", "banStudent - DTO creado:")
+        Log.d("AdminRemoteDataSource", "banStudent - DTO.userId: ${banRequest.userId}")
+        Log.d("AdminRemoteDataSource", "banStudent - DTO.bannStatus: ${banRequest.bannStatus}")
+
+        Log.d("AdminRemoteDataSource", "banStudent - Calling adminService.banStudent...")
+
+        try {
+            val response = adminService.banStudent(banRequest)
+
+            Log.d("AdminRemoteDataSource", "banStudent - Response recibida:")
+            Log.d("AdminRemoteDataSource", "banStudent - Código: ${response.code()}")
+            Log.d("AdminRemoteDataSource", "banStudent - Éxito: ${response.isSuccessful}")
+            Log.d("AdminRemoteDataSource", "banStudent - Message: ${response.message()}")
+            Log.d("AdminRemoteDataSource", "banStudent - Headers: ${response.headers()}")
+            Log.d("AdminRemoteDataSource", "banStudent - Raw response: ${response.raw()}")
+            Log.d("AdminRemoteDataSource", "banStudent - Body: ${response.body()}")
+
+            if (response.raw().request.url != null) {
+                Log.d("AdminRemoteDataSource", "banStudent - URL llamada: ${response.raw().request.url}")
+                Log.d("AdminRemoteDataSource", "banStudent - Método HTTP: ${response.raw().request.method}")
+            }
+
+            if (!response.isSuccessful) {
+                Log.e("AdminRemoteDataSource", "banStudent - ERROR: Response no exitosa")
+                throw Exception("Error al banear estudiante con ID $userId: ${response.message()}")
+            }
+
+            Log.d("AdminRemoteDataSource", "banStudent - SUCCESS: Response exitosa")
+            Log.d("AdminRemoteDataSource", "=== FIN banStudent ===")
+
+            // Retorna el response en lugar de Unit
+            response
+
+        } catch (e: Exception) {
+            Log.e("AdminRemoteDataSource", "banStudent - EXCEPTION caught:", e)
+            Log.e("AdminRemoteDataSource", "banStudent - Exception message: ${e.message}")
+            Log.e("AdminRemoteDataSource", "banStudent - Exception type: ${e.javaClass.simpleName}")
+            throw e
+        }
+    }
 }

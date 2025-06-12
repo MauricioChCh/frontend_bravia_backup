@@ -4,6 +4,7 @@ import com.example.bravia.data.mapper.CompanyMapper
 import com.example.bravia.data.mapper.StudentMapper
 import com.example.bravia.data.mapper.UserReportMapper
 import com.example.bravia.data.remote.AdminRemoteDataSource
+import com.example.bravia.data.remote.dto.AdminBanningStudentRequestDTO
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Student
 import com.example.bravia.domain.model.UserReport
@@ -172,6 +173,18 @@ class AdminRepositoryImpl @Inject constructor(
                 android.util.Log.e("AdminRepositoryImpl", "Error al obtener la compañía con ID $companyId: ${error?.message}")
                 throw error ?: Exception("Unknown error fetching company with ID $companyId")
             }
+        }
+    }
+
+    override suspend fun banStudent(userId: Long, banStatus: Boolean) {
+        val result = remoteDataSource.banStudent(userId, banStatus)
+
+        if (result.isFailure) {
+            val error = result.exceptionOrNull()
+            android.util.Log.e("AdminRepositoryImpl", "Error al banear usuario con ID $userId: ${error?.message}")
+            throw error ?: Exception("Unknown error banning student with ID $userId")
+        } else {
+            android.util.Log.d("AdminRepositoryImpl", "Usuario con ID $userId baneado exitosamente con estado $banStatus")
         }
     }
 

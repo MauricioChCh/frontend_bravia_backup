@@ -1,11 +1,14 @@
 package com.example.bravia.data.remote.api
 
+import com.example.bravia.data.remote.dto.AdminBanningStudentRequestDTO
 import com.example.bravia.data.remote.dto.CompanyResponseDTO
 import com.example.bravia.data.remote.dto.StudentResponseAdminDTO
 import com.example.bravia.data.remote.dto.StudentResponseDTO
 import com.example.bravia.data.remote.dto.UserReportResponseDTO
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface AdminService {
@@ -39,6 +42,9 @@ interface AdminService {
         @Path("companyId") companyId: Long
     ): Response<CompanyResponseDTO>
 
-
+    @PUT("admin/students/ban")
+    suspend fun banStudent(
+        @Body banRequest: AdminBanningStudentRequestDTO
+    ): Response<Unit>
 
 }

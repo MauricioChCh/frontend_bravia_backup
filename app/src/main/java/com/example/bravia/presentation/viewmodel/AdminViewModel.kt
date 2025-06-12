@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bravia.domain.model.Company
 import com.example.bravia.domain.model.Student
 import com.example.bravia.domain.model.UserReport
+import com.example.bravia.domain.usecase.BanUserIdUseCase
 import com.example.bravia.domain.usecase.GetAdminCompanyByIdUseCase
 import com.example.bravia.domain.usecase.GetAdminStudentByIdUseCase
 import com.example.bravia.domain.usecase.GetAllCompaniesUseCase
@@ -37,6 +38,7 @@ class AdminViewModel @Inject constructor(
     private val getCompanyByIdUseCase: GetAdminCompanyByIdUseCase,
     private val getStudentByIdUseCase: GetAdminStudentByIdUseCase,
     private val getCompanyByCompanyIdUseCase: GetCompanyByCompanyIdUseCase,
+    private val banUserByIdUseCase: BanUserIdUseCase,
 ) : ViewModel() {
 
     private val _companies = MutableStateFlow<List<Company>>(emptyList())
@@ -212,6 +214,21 @@ class AdminViewModel @Inject constructor(
             }.onFailure { throwable ->
                 Log.e("AdminViewModel", "fetchCompanyById - error: ${throwable.message}", throwable)
                 _adminState.value = AdminState.Error(throwable.message ?: "Error fetching company")
+            }
+        }
+    }
+
+    fun banUserById(userId: Long, isBanned: Boolean) {
+        viewModelScope.launch {
+            _adminState.value = AdminState.Loading
+            runCatching {
+                banUserByIdUseCase(userId, isBanned)
+            }.onSuccess {
+                Log.d("AdminViewModel", "banUserById - updated ban status for userId: $userId to $isBanned")
+                _adminState.value = AdminState.Success
+            }.onFailure { throwable ->
+                Log.e("AdminViewModel", "banUserById - error: ${throwable.message}", throwable)
+                _adminState.value = AdminState.Error(throwable.message ?: "Error banning user")
             }
         }
     }
